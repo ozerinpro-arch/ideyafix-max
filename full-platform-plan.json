@@ -1,8 +1,8 @@
 {
   "kind": "ideyafix-independent-full-platform",
   "createdAt": "2026-11-06T22:51:50.829812+00:00",
-  "acceptedPercent": 93.46,
-  "state": "non_ai_functions_accepted_publication_pending",
+  "acceptedPercent": 96.26,
+  "state": "non_ai_complete_ai_free_api_unavailable",
   "scope": "Independent full functional fork for MAX, fictional data, original website read-only; public GitHub authorized after working bot",
   "tasks": [
     {
@@ -199,8 +199,8 @@
       "id": "github",
       "title": "Открытый GitHub и комплект подачи",
       "weight": 3,
-      "acceptedPercent": 0,
-      "state": "after_working_full_bot"
+      "acceptedPercent": 100,
+      "state": "accepted_public_source_and_release_verified"
     }
   ],
   "aiDecision": "NanoGPT new key verified via read-only API; no active subscription or included quota; no suitable free general-purpose API model found; paid calls not authorized and disabled. Local model canceled by user.",
@@ -254,5 +254,16 @@
     "publicCaOnly": true,
     "runtimeDataCredentialsInImage": false,
     "archivesVerifiedByRoot": true
+  },
+  "githubAccepted": {
+    "repository": "https://github.com/ozerinpro-arch/ideyafix-max",
+    "release": "https://github.com/ozerinpro-arch/ideyafix-max/releases/tag/hackathon-2026-11-07",
+    "images": [
+      "linux/amd64",
+      "linux/arm64"
+    ],
+    "publicAnonymousVerification": true,
+    "imageChecksumsMatch": true,
+    "officialHackathonSubmission": false
   }
 }

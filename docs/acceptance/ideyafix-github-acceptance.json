@@ -1,0 +1,44 @@
+{
+  "status": "PASS anonymous public API verification",
+  "repository": "https://github.com/ozerinpro-arch/ideyafix-max",
+  "release": "https://github.com/ozerinpro-arch/ideyafix-max/releases/tag/hackathon-2026-11-07",
+  "assets": [
+    {
+      "name": "ideyafix-container-acceptance.json",
+      "bytes": 4845,
+      "sha256": "e8f7dee3ca82177dc32672ea924278716a7b0712d4c30bb7a359d78680969e77",
+      "url": "https://github.com/ozerinpro-arch/ideyafix-max/releases/download/hackathon-2026-11-07/ideyafix-container-acceptance.json"
+    },
+    {
+      "name": "ideyafix-image-file-manifest.json",
+      "bytes": 39673,
+      "sha256": "0abe22e37a51a8bf4ed866dc1ce46c6618e3ab31348e9ae59ff95a19e417b3da",
+      "url": "https://github.com/ozerinpro-arch/ideyafix-max/releases/download/hackathon-2026-11-07/ideyafix-image-file-manifest.json"
+    },
+    {
+      "name": "ideyafix-max-linux-amd64.tar.gz",
+      "bytes": 165815593,
+      "sha256": "3f3924f8ecd9703bf8adc92ef905d9cac966def72d3b49d444bd4b6a0d7e9530",
+      "url": "https://github.com/ozerinpro-arch/ideyafix-max/releases/download/hackathon-2026-11-07/ideyafix-max-linux-amd64.tar.gz"
+    },
+    {
+      "name": "ideyafix-max-linux-arm64.tar.gz",
+      "bytes": 161462121,
+      "sha256": "40baad2acc8bb0f7c72c798ceef884e975d539f252759dc145f2e3e6b931ac3b",
+      "url": "https://github.com/ozerinpro-arch/ideyafix-max/releases/download/hackathon-2026-11-07/ideyafix-max-linux-arm64.tar.gz"
+    },
+    {
+      "name": "ideyafix-real-max-acceptance.json",
+      "bytes": 1247,
+      "sha256": "5e06c1f8bf897c48748588430efe2da72228c8f1f6c891d86dc9c774c174d4bf",
+      "url": "https://github.com/ozerinpro-arch/ideyafix-max/releases/download/hackathon-2026-11-07/ideyafix-real-max-acceptance.json"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 497,
+      "sha256": "4be9505536040e0aa5571b52604955a33190281237e07b4ec58f667d1b0d8189",
+      "url": "https://github.com/ozerinpro-arch/ideyafix-max/releases/download/hackathon-2026-11-07/SHA256SUMS.txt"
+    }
+  ],
+  "credentialsSent": false
+}

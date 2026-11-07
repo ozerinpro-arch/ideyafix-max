@@ -1,0 +1,139 @@
+{
+  "status": "PASS actual local Docker builds and synthetic runtime acceptance",
+  "architectures": [
+    "linux/arm64",
+    "linux/amd64"
+  ],
+  "baseImage": "python:3.12.16-slim-bookworm@sha256:935c3c5b12357a7e10caa9c1e6ca5692344d97cf229832ef584be2cec9fc03df",
+  "pythonDependencyPins": 78,
+  "requirementsExactLock": true,
+  "pipCheck": "PASS",
+  "nonrootUser": "10001:10001",
+  "runtimeMode": "0700",
+  "temporaryDirectory": "/private/tmp real1777",
+  "publishedPorts": [],
+  "images": {
+    "arm64": {
+      "uid": 10001,
+      "runtimeMode": "0o700",
+      "tmpMode": "0o1777",
+      "hostPaths": [],
+      "files": 171,
+      "missing": [],
+      "extra": [],
+      "changed": [],
+      "imageId": "sha256:1c69f51c0e6a9f73e2fe700bbb3ab73452c70218addee124fbc32e4e2e771e17",
+      "architecture": "arm64",
+      "user": "10001:10001",
+      "imageBytes": 771028452
+    },
+    "amd64": {
+      "uid": 10001,
+      "runtimeMode": "0o700",
+      "tmpMode": "0o1777",
+      "hostPaths": [],
+      "files": 171,
+      "missing": [],
+      "extra": [],
+      "changed": [],
+      "imageId": "sha256:6d4aa07873f33e20134455dafe514d073a1298dbbbe9f049292e9425e2f0e656",
+      "architecture": "amd64",
+      "user": "10001:10001",
+      "imageBytes": 166779326
+    }
+  },
+  "tests": {
+    "arm64Broad": {
+      "tests": 96,
+      "seconds": 195.14,
+      "status": "PASS"
+    },
+    "amd64Focused": {
+      "tests": 40,
+      "seconds": 130.411,
+      "status": "PASS"
+    },
+    "finalChangedDatedNativeCases": {
+      "arm64": {
+        "tests": 2,
+        "seconds": 7.355,
+        "status": "PASS"
+      },
+      "amd64": {
+        "tests": 2,
+        "seconds": 11.822,
+        "status": "PASS"
+      }
+    },
+    "qualification": "Broad tests precede only final dated-module/public-CA changes; final focused cases verified on both architectures. Subsequent rebuilds change only inventory documentation, Docker archive instructions and the final public README; all 171 final image files equal current source.",
+    "networkForSyntheticTests": "none; read-only rootfs; cap-drop ALL; no-new-privileges"
+  },
+  "healthChecks": {
+    "disabled": "PASS",
+    "missingDatabaseNoCreate": "PASS",
+    "currentHeartbeatReadOnly": "PASS",
+    "stale": "PASS",
+    "wrongNativeLinuxUid": "PASS",
+    "database644Rejected": "PASS",
+    "config644Rejected": "PASS"
+  },
+  "documentedBootstrap": "PASS DockerownedLinuxvolumes, networknone, one-time link shape verified butactual link notprinted/archived",
+  "optionalFictionalSeed": "PASS first creates2privateassignments/1material; restart already_prepared; AIcalls0",
+  "publicTlsSmoke": {
+    "arm64": 401,
+    "amd64": 401,
+    "authorizationHeader": false,
+    "stockTrustCertificateFails": true,
+    "scopedCaOnly": true,
+    "systemTrustChanged": false,
+    "publicRootDERsha256": "d26d2d0231b7c39f92cc738512ba54103519e4405d68b5bd703e9788ca8ecf31"
+  },
+  "privateFilesCredentialsRuntimeUserPathsInImages": false,
+  "ownedPackagingSourceHashes": {
+    "Dockerfile": "d247229250c7b1a22cc1505acbc53b38569b6e85231b15d2be4b979aea1ead0e",
+    ".dockerignore": "926e972f50f1337750846147bf25aa3a1221b845a568c9b52766c2f99d0aca58",
+    "compose.yaml": "576a1c4c7bf9d65f92c5ca3997c7bf11d0cc6068ce3660817bd2dec33a8b1df9",
+    "config/max.example.json": "5ba5382e6bbda95f124c611463a9edf29ec18a6daa179ff736f7dd9af24f3723",
+    "docs/DOCKER.md": "64e457f1d577b2a5603f6acc5871107d08c0758f76993fb17a090cfd81c0b2bc",
+    "scripts/container-health.py": "46a14c2f4e27edc8384d33cc3fd9c9a3c4bc0d328e360edbf344103165f93f9b"
+  },
+  "realMaxMessagesSent": 0,
+  "authenticatedMaxCalls": 0,
+  "realAiProviderCalls": 0,
+  "publication": "local only; no registry or GitHub upload performed",
+  "runtimeFilesMode": "0600",
+  "imageArchives": {
+    "arm64": {
+      "archive": "ideyafix-max-linux-arm64.tar.gz",
+      "bytes": 161462121,
+      "sha256": "40baad2acc8bb0f7c72c798ceef884e975d539f252759dc145f2e3e6b931ac3b",
+      "repoTags": [
+        "ideyafix-max:arm64"
+      ],
+      "imageId": "sha256:1c69f51c0e6a9f73e2fe700bbb3ab73452c70218addee124fbc32e4e2e771e17",
+      "dockerLoadVerified": true,
+      "loadVerifiedRuntime": {
+        "uid": 10001,
+        "machine": "aarch64"
+      },
+      "exportAndVerifySeconds": 6.018,
+      "containsRuntimeOrCredentials": false
+    },
+    "amd64": {
+      "archive": "ideyafix-max-linux-amd64.tar.gz",
+      "bytes": 165815593,
+      "sha256": "3f3924f8ecd9703bf8adc92ef905d9cac966def72d3b49d444bd4b6a0d7e9530",
+      "repoTags": [
+        "ideyafix-max:amd64"
+      ],
+      "imageId": "sha256:6d4aa07873f33e20134455dafe514d073a1298dbbbe9f049292e9425e2f0e656",
+      "dockerLoadVerified": true,
+      "loadVerifiedRuntime": {
+        "uid": 10001,
+        "machine": "x86_64"
+      },
+      "exportAndVerifySeconds": 6.098,
+      "containsRuntimeOrCredentials": false
+    }
+  }
+}
