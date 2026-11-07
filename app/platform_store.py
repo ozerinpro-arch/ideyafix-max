@@ -11,7 +11,7 @@ from fastapi import HTTPException
 from .live_store import LiveStore,_validate,_text,_identifier
 from .platform_profiles import PROFILES,ALIASES
 from .platform_chat import ChatState
-from .platform_transport import document_bytes
+from .platform_transport import document_bytes, image_bytes
 from . import domain
 
 def stamp():return int(time.time()*1000)
@@ -73,7 +73,7 @@ class PlatformStore(LiveStore):
         data=json.loads(db.execute('SELECT payload FROM state WHERE id=1').fetchone()[0])
         answer=domain.command(data,actor_id,text,actor_override={'id':actor_id,'name':profile['name'],'role':role})
         db.execute('UPDATE state SET payload=? WHERE id=1',(json.dumps(data,ensure_ascii=False),))
-        buttons=[{'label':'Хакатон','command':'/hackathon'},{'label':'Личный кабинет','command':'/home'}]
+        buttons=[{'label':'Главная','command':'/home'}]
         if role=='organizer':buttons.insert(0,{'label':'Заявки команд','command':'/applications'})
         elif domain.my_team(data,actor_id):buttons.insert(0,{'label':'Отправить заявку','command':'/apply'})
         return {'text':answer,'buttons':buttons}
@@ -214,7 +214,16 @@ class PlatformStore(LiveStore):
             if document is None:
                 document={'name':'Подробный ответ.txt','contentType':'text/plain; charset=utf-8','base64':base64.b64encode(text.encode()).decode()}
             text=text[:3350]+'\n\nПолные сведения сохранены в приложенном документе.'
-        return {'text':text,'buttons':native,'document':document,'resourceGuards':reply.get('resourceGuards',[])}
+        result={'text':text,'buttons':native,'document':document,'resourceGuards':reply.get('resourceGuards',[])}
+        image=reply.get('image') if page==0 and document is None else None
+        if image is not None:
+            try:
+                image_bytes(image)
+            except ValueError:
+                result['text']+='\n\nФото временно недоступно.'
+            else:
+                result['image']=image
+        return result
 
     def ingest(self,normalized):
         event,document,callback=self._validate_platform(normalized)
@@ -359,3 +368,19 @@ class PlatformStore(LiveStore):
                         db.execute('UPDATE platform_reply_payloads SET payload=? WHERE outbox_id=?',(json.dumps(item['reply'],ensure_ascii=False),item['id']))
                         db.execute('UPDATE live_outbox SET text=? WHERE id=?',(item['text'],item['id']))
         return item
+
+    def image_is_current(self,item):
+        """Recheck access across the separate image upload and message POST."""
+        try:
+            with self.connection() as db:
+                row=db.execute("""
+                    SELECT owner.actor_id FROM platform_reply_owners owner
+                    JOIN live_outbox outbox ON outbox.id=owner.outbox_id
+                    JOIN live_sessions session ON session.chat_id=outbox.chat_id AND session.actor_id=owner.actor_id
+                    WHERE owner.outbox_id=? AND outbox.state='started' AND owner.actor_id>0
+                """,(item['id'],)).fetchone()
+            if row is None or self.assistant.authorize(row['actor_id']).get('status')!=200:
+                return False
+            return not self.assistant.validate_reply(row['actor_id'],item['reply']).get('resourceDenied')
+        except Exception:
+            return False

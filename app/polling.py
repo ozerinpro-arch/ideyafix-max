@@ -136,7 +136,10 @@ class Poller:
         try:
             if item.get('reply')is not None:
                 reply=item['reply']
-                outcome=self.client.send_reply(int(chat),reply['text'],buttons=reply.get('buttons',()),document=reply.get('document'))
+                options={'buttons':reply.get('buttons',()),'document':reply.get('document')}
+                if reply.get('image') is not None:
+                    options.update(image=reply['image'],image_guard=lambda:self.store.image_is_current(item))
+                outcome=self.client.send_reply(int(chat),reply['text'],**options)
             else:
                 outcome = self.client.send_message(int(chat), item['text'])
         except Exception:

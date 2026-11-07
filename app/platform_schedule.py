@@ -5,7 +5,7 @@ No original school runtime, HTTP listener, credentials or domain storage is used
 """
 from copy import deepcopy
 import base64
-from datetime import datetime,timezone
+from datetime import date, datetime, timezone
 import hashlib
 import json
 import math
@@ -13,6 +13,9 @@ from pathlib import Path
 import re
 import time
 from urllib.parse import quote, urlencode, urlsplit, parse_qs
+from zoneinfo import ZoneInfo
+
+from .platform_schedule_cards import WEEKDAYS, Day, date_label, lesson_count, render_card, timetable_days, week_pages
 
 
 NAMESPACES = {'schedule', 'calendar', 'preferences', 'requests', 'replacements',
@@ -300,6 +303,16 @@ class ScheduleAssistant:
     def _title(self, action):
         route = action['nativeEndpoint']
         if route=='/api/student/schedule':return 'Моё опубликованное расписание'
+        replacement_labels = {
+            '/api/school/replacements': 'Список замен',
+            '/api/school/replacements/candidates': 'Кто может заменить',
+            '/api/school/replacements/preview': 'Проверить замену',
+            '/api/school/replacements/apply': 'Внести в черновик',
+            '/api/school/replacements/{identifier}/publish-preview': 'Проверить публикацию',
+            '/api/school/replacements/{identifier}/publish': 'Опубликовать замену',
+        }
+        if route in replacement_labels:
+            return replacement_labels[route]
         suffix = route.rsplit('/', 1)[-1]
         operations = {'preview':'Предпросмотр', 'apply':'Применить', 'publish':'Опубликовать',
             'publish-preview':'Проверить публикацию', 'decision':'Принять решение',
@@ -331,8 +344,107 @@ class ScheduleAssistant:
         if action['method']=='GET': return ('Открыть ' if suffix.startswith('{') else 'Посмотреть ') + noun.lower()
         return ('Изменить ' if action['method'] in {'PATCH','PUT'} else 'Создать ') + noun.lower()
 
+    def _schedule_picture(self, actor, profile, argument):
+        role = profile['role']
+        personal = role in {'student', 'teacher'}
+        words = argument.split()
+        mode = words.pop(0) if words and words[0] in {'draft', 'published'} else ''
+        if personal and mode:
+            return self._reply('Откройте личное расписание.', [self._button('Моё расписание', 'schedule', '')])
+        week = bool(words and words[0] == 'week')
+        action = words.pop(0) if words else 'day'
+        if action not in {'day', 'week'} or len(words) > (1 if week else 2) or any(
+            not value.isascii() or not value.isdecimal() or len(value) > 5 for value in words
+        ):
+            return self._reply('Выберите день или неделю кнопкой.', [self._button('Расписание', 'schedule', '')])
+        prefix = mode + ' ' if mode else ''
+        path = {
+            'student': '/api/student/schedule',
+            'teacher': '/api/staff/my-schedule',
+        }.get(role, '/api/school/publications' if mode == 'published' else '/api/timetable')
+        response = self.runtime.request(actor, 'GET', path)
+        data = response.get('data')
+        if response.get('status') != 200 or not isinstance(data, dict):
+            return self._reply('Расписание пока не открылось.', [self._button('Повторить', 'schedule', argument)])
+        snapshot = (data.get('active') or {}) if mode == 'published' else data
+        lessons = snapshot.get('lessons') or []
+        period_start = date.fromisoformat(snapshot['periodStart']) if snapshot.get('periodStart') else None
+        days = timetable_days(lessons, period_start)
+        today = datetime.now(ZoneInfo('Europe/Moscow')).date()
+        first_day = next((day.index for day in days if day.date == today and day.lessons),
+                         next((day.index for day in days if day.lessons), 0))
+        index = int(words[0]) if words and not week else first_day
+        if not 0 <= index < len(days):
+            return self._reply('Выберите доступный день недели.', [self._button('Расписание', 'schedule', prefix.strip())])
+        scope = profile['name'] if personal else ('Опубликованная неделя' if mode == 'published' else 'Рабочий черновик школы')
+        version = snapshot.get('publicationVersion') or snapshot.get('version')
+        status = ('Публикация №' + str(version)) if version else (
+            'Опубликованной недели пока нет' if mode == 'published' else
+            'Личная сетка' if personal else 'Версия черновика ' + str(data.get('revision', ''))
+        )
+        if week:
+            pages = week_pages(days)
+            page = min(int(words[0]) if words else 0, len(pages) - 1)
+            shown = pages[page]
+            period = (f'{days[0].date:%d.%m} — {days[-1].date:%d.%m.%Y}' if period_start
+                      else 'Понедельник — суббота')
+            buttons = [self._button('По дням', 'schedule', prefix + f'day {first_day}')]
+            if page > 0:
+                buttons.append(self._button('← Неделя', 'schedule', prefix + f'week {page - 1}'))
+            if page + 1 < len(pages):
+                buttons.append(self._button('Неделя →', 'schedule', prefix + f'week {page + 1}'))
+            heading = 'Неделя · ' + period
+        else:
+            day = days[index]
+            pages = [day.lessons[start:start + 6] for start in range(0, max(1, len(day.lessons)), 6)]
+            page = min(int(words[1]) if len(words) == 2 else 0, len(pages) - 1)
+            shown = (Day(day.index, day.date, pages[page]),)
+            period = date_label(day.date) if day.date else 'Сетка без даты'
+            heading = WEEKDAYS[index] + (' · ' + period if day.date else '')
+            buttons = []
+            if index > 0:
+                buttons.append(self._button('← День', 'schedule', prefix + f'day {index - 1}'))
+            if index + 1 < len(days):
+                buttons.append(self._button('День →', 'schedule', prefix + f'day {index + 1}'))
+            if page > 0:
+                buttons.append(self._button('← Уроки', 'schedule', prefix + f'day {index} {page - 1}'))
+            if page + 1 < len(pages):
+                buttons.append(self._button('Уроки →', 'schedule', prefix + f'day {index} {page + 1}'))
+            buttons.append(self._button('Вся неделя', 'schedule', prefix + 'week'))
+        if not personal:
+            alternate = 'draft' if mode == 'published' else 'published'
+            buttons.append(self._button('Черновик' if alternate == 'draft' else 'Публикация', 'schedule', alternate))
+        if role != 'student':
+            buttons.append(self._button('Действия', 'schedule', 'menu'))
+        lines = [heading]
+        for day in shown:
+            if week:
+                lines.append(WEEKDAYS[day.index] + ' · ' + lesson_count(len(day.lessons)))
+            for lesson in day.lessons:
+                row = [str(lesson.get('start') or ''), str(lesson.get('subject') or 'Занятие')]
+                room = ', '.join(lesson.get('rooms') or [])
+                if room:
+                    row.append(room)
+                lines.append(' · '.join(value for value in row if value))
+        if len(lines) == 1:
+            lines.append('Занятий нет.' if status != 'Опубликованной недели пока нет' else status + '.')
+        reply = self._reply('\n'.join(lines)[:1700], buttons)
+        reply['image'] = render_card(shown, week=week, scope=scope, period=period, state=status,
+                                     page=page + 1, page_count=len(pages))
+        fingerprint = hashlib.sha256(json.dumps(
+            {'data': data, 'file': response.get('file')}, sort_keys=True, ensure_ascii=False,
+            allow_nan=False, separators=(',', ':'),
+        ).encode()).hexdigest()
+        reply['resourceGuards'] = [{'kind': 'native_read', 'path': path, 'fingerprint': fingerprint}]
+        return reply
+
     def _handle(self, state, actor, ns, argument, event):
         state['activeNamespace'] = ns
+        if ns == 'schedule' and hasattr(self.runtime, 'profiles') and (not argument or argument.split()[0] in {'day', 'week', 'draft', 'published'}):
+            profile = next((row for row in self.runtime.profiles() if row['id'] == actor), None)
+            if profile and profile['role'] in {'student', 'teacher', 'director', 'planner', 'platform_admin'}:
+                state.pop('form', None)
+                return self._schedule_picture(actor, profile, argument)
         if argument.startswith('result '):
             try:
                 index=int(argument[7:]);pages=state.get('resultPages',[])
@@ -379,9 +491,9 @@ class ScheduleAssistant:
             if (page+1)*8<len(visible):buttons.append(self._button('Следующие действия',ns,'menu '+str(page+1)))
             if page:buttons.append(self._button('Предыдущие действия',ns,'menu '+str(page-1)))
             if ns == 'schedule':
-                sections=['notifications']if role=='student'else['preferences','requests','outcomes','notifications']if role=='teacher'else['publish','makeups','outcomes','notifications']
+                sections=['notifications']if role=='student'else['preferences','requests','outcomes','notifications']if role=='teacher'else['publish','makeups']if role=='platform_admin'else['publish','makeups','outcomes','notifications']
                 buttons += [self._button(TITLES[n], n, '') for n in sections]
-            return self._reply(TITLES[ns]+('. Выберите действие. Записи и права проверяет родной сервис.'if visible else '. Для текущей роли действия этого раздела недоступны.'),buttons)
+            return self._reply(TITLES[ns]+('\nВыберите действие.'if visible else '\nДля вашего профиля здесь нет доступных действий.'),buttons)
         if argument == 'cancel':
             state.pop('form', None)
             return self._reply('Ввод отменён. Изменения не отправлялись.', [self._button('Вернуться',ns,'')])
@@ -1038,6 +1150,27 @@ class ScheduleAssistant:
                            '\nОтправить действие родному сервису?',
                            [self._button('Подтвердить',ns,'confirm'),self._button('Исправить ввод',ns,'change'),self._button('Отменить',ns,'cancel')])
 
+    @staticmethod
+    def _replacement_list(data):
+        lines = ['Список замен']
+        if data.get('periodStart'):
+            lines.append('Неделя с ' + date_label(date.fromisoformat(data['periodStart'])))
+        records = data.get('records') or []
+        if not records:
+            lines.append('Замен пока нет.')
+        for row in records:
+            after = row['after']
+            day = date_label(date.fromisoformat(row['date']))
+            subject = ' · '.join(filter(None, (after.get('className'), after.get('subject'))))
+            status = 'Опубликована' if row['status'] == 'published' else 'В черновике'
+            before_names = ', '.join(row['before'].get('teachers') or ())
+            after_names = ', '.join(after.get('teachers') or ())
+            lines.append(f'\n{day} · {after.get("start", "")}\n{subject}\n{before_names} → {after_names}\n{status}')
+        for blocker in data.get('blockers') or []:
+            if isinstance(blocker, dict) and blocker.get('message'):
+                lines.append(blocker['message'])
+        return '\n'.join(lines)
+
     def _execute(self,state,actor,ns,event):
         form=state['form'];action=form['action'];path=action['nativeEndpoint']
         for name,value in form['path'].items():path=path.replace('{'+name+'}',quote(str(value),safe=''))
@@ -1073,7 +1206,10 @@ class ScheduleAssistant:
             native_token,shown=_private_invitation(data)
             if native_token is None:raise ValueError('native_invitation_capability_missing')
             shown['notice']='Создано одноразовое тестовое приглашение. Подтверждение входа нового сотрудника этим действием не выполнялось.'
-        text='Результат: '+self._title(action)+'\n'+_human(shown,labels=self._labels(state))
+        if path=='/api/school/replacements' and action['method']=='GET' and isinstance(shown,dict):
+            text=self._replacement_list(shown)
+        else:
+            text='Результат: '+self._title(action)+'\n'+_human(shown,labels=self._labels(state))
         state['resultPages']=[text[i:i+3500] for i in range(0,len(text),3500)] or ['Результат подтверждён.']
         state['resultGuards']=[]
         if action['method']=='GET':

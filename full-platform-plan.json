@@ -265,5 +265,13 @@
     "publicAnonymousVerification": true,
     "imageChecksumsMatch": true,
     "officialHackathonSubmission": false
+  },
+  "visualRefresh": {
+    "roleMenus": "accepted",
+    "nativePhotos": "accepted_real_max",
+    "schedule": "day_and_week_observed",
+    "replacementMaterialsPlanner": "accepted_native_and_real_max",
+    "realScreens": "docs/demo/",
+    "evidence": "docs/acceptance/ideyafix-visual-refresh.json"
   }
 }

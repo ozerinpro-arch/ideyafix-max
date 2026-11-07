@@ -23,7 +23,8 @@ STATUS = {'sent': 'Выдано', 'active': 'В работе', 'submitted': 'Н�
           'shared': 'Доступ открыт', 'revoked': 'Доступ отозван', 'stale': 'Условия изменились',
           'draft': 'Черновик', 'confirmed': 'Подтверждено', 'paused': 'Приостановлено',
           'completed': 'Завершено', 'present': 'Присутствовал', 'absent': 'Отсутствовал',
-          'excused': 'Уважительная причина'}
+          'excused': 'Уважительная причина', 'requested': 'Материал запрошен',
+          'missing': 'Материал не передан'}
 
 
 def _button(label, command):
@@ -234,10 +235,15 @@ class LearningAssistant:
     def _menu(self, actor, namespace):
         role = self._role(actor)
         teacher, student, director = role == 'teacher', role == 'student', role == 'director'
+        if namespace == 'materials' and role in {'director', 'planner'}:
+            return _reply('Материалы по заменам\n\n'
+                          'Посмотрите, какие версии переданы преподавателям и где материал ещё ждут.',
+                          [_button('Текущие передачи', '/materials shares'),
+                           _button('История передач', '/materials share_history')])
         menus = {
             'materials': [('Моя библиотека', 'list'), ('Новый материал', 'new'), ('Подготовка к урокам', 'dashboard'),
                           ('По классу', 'classes'), ('Передача материалов', 'shares'), ('История передач', 'share_history'), ('Черновик с ИИ', 'ai')],
-            'learning': [('Мои задания', 'list'), *(([('Выдать задание', 'assign')] if teacher else [])),
+            'learning': [('Все задания' if teacher else 'Открыть задания', 'list'), *(([('Выдать задание', 'assign')] if teacher else [])),
                          *(([('На проверку', 'submitted'), ('На доработке', 'revision'), ('Проверено', 'reviewed'), ('Поиск работ', 'search')] if teacher else [])),
                          *(([('Самостоятельная практика', 'practice')] if student else [])),
                          ('Обзор обучения', 'overview')],
@@ -251,9 +257,20 @@ class LearningAssistant:
             'ai': ([('Черновик материала', 'material')] if teacher else
                    [('Практика с ИИ', 'practice'), ('Обсудить задание с ИИ', 'tutor')]),
         }
-        title = {'materials': 'Материалы и подготовка', 'learning': 'Персональное обучение', 'recovery': 'Восстановление пробелов',
-                 'journal': 'Журнал и аналитика', 'consultations': 'Консультации', 'clubs': 'Кружки и документы', 'ai': 'Помощь ИИ'}[namespace]
-        return _reply(title + '\nИспользуются отдельные тестовые данные и штатные проверки доступа платформы.',
+        title = {'materials': 'Мои материалы', 'learning': 'Работы учеников' if teacher else 'Мои задания',
+                 'recovery': 'После пропусков', 'journal': 'Оценки и посещаемость',
+                 'consultations': 'Консультации', 'clubs': 'Кружки и документы', 'ai': 'Помощник ИИ'}[namespace]
+        description = {
+            'materials': 'Откройте библиотеку, подготовьте урок или передайте материал на замену.',
+            'learning': 'Выдайте задание или выберите работу для проверки.' if teacher else
+                        'Откройте задание, чтобы прочитать условия и отправить ответ.',
+            'recovery': 'Посмотрите задания, которые требуют внимания после пропусков.',
+            'journal': 'Посмотрите оценки и посещаемость за нужный период.',
+            'consultations': 'Откройте свои записи и предложения преподавателей.',
+            'clubs': 'Откройте программы, записи и документы, доступные вашему профилю.',
+            'ai': 'Выберите учебный сценарий помощника.',
+        }[namespace]
+        return _reply(title + '\n\n' + description,
                       [_button(label, '/' + namespace + ' ' + command) for label, command in menus[namespace]])
 
     def _choices(self, state, namespace, operation, rows, title, *, context=None):
@@ -464,7 +481,7 @@ class LearningAssistant:
                      *([] if command == 'ai' else [_field('answers', 'Ответы для преподавателя (можно пропустить)', optional=True)])],
                      values={'className':lesson['className'],'subject':lesson['subject'],'durationMinutes':duration,'lessonId':lesson['id']} if lesson else None)
             if command in ('shares','share_history'):
-                path = '/api/school/replacement-materials' if role == 'director' else '/api/teacher/replacement-materials'
+                path = '/api/school/replacement-materials' if role in {'director', 'planner'} else '/api/teacher/replacement-materials'
                 data = self._rpc(actor, 'GET', path)
                 if command == 'share_history':
                     return self._choices(state,ns,'share_history_open',data['history'],'История разрешений на версии материалов.',context={'overview':data})
@@ -603,8 +620,12 @@ class LearningAssistant:
             buttons = []
             if row.get('role') == 'recipient': buttons.append(_button('Запросить материал', '/materials share_request'))
             if row.get('role') == 'sender': buttons.append(_button('Открыть одну версию', '/materials share_material'))
-            if row.get('grant'):
-                buttons += [_button('Прочитать передачу', '/materials grant_open'), _button('Отозвать передачу', '/materials grant_revoke')]
+            if row.get('grant') and row.get('role') in {'sender', 'recipient'}:
+                buttons.append(_button('Прочитать передачу', '/materials grant_open'))
+                if row.get('role') == 'sender':
+                    buttons.append(_button('Отозвать передачу', '/materials grant_revoke'))
+            if self._role(actor) in {'director', 'planner'}:
+                buttons.append(_button('К списку замен', '/materials shares'))
             return _reply(str(row['date']) + ' · ' + row['className'] + ' · ' + row['subject'] + '\n' + STATUS.get(row['status'], row['status']) + '\nПередаётся только версия материала для этого урока.', buttons)
         if operation == 'consultation_open':
             buttons = [_button('Отменить консультацию', '/consultations cancel_booking')]

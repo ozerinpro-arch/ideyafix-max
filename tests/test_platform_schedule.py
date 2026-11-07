@@ -387,6 +387,11 @@ class NativeScheduleTests(unittest.TestCase):
         self.assertNotIn('не подтверждено',self.send('/replacements confirm',710005)['text'])
         publication=self.runtime.request(710005,'GET','/api/school/publications')['data']['active']
         self.assertGreater(publication['version'],status['activeVersion'])
+        listing=self.start('replacements','/api/school/replacements','GET',710005)
+        self.assertIn('Марина Демо → Лера Демо',listing['text'])
+        self.assertIn('Опубликована',listing['text'])
+        self.assertNotIn('Planning event id',listing['text'])
+        self.assertEqual(listing['resourceGuards'][0]['path'],'/api/school/replacements')
 
     def test_native_teacher_preference_manager_preview_and_approval(self):
         own=self.runtime.request(710003,'GET','/api/teacher/preferences')['data']

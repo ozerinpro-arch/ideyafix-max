@@ -4,11 +4,14 @@ Only MAX's network is substituted. Wire parsing, durable personal binding,
 callbacks, conversations, native authorization, domain writes and receipts run.
 """
 from pathlib import Path
+from base64 import b64decode
+from io import BytesIO
 import tempfile
 import time
 import unittest
 from uuid import uuid4
 from unittest.mock import patch
+from PIL import Image
 
 from app.max_settings import MaxSettings
 from app.platform_assistant import PlatformAssistant
@@ -26,6 +29,9 @@ class LocalMax:
         self.marker+=1;updates,self.updates=self.updates,[]
         return TransportOutcome('accepted','updates',200,data={'updates':updates,'marker':self.marker})
     def send_reply(self,chat,text,**kwargs):
+        guard=kwargs.pop('image_guard',None)
+        if guard is not None and not guard():
+            return TransportOutcome('rejected','image_access_changed')
         self.sent.append({'chat':chat,'text':text,**kwargs})
         return TransportOutcome(self.status,'synthetic_receipt',200,provider_message_id=str(uuid4())if self.status=='accepted'else None)
     def answer_callback(self,identity):self.answers.append(identity)
@@ -69,16 +75,25 @@ class FullPlatformIntegrationTests(unittest.TestCase):
         menu=self.client.sent[-1]
         self.assertIn('Славик Демо',menu['text'])
         labels={b['label']:b['payload']for b in menu['buttons']}
-        self.assertNotIn('Профили и доступ',labels)
-        reply=self.poll(self.incoming(callback=labels['Личное расписание']))
+        self.assertNotIn('Люди и доступ',labels)
+        self.assertFalse(any('Хакатон' in label or 'MAX' in label for label in labels))
+        with Image.open(BytesIO(b64decode(menu['image']['base64']))) as cover:
+            self.assertEqual(cover.size, (960, 640))
+        reply=self.poll(self.incoming(callback=labels['Моё расписание']))
         self.assertTrue(reply['buttons'])
+        with Image.open(BytesIO(b64decode(self.client.sent[-1]['image']['base64']))) as card:
+            self.assertGreater(card.width, 500)
+        self.assertIn('Математика',self.client.sent[-1]['text'])
+        week=next(b['payload'] for b in self.client.sent[-1]['buttons'] if b['label']=='Вся неделя')
         self.assertEqual(len(self.client.answers),1)
+        self.poll(self.incoming(callback=week))
+        self.assertEqual(self.client.sent[-1]['image']['name'],'schedule-week.jpg')
         self.poll(self.incoming('/role роман'))
         self.assertIn('закреплён личный профиль',self.client.sent[-1]['text'])
         self.assertEqual(self.runtime.request(710007,'GET','/api/staff/workspace')['status'],403)
         self.assertEqual(self.runtime.request(710007,'GET','/api/student/schedule')['status'],200)
         # Another MAX account cannot reuse a personal action capability.
-        self.poll(self.incoming(callback=labels['Задания'],sender=777,chat=888))
+        self.poll(self.incoming(callback=labels['Мои задания'],sender=777,chat=888))
         self.assertIn('одноразовую ссылку',self.client.sent[-1]['text'])
 
     def test_max_material_conversation_confirmation_replay_restart_and_unknown_send(self):
@@ -115,11 +130,32 @@ class FullPlatformIntegrationTests(unittest.TestCase):
             reply=self.assistant.handle(profile['id'],'/start',str(uuid4()),session_key='synthetic-menus')
             self.assertIn(profile['name'],reply['text'])
             self.assertTrue(reply['buttons'])
+            self.assertLessEqual(len(reply['buttons']),6)
+            for item in reply['buttons']:
+                command=item['command']
+                self.assertNotIn(command,{'/hackathon','/max'})
+                if command.startswith('/section '):
+                    section=self.assistant.handle(profile['id'],command,str(uuid4()),session_key='synthetic-menus')
+                    actions={button['command']for button in section['buttons']}
+                    self.assertGreater(len(actions),1)
+                    self.assertIn('/home',actions)
+                    self.assertIn('image',section)
+                    self.assertFalse(actions & {'/hackathon','/max'})
+                    if '/max notices' in actions:
+                        self.assertEqual(profile['role'],'director')
         self.bind(710006)
         self.poll(self.incoming('/calendar'))
         self.assertIn('buttons',self.client.sent[-1])
         self.assertEqual(self.runtime.request(710006,'GET','/api/school/calendar')['status'],200)
         self.assertEqual(self.runtime.request(710004,'GET','/api/school/calendar')['status'],403)
+
+    def test_planner_opens_replacement_material_status_from_role_menu(self):
+        self.bind(710006)
+        for label in ('Учебный день','Материалы замен','Текущие передачи'):
+            action=next(button['payload'] for button in self.client.sent[-1]['buttons'] if button['label']==label)
+            self.poll(self.incoming(callback=action))
+        self.assertIn('Передача материалов для опубликованных замен',self.client.sent[-1]['text'])
+        self.assertNotIn('Операция недоступна',self.client.sent[-1]['text'])
 
     def test_new_native_invitation_is_claimed_in_max_and_lost_rpc_keeps_owner(self):
         self.bind(710005)

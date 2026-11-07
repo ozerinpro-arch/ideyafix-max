@@ -5,25 +5,11 @@ import json
 import re
 
 from .platform_chat import ChatState
+from .platform_navigation import cover_image, help_reply, home_reply, section_parent, section_reply
 
 SCHEDULE={'schedule','calendar','preferences','requests','replacements','publish',
           'analytics','admin','exchange','restore','makeups','outcomes','notifications'}
 LEARNING={'materials','learning','journal','consultations','clubs','recovery','ai'}
-MENU=[('Личное расписание','/schedule'),('Календарь','/calendar'),
-      ('Предпочтения','/preferences'),('Обращения','/requests'),('Замены','/replacements'),
-      ('Публикации','/publish'),('Материалы','/materials'),('Задания','/learning'),
-      ('Журнал','/journal'),('Консультации','/consultations'),('Кружки','/clubs'),
-      ('После пропусков','/recovery'),('Помощник ИИ','/ai'),('Аналитика','/analytics'),
-      ('Отработки','/makeups'),('Факты занятий','/outcomes'),('Уведомления','/notifications'),
-      ('Обмен данными','/exchange'),('Профили и доступ','/admin'),('Восстановление','/restore')]
-ROLE_MENUS={
- 'student':{'schedule','learning','journal','consultations','clubs','recovery','notifications'},
- 'teacher':{'schedule','preferences','requests','materials','learning','journal','consultations','makeups','notifications','ai'},
- 'planner':{'schedule','calendar','preferences','requests','replacements','publish','makeups','outcomes','analytics','exchange','notifications'},
- 'director':{'schedule','calendar','preferences','requests','replacements','publish','journal','clubs','outcomes','analytics','exchange','admin','notifications'},
- 'platform_admin':SCHEDULE|LEARNING,
- 'access_admin':{'admin'},
-}
 
 class PlatformAssistant:
     def __init__(self,runtime=None,*,nanogpt_config=None):
@@ -107,29 +93,27 @@ class PlatformAssistant:
         if self.authorize(actor_id).get('status')!=200:return self._denied()
         self.profiles()
         scope=f'{session_key or "test"}:{actor_id}'
-        namespace=text.strip().split(' ',1)[0].lstrip('/').casefold()
+        command, _, argument = text.strip().partition(' ')
+        namespace = command.lstrip('/').casefold()
+        profile = self._profiles.get(actor_id, {})
+        role = profile.get('role', '')
         def route(state):
-            if namespace in {'start','help','home','platform','menu'}:
+            if namespace in {'start','home','platform','menu','more','today'}:
                 state.clear()
-                profile=self._profiles.get(actor_id)
-                name=profile['name'] if profile else 'Тестовый пользователь'
-                role=profile['role']if profile else''
-                menu=[{'label':label,'command':command}for label,command in MENU if command[1:]in ROLE_MENUS.get(role,set())]
-                menu.append({'label':'Мой профиль','command':'/role'})
-                menu.append({'label':'Хакатон · тестовые заявки','command':'/hackathon'})
-                menu.append({'label':'Подключение MAX','command':'/max'})
-                if role in {'director','platform_admin'}:menu.append({'label':'Пригласить пользователя','command':'/people'})
-                return {'text':f'Идеяфикс · личный кабинет MAX\n{name}\nВыберите раздел. Все предметные данные вымышлены. Права каждого действия проверяет отдельное ядро платформы.',
-                    'buttons':menu}
+                return home_reply(profile)
+            if namespace == 'help':
+                state.clear()
+                return help_reply()
+            if namespace == 'section':
+                state.clear()
+                return section_reply(role, argument.strip())
             if namespace in {'people','invite'}:
-                profile=self._profiles.get(actor_id,{})
-                if profile.get('role')not in {'director','platform_admin'}:
+                if role not in {'director','platform_admin'}:
                     return {'text':'Приглашать пользователей может директор или администратор.','buttons':[{'label':'Мой кабинет','command':'/home'}]}
                 allowed=[p for p in self._profiles.values()if p['id']!=actor_id and(profile['role']=='platform_admin'or p['role']in {'student','teacher'})]
                 if namespace=='people':
                     return {'text':'Выберите вымышленный личный профиль для приглашения. Ссылка закрепит профиль и права; получатель откроет её в MAX.',
                         'buttons':[{'label':p['name'],'command':'/invite '+str(p['id'])}for p in allowed]+[{'label':'Личный кабинет','command':'/home'}]}
-                argument=text.strip().partition(' ')[2]
                 target=next((p for p in allowed if str(p['id'])==argument),None)
                 if target is None:return {'text':'Выберите профиль кнопкой из раздела приглашений.','buttons':[{'label':'Пользователи','command':'/people'}]}
                 return {'text':'Приглашение для '+target['name'],'inviteActorId':target['id'],'buttons':[{'label':'Пользователи','command':'/people'}]}
@@ -144,12 +128,31 @@ class PlatformAssistant:
             if reply is None:
                 return {'text':'Ввод не относится к открытому действию. Выберите раздел или вернитесь в личный кабинет.',
                         'buttons':[{'label':'Личный кабинет','command':'/start'}]}
-            reply.setdefault('buttons',[])
-            if not any(b.get('command')=='/home' for b in reply['buttons']):
-                reply['buttons'].append({'label':'Личный кабинет','command':'/home'})
+            actions = reply.setdefault('buttons', [])
+            for action in actions:
+                if action.get('command') == '/home':
+                    action['label'] = 'Главная'
+            if not argument and namespace in SCHEDULE | LEARNING:
+                parent = section_parent(role, '/' + namespace)
+                if parent and not any(action.get('command') == parent for action in actions):
+                    actions.append({'label': 'Назад', 'command': parent})
+                if namespace in {'replacements', 'publish', 'analytics'}:
+                    reply['cover'] = 'operations'
+                elif namespace in {'materials', 'learning', 'journal', 'clubs'} and not reply.get('document'):
+                    reply['cover'] = 'operations' if namespace == 'materials' and role in {'planner', 'director'} else 'study'
+            if not any(action.get('command') == '/home' for action in actions):
+                actions.append({'label': 'Главная', 'command': '/home'})
             return reply
         reply=self.router.run('platform-router',scope,event_id,text,route)
-        return self.validate_reply(actor_id,reply)if reply is not None else None
+        if reply is None:
+            return None
+        reply = self.validate_reply(actor_id, reply)
+        cover = reply.pop('cover', None)
+        if cover and not reply.get('image'):
+            image = cover_image(cover)
+            if image is not None:
+                reply['image'] = image
+        return reply
 
     def handle_file(self,actor_id,document,event_id,*,session_key=None):
         if self.authorize(actor_id).get('status')!=200:return self._denied()

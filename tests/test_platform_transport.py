@@ -17,12 +17,16 @@ class NativePlatformTransportTests(unittest.TestCase):
         self.api=[];self.media=[]
         def api(request):
             self.api.append(request)
-            if request.url.path=='/uploads':return httpx.Response(200,json={'url':'https://files.max.ru/upload/private-test'})
+            if request.url.path=='/uploads':
+                url='https://iu.oneme.ru/uploadImage?scope=test' if request.url.params['type']=='image' else 'https://files.max.ru/upload/private-test'
+                return httpx.Response(200,json={'url':url})
             if request.url.path=='/answers':return httpx.Response(200,json={'success':True})
             return httpx.Response(200,json={'message':{'body':{'mid':'mid-fixture'},'recipient':{'chat_type':'dialog','chat_id':456}}})
         def media(request):
             self.media.append(request)
             self.assertNotIn('authorization',request.headers)
+            if request.url.path=='/uploadImage':
+                return httpx.Response(200,json={'photos':{'one':{'token':'synthetic-image-token'}}})
             return httpx.Response(200,json={'token':'synthetic-file-token'})if request.method=='POST'else httpx.Response(200,content=b'col\nvalue')
         self.client=PlatformMaxClient(self.token,transport=httpx.MockTransport(api),media_transport=httpx.MockTransport(media))
         self.addCleanup(self.client.close)
@@ -49,6 +53,26 @@ class NativePlatformTransportTests(unittest.TestCase):
         document={'name':'текст.txt','contentType':'text/plain','base64':base64.b64encode(self.token.read_bytes()).decode()}
         result=self.client.send_reply(456,'Документ',document=document)
         self.assertEqual(result.status,'rejected');self.assertEqual(self.api,[]);self.assertEqual(self.media,[])
+
+    def test_photo_and_buttons_share_a_message_and_access_is_rechecked(self):
+        photo=Path(__file__).resolve().parents[1]/'app/assets/max-visual/home.jpg'
+        image={'name':'home.jpg','contentType':'image/jpeg','base64':base64.b64encode(photo.read_bytes()).decode()}
+        with patch('time.sleep'):
+            result=self.client.send_reply(456,'Моё расписание',image=image,
+                buttons=[{'label':'Неделя','payload':'a'*43}],image_guard=lambda:True)
+        self.assertEqual(result.status,'accepted')
+        self.assertEqual(self.api[0].url.params['type'],'image')
+        self.assertEqual(len(self.media),1)
+        body=json.loads(self.api[-1].content)
+        self.assertEqual(body['text'],'Моё расписание')
+        self.assertEqual(body['attachments'][0],{'type':'image','payload':{'token':'synthetic-image-token'}})
+        self.assertEqual(body['attachments'][1]['type'],'inline_keyboard')
+        self.api.clear()
+        authority=iter((True,False))
+        with patch('time.sleep'):
+            denied=self.client.send_reply(456,'Моё расписание',image=image,image_guard=lambda:next(authority))
+        self.assertEqual(denied.code,'image_access_changed')
+        self.assertEqual([request.url.path for request in self.api],['/uploads'])
 
     def test_download_is_bounded_and_no_auth_on_media_host(self):
         result=self.client.download_document({'name':'таблица.csv','url':'https://files.max.ru/private-fixture'})

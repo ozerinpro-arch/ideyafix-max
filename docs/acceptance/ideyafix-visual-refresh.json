@@ -1,0 +1,27 @@
+{
+  "observedAt": "2026-11-07T17:32:45.290663+03:00",
+  "fullSuite": 203,
+  "finalFocusedSuite": 15,
+  "realMaxProfile": "fictional planner",
+  "realMaxObserved": [
+    "role home with photo and five actions",
+    "school draft photo",
+    "published day with photo, caption and buttons",
+    "published week with photo",
+    "school day and materials menus with photo",
+    "planner replacement material access",
+    "replacement menu with photo and readable empty state"
+  ],
+  "sourceBaseline": "c8dcb0a",
+  "externalWorktreeUsedFor": "Button wording as UX reference",
+  "nativeEngineCodeChanged": false,
+  "paidAiRequestsByThisWork": 0,
+  "safeScreenshotSha256": {
+    "ideyafix-max-visual-home.jpg": "af988bafbafda27e7720d7bdc71e3ca687616be5a884ac3012dbb7cdd7afec1d",
+    "ideyafix-max-visual-schedule.jpg": "c79313986f93de25e534ab1fcccafec255c066ed09ea5a8f6ac21fd7c43a0d2d",
+    "ideyafix-max-visual-actions.jpg": "b2b98bbbdbbf43f3f6ecb446f1b8c6dfdf7b832337e4e4cf7d90efc2545b89e4",
+    "ideyafix-max-visual-materials.jpg": "2247291b211232db4b96c7b871a98aa09760b184867a35af7e6ab7957e88ef3e",
+    "ideyafix-max-visual-replacements.jpg": "27a9db5de623e798fd5cb9143049a7ccbfe9c26fe978f5cde2faa55e30194435",
+    "ideyafix-max-visual-replacement-list.jpg": "5f8789c08c7a251613e34916ef77365a3a4c69bef32b4f7c15452701a3ec3799"
+  }
+}
