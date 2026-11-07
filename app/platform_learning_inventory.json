@@ -1,0 +1,1889 @@
+{
+  "scope": "Full native educational feature adapters, separate Идеяфикс fork, synthetic domain only",
+  "phase": "native_adapter_acceptance_pass_provider_pending",
+  "sourceReadOnly": true,
+  "sourceRuntimeImportsAllowed": false,
+  "confirmedPercent": 95.3,
+  "features": [
+    {
+      "id": "materials.dashboard",
+      "commands": "/materials dashboard/classes/next",
+      "roles": [
+        "teacher"
+      ],
+      "nativeRoutes": [
+        "GET /api/teacher/preparation"
+      ],
+      "sourceServer": "server/teacher_preparation.py",
+      "sourceUi": "src/TeacherPreparation.tsx",
+      "acceptanceCriteria": [
+        "current/next lesson with truthful blockers",
+        "class/subject overview",
+        "AI availability"
+      ],
+      "status": "native_adapter_acceptance_pass",
+      "confirmedPercent": 100,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_material_class_filter_assessment_lesson_binding_and_dashboard",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_assignment_queue_status_search_and_current_publication_next_lesson"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Подготовка к урокам",
+          "sourceEvidence": {
+            "path": "src/TeacherPreparation.tsx",
+            "line": 11,
+            "selector": "nextLesson"
+          },
+          "botCommand": "/materials dashboard",
+          "handler": "LearningAssistant._command",
+          "nativeCalls": [
+            "GET /api/teacher/preparation"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_material_class_filter_assessment_lesson_binding_and_dashboard"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "По классам",
+          "sourceEvidence": {
+            "path": "src/TeacherPreparation.tsx",
+            "line": 98,
+            "selector": "По классам"
+          },
+          "botCommand": "/materials classes → choose N",
+          "handler": "LearningAssistant._selected(material_class)",
+          "nativeCalls": [
+            "GET /api/teacher/preparation",
+            "GET /api/teacher/preparation/materials?className=..."
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_material_class_filter_assessment_lesson_binding_and_dashboard"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Подготовить следующий урок",
+          "sourceEvidence": {
+            "path": "src/TeacherPreparation.tsx",
+            "line": 98,
+            "selector": "Подготовить следующий урок"
+          },
+          "botCommand": "/materials next",
+          "handler": "LearningAssistant._command",
+          "nativeCalls": [
+            "GET /api/teacher/preparation",
+            "POST /api/teacher/preparation/materials"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_assignment_queue_status_search_and_current_publication_next_lesson"
+          ],
+          "proof": "native unavailable-next guard; synthetic time-dependent projection of actual owned lesson; real native save",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ]
+    },
+    {
+      "id": "materials.library",
+      "commands": "/materials list/create/open/edit",
+      "roles": [
+        "teacher"
+      ],
+      "nativeRoutes": [
+        "GET,POST /api/teacher/preparation/materials",
+        "GET,PATCH /api/teacher/preparation/materials/{id}"
+      ],
+      "sourceServer": "server/teacher_preparation.py",
+      "sourceUi": "src/TeacherPreparation.tsx",
+      "acceptanceCriteria": [
+        "manual lesson_plan/material/assessment",
+        "class filter",
+        "full text and separate answers",
+        "expected material revision and replay"
+      ],
+      "status": "native_adapter_acceptance_pass",
+      "confirmedPercent": 100,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_material_create_revision_export_and_exact_event_replay",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_material_class_filter_assessment_lesson_binding_and_dashboard",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_new_confirmation_event_reuses_intent_after_committed_native_effect",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_material_conflict_preserves_draft_compares_and_requires_new_confirmation",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_max_txt_material_limits_invalid_inputs_and_lost_outer_reply"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Мои сохранённые материалы",
+          "sourceEvidence": {
+            "path": "src/TeacherPreparation.tsx",
+            "line": 120,
+            "selector": "Мои сохранённые материалы"
+          },
+          "botCommand": "/materials list → choose N",
+          "handler": "LearningAssistant._selected(material_open)",
+          "nativeCalls": [
+            "GET /api/teacher/preparation/materials",
+            "GET /api/teacher/preparation/materials/{id}"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_material_create_revision_export_and_exact_event_replay",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_material_class_filter_assessment_lesson_binding_and_dashboard"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Сохранить ручной черновик",
+          "sourceEvidence": {
+            "path": "src/TeacherPreparation.tsx",
+            "line": 117,
+            "selector": "Сохранить ручной черновик"
+          },
+          "botCommand": "/materials new → answers → confirm",
+          "handler": "LearningAssistant._execute(material_create)",
+          "nativeCalls": [
+            "POST /api/teacher/preparation/materials"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_material_create_revision_export_and_exact_event_replay",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_material_class_filter_assessment_lesson_binding_and_dashboard",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_new_confirmation_event_reuses_intent_after_committed_native_effect",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_max_txt_material_limits_invalid_inputs_and_lost_outer_reply"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Сохранить изменения",
+          "sourceEvidence": {
+            "path": "src/TeacherPreparation.tsx",
+            "line": 117,
+            "selector": "Сохранить изменения"
+          },
+          "botCommand": "/materials edit → answers → confirm",
+          "handler": "LearningAssistant._execute(material_update)",
+          "nativeCalls": [
+            "PATCH /api/teacher/preparation/materials/{id}"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_material_create_revision_export_and_exact_event_replay",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_max_txt_material_limits_invalid_inputs_and_lost_outer_reply"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Проверить новую версию",
+          "sourceEvidence": {
+            "path": "src/TeacherPreparation.tsx",
+            "line": 116,
+            "selector": "Проверить новую версию"
+          },
+          "botCommand": "/materials compare → rebase → confirm",
+          "handler": "LearningAssistant._advance(materialConflict)",
+          "nativeCalls": [
+            "GET /api/teacher/preparation/materials/{id}",
+            "PATCH /api/teacher/preparation/materials/{id}"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_material_conflict_preserves_draft_compares_and_requires_new_confirmation"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Скачать TXT",
+          "sourceEvidence": {
+            "path": "src/TeacherPreparation.tsx",
+            "line": 117,
+            "selector": "Скачать TXT"
+          },
+          "botCommand": "/materials export",
+          "handler": "LearningAssistant._context_action(export)",
+          "nativeCalls": [
+            "GET /api/teacher/preparation/materials/{id}; checked selected text encoded to TXT"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_material_create_revision_export_and_exact_event_replay"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Моё опубликованное занятие",
+          "sourceEvidence": {
+            "path": "src/TeacherPreparation.tsx",
+            "line": 103,
+            "selector": "Моё опубликованное занятие"
+          },
+          "botCommand": "/materials new → select native lesson",
+          "handler": "LearningAssistant._command/_execute(material_create)",
+          "nativeCalls": [
+            "GET /api/teacher/preparation",
+            "POST /api/teacher/preparation/materials"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_material_class_filter_assessment_lesson_binding_and_dashboard"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ]
+    },
+    {
+      "id": "materials.ai",
+      "commands": "/ai material",
+      "roles": [
+        "teacher"
+      ],
+      "nativeRoutes": [
+        "POST /api/teacher/preparation/generate"
+      ],
+      "sourceServer": "server/teacher_preparation.py",
+      "sourceUi": "src/TeacherPreparation.tsx",
+      "acceptanceCriteria": [
+        "preserve selected native provider/model",
+        "offline unavailable truthfully",
+        "synthetic generator test without paid I/O"
+      ],
+      "status": "native_off_contract_pass_real_provider_pending",
+      "confirmedPercent": 70,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_ai_endpoints_validate_commands_and_honestly_remain_off",
+        "tests.test_platform_learning.NativeGeneratorContractTests.test_same_fork_generator_preserves_provider_configuration_with_synthetic_model"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Сгенерировать и сохранить черновик",
+          "sourceEvidence": {
+            "path": "src/TeacherPreparation.tsx",
+            "line": 112,
+            "selector": "Сгенерировать и сохранить черновик"
+          },
+          "botCommand": "/materials ai; /ai material",
+          "handler": "LearningAssistant._command/_execute(material_ai)",
+          "nativeCalls": [
+            "GET /api/teacher/preparation",
+            "POST /api/teacher/preparation/generate"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_ai_endpoints_validate_commands_and_honestly_remain_off",
+            "tests.test_platform_learning.NativeGeneratorContractTests.test_same_fork_generator_preserves_provider_configuration_with_synthetic_model"
+          ],
+          "proof": "actual native OFF503/no mutation plus copied generator synthetic model contract; real provider pending",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ],
+      "gaps": [
+        "New NanoGPT key and verified free model configuration owned by root; actual generation pending, no provider calls in adapter acceptance"
+      ]
+    },
+    {
+      "id": "materials.sharing",
+      "commands": "/materials shares/request/share/open/revoke",
+      "roles": [
+        "teacher",
+        "director"
+      ],
+      "nativeRoutes": [
+        "GET /api/teacher/replacement-materials",
+        "GET /api/school/replacement-materials",
+        "POST /api/teacher/replacement-materials/requests",
+        "POST /api/teacher/replacement-materials/grants",
+        "GET /api/teacher/replacement-materials/grants/{id}",
+        "POST /api/teacher/replacement-materials/grants/{id}/revoke"
+      ],
+      "sourceServer": "server/replacement_materials.py",
+      "sourceUi": "src/ReplacementMaterials.tsx",
+      "acceptanceCriteria": [
+        "native published replacement and distinct authorized recipient",
+        "request/grant exact frozen material revision",
+        "later personal edit does not alter shared snapshot",
+        "new actual publication invalidates previous grant; owner revoke blocks reading",
+        "history with reason and previous publication retained"
+      ],
+      "status": "native_adapter_acceptance_pass",
+      "confirmedPercent": 100,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_native_published_replacement_request_share_frozen_version_and_revoke",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_revoked_grant_never_reappears_from_conversation_or_pending_max_cache"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Запросить материал",
+          "sourceEvidence": {
+            "path": "src/ReplacementMaterials.tsx",
+            "line": 7,
+            "selector": "request"
+          },
+          "botCommand": "/materials shares → choose N → share_request → confirm",
+          "handler": "LearningAssistant._context_action/_execute(share_request)",
+          "nativeCalls": [
+            "GET /api/teacher/replacement-materials",
+            "POST /api/teacher/replacement-materials/requests"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_native_published_replacement_request_share_frozen_version_and_revoke"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)",
+          "nativeActorScope": "current published replacement recipient"
+        },
+        {
+          "uiAction": "Передать версию материала",
+          "sourceEvidence": {
+            "path": "src/ReplacementMaterials.tsx",
+            "line": 33,
+            "selector": "grants"
+          },
+          "botCommand": "/materials share_material → choose N → confirm",
+          "handler": "LearningAssistant._selected(share_choose_material)/_execute(share_create)",
+          "nativeCalls": [
+            "GET /api/teacher/preparation/materials",
+            "POST /api/teacher/replacement-materials/grants"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_native_published_replacement_request_share_frozen_version_and_revoke"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)",
+          "nativeActorScope": "current published replacement original teacher/material author"
+        },
+        {
+          "uiAction": "Прочитать передачу",
+          "sourceEvidence": {
+            "path": "src/ReplacementMaterials.tsx",
+            "line": 14,
+            "selector": "grant"
+          },
+          "botCommand": "/materials grant_open",
+          "handler": "LearningAssistant._context_action(grant_open)",
+          "nativeCalls": [
+            "GET /api/teacher/replacement-materials/grants/{id}"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_native_published_replacement_request_share_frozen_version_and_revoke",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_revoked_grant_never_reappears_from_conversation_or_pending_max_cache"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Отозвать передачу",
+          "sourceEvidence": {
+            "path": "src/ReplacementMaterials.tsx",
+            "line": 7,
+            "selector": "revoke"
+          },
+          "botCommand": "/materials grant_revoke → reason → confirm",
+          "handler": "LearningAssistant._execute(share_revoke)",
+          "nativeCalls": [
+            "POST /api/teacher/replacement-materials/grants/{id}/revoke"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_native_published_replacement_request_share_frozen_version_and_revoke"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)",
+          "nativeActorScope": "grant sender/material author"
+        },
+        {
+          "uiAction": "История передач",
+          "sourceEvidence": {
+            "path": "src/ReplacementMaterials.tsx",
+            "line": 63,
+            "selector": "history"
+          },
+          "botCommand": "/materials share_history → choose N",
+          "handler": "LearningAssistant._selected(share_history_open)",
+          "nativeCalls": [
+            "GET /api/teacher/replacement-materials; director GET /api/school/replacement-materials"
+          ],
+          "nativeRoles": [
+            "teacher",
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_native_published_replacement_request_share_frozen_version_and_revoke"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ]
+    },
+    {
+      "id": "learning.dashboard",
+      "commands": "/learning list/overview/submitted/revision/reviewed/search",
+      "roles": [
+        "teacher",
+        "student"
+      ],
+      "nativeRoutes": [
+        "GET /api/teacher/learning",
+        "GET /api/student/learning"
+      ],
+      "sourceServer": "server/student_learning.py",
+      "sourceUi": "src/TeacherPersonalTasks.tsx",
+      "acceptanceCriteria": [
+        "teacher allowed students/subjects",
+        "student own assignments/performance",
+        "AI status respected"
+      ],
+      "status": "native_adapter_acceptance_pass",
+      "confirmedPercent": 100,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_real_native_role_guards_ai_off_and_recovery_views",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_dynamic_native_teacher_and_student_can_use_learning_after_genuine_invites",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_assignment_queue_status_search_and_current_publication_next_lesson",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_teacher_cached_assignment_and_list_recheck_native_scope_after_pupil_archive"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Обзор обучения",
+          "sourceEvidence": {
+            "path": "src/TeacherPersonalTasks.tsx",
+            "line": 62,
+            "selector": "data.students"
+          },
+          "botCommand": "/learning overview",
+          "handler": "LearningAssistant._command",
+          "nativeCalls": [
+            "GET /api/{teacher|student}/learning"
+          ],
+          "nativeRoles": [
+            "teacher",
+            "student"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_real_native_role_guards_ai_off_and_recovery_views",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_dynamic_native_teacher_and_student_can_use_learning_after_genuine_invites"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Работы учеников",
+          "sourceEvidence": {
+            "path": "src/TeacherPersonalTasks.tsx",
+            "line": 72,
+            "selector": "Работы учеников"
+          },
+          "botCommand": "/learning list/submitted/revision/reviewed",
+          "handler": "LearningAssistant._command",
+          "nativeCalls": [
+            "GET /api/teacher/learning; local status filter of native scoped data"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_assignment_queue_status_search_and_current_publication_next_lesson",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_teacher_cached_assignment_and_list_recheck_native_scope_after_pupil_archive"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Поиск по заданию, предмету или ученику",
+          "sourceEvidence": {
+            "path": "src/TeacherPersonalTasks.tsx",
+            "line": 72,
+            "selector": "Поиск по заданию"
+          },
+          "botCommand": "/learning search → query",
+          "handler": "LearningAssistant._advance(assignment_search)",
+          "nativeCalls": [
+            "GET /api/teacher/learning; local text filter and paginated choices"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_assignment_queue_status_search_and_current_publication_next_lesson"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ]
+    },
+    {
+      "id": "learning.assignment",
+      "commands": "/learning assign; /materials assign; /learning choose N",
+      "roles": [
+        "teacher",
+        "student"
+      ],
+      "nativeRoutes": [
+        "POST /api/teacher/learning/assignments",
+        "GET /api/{teacher|student}/learning/assignments/{id}"
+      ],
+      "sourceServer": "server/student_learning.py",
+      "sourceUi": "src/TeacherPersonalTasks.tsx",
+      "acceptanceCriteria": [
+        "native allowed student and subject",
+        "gap/title/content/answers/dueAt",
+        "no answers leak to student",
+        "current native assignment/thread revision"
+      ],
+      "status": "native_adapter_acceptance_pass",
+      "confirmedPercent": 100,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_assignment_draft_two_attempts_review_and_message",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_dynamic_native_teacher_and_student_can_use_learning_after_genuine_invites",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_checked_saved_material_handoff_requires_review_before_manual_assignment",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_distinct_native_students_do_not_share_assignments_answers_or_materials",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_teacher_cached_assignment_and_list_recheck_native_scope_after_pupil_archive"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Предпросмотр",
+          "sourceEvidence": {
+            "path": "src/TeacherPersonalTasks.tsx",
+            "line": 70,
+            "selector": "Предпросмотр"
+          },
+          "botCommand": "/learning assign → answers",
+          "handler": "LearningAssistant._advance",
+          "nativeCalls": [
+            "GET /api/teacher/learning; no write before confirmation"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_assignment_draft_two_attempts_review_and_message"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Назначить",
+          "sourceEvidence": {
+            "path": "src/TeacherPersonalTasks.tsx",
+            "line": 60,
+            "selector": "Назначить"
+          },
+          "botCommand": "/learning confirm",
+          "handler": "LearningAssistant._execute(assignment_create)",
+          "nativeCalls": [
+            "POST /api/teacher/learning/assignments generate=false"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_assignment_draft_two_attempts_review_and_message",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_dynamic_native_teacher_and_student_can_use_learning_after_genuine_invites"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Перейти к выдаче задания",
+          "sourceEvidence": {
+            "path": "src/TeacherPreparation.tsx",
+            "line": 117,
+            "selector": "Перейти к выдаче задания"
+          },
+          "botCommand": "/materials assign → student → gap → dueAt → confirm",
+          "handler": "LearningAssistant._context_action(assign)/_execute(assignment_create)",
+          "nativeCalls": [
+            "GET /api/teacher/preparation/materials/{id}",
+            "GET /api/teacher/learning",
+            "POST /api/teacher/learning/assignments generate=false"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_checked_saved_material_handoff_requires_review_before_manual_assignment"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Открыть работу и переписку",
+          "sourceEvidence": {
+            "path": "src/TeacherPersonalTasks.tsx",
+            "line": 73,
+            "selector": "Открыть работу и переписку"
+          },
+          "botCommand": "/learning list → choose N",
+          "handler": "LearningAssistant._selected(assignment_open)",
+          "nativeCalls": [
+            "GET /api/{teacher|student}/learning/assignments/{id}"
+          ],
+          "nativeRoles": [
+            "teacher",
+            "student"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_assignment_draft_two_attempts_review_and_message",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_distinct_native_students_do_not_share_assignments_answers_or_materials",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_teacher_cached_assignment_and_list_recheck_native_scope_after_pupil_archive"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ]
+    },
+    {
+      "id": "learning.work",
+      "commands": "/learning draft/submit/review",
+      "roles": [
+        "teacher",
+        "student"
+      ],
+      "nativeRoutes": [
+        "POST /api/student/learning/assignments/{id}/{draft|submit}",
+        "POST /api/teacher/learning/assignments/{id}/review"
+      ],
+      "sourceServer": "server/student_learning.py",
+      "sourceUi": "src/LearningThread.tsx",
+      "acceptanceCriteria": [
+        "draft preserved",
+        "immutable submission attempts",
+        "review exact attempt and expected revision",
+        "revision request then resubmit then reviewed"
+      ],
+      "status": "native_adapter_acceptance_pass",
+      "confirmedPercent": 100,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_assignment_draft_two_attempts_review_and_message",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_dynamic_native_teacher_and_student_can_use_learning_after_genuine_invites",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_max_txt_student_draft_and_submit_preserve_native_8000_limit"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Сохранить черновик",
+          "sourceEvidence": {
+            "path": "src/LearningThread.tsx",
+            "line": 10,
+            "selector": "draft"
+          },
+          "botCommand": "/learning draft → text → confirm",
+          "handler": "LearningAssistant._execute(learning_draft)",
+          "nativeCalls": [
+            "POST /api/student/learning/assignments/{id}/draft"
+          ],
+          "nativeRoles": [
+            "student"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_assignment_draft_two_attempts_review_and_message",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_max_txt_student_draft_and_submit_preserve_native_8000_limit"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Сдать работу",
+          "sourceEvidence": {
+            "path": "src/LearningThread.tsx",
+            "line": 25,
+            "selector": "submit"
+          },
+          "botCommand": "/learning submit → text → confirm",
+          "handler": "LearningAssistant._execute(learning_submit)",
+          "nativeCalls": [
+            "POST /api/student/learning/assignments/{id}/submit"
+          ],
+          "nativeRoles": [
+            "student"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_assignment_draft_two_attempts_review_and_message",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_dynamic_native_teacher_and_student_can_use_learning_after_genuine_invites",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_max_txt_student_draft_and_submit_preserve_native_8000_limit"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Проверить попытку",
+          "sourceEvidence": {
+            "path": "src/LearningThread.tsx",
+            "line": 10,
+            "selector": "review"
+          },
+          "botCommand": "/learning review → attempt → decision → comment → confirm",
+          "handler": "LearningAssistant._execute(learning_review)",
+          "nativeCalls": [
+            "POST /api/teacher/learning/assignments/{id}/review"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_assignment_draft_two_attempts_review_and_message"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ]
+    },
+    {
+      "id": "learning.messages",
+      "commands": "/learning message; /ai tutor",
+      "roles": [
+        "teacher",
+        "student"
+      ],
+      "nativeRoutes": [
+        "POST /api/{teacher|student}/learning/assignments/{id}/messages"
+      ],
+      "sourceServer": "server/student_learning.py",
+      "sourceUi": "src/LearningThread.tsx",
+      "acceptanceCriteria": [
+        "persisted visible thread",
+        "native role ownership",
+        "askAi only explicit and configured",
+        "requestId recovery"
+      ],
+      "status": "native_off_contract_pass_real_provider_pending",
+      "confirmedPercent": 85,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_assignment_draft_two_attempts_review_and_message",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_ai_endpoints_validate_commands_and_honestly_remain_off",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_complete_message_history_preserves_older_messages_and_current_native_scope"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Сообщение собеседнику",
+          "sourceEvidence": {
+            "path": "src/LearningThread.tsx",
+            "line": 24,
+            "selector": "messages"
+          },
+          "botCommand": "/learning message → text → confirm",
+          "handler": "LearningAssistant._execute(learning_message)",
+          "nativeCalls": [
+            "POST /api/{teacher|student}/learning/assignments/{id}/messages askAi=false"
+          ],
+          "nativeRoles": [
+            "teacher",
+            "student"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_assignment_draft_two_attempts_review_and_message"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Вопрос ИИ",
+          "sourceEvidence": {
+            "path": "src/LearningThread.tsx",
+            "line": 24,
+            "selector": "askAi"
+          },
+          "botCommand": "/learning tutor → text → confirm; /ai tutor",
+          "handler": "LearningAssistant._context_action/_execute(learning_tutor)",
+          "nativeCalls": [
+            "GET /api/{teacher|student}/learning",
+            "POST /api/{teacher|student}/learning/assignments/{id}/messages askAi=true"
+          ],
+          "nativeRoles": [
+            "teacher",
+            "student"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_ai_endpoints_validate_commands_and_honestly_remain_off"
+          ],
+          "proof": "native capability OFF503 preserves messages; provider generation pending",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Вся переписка по заданию",
+          "sourceEvidence": {
+            "path": "src/LearningThread.tsx",
+            "line": 37,
+            "selector": "detail.messages.map"
+          },
+          "botCommand": "/learning history",
+          "handler": "LearningAssistant._context_action(history)",
+          "nativeCalls": [
+            "GET /api/{teacher|student}/learning/assignments/{id}"
+          ],
+          "nativeRoles": [
+            "teacher",
+            "student"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_complete_message_history_preserves_older_messages_and_current_native_scope"
+          ],
+          "proof": "actual8+native messages retained incompleteTXT; studentteacheranswersnotexposed; archivedstudent deniescachedteacher transcript via native_read guard",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ],
+      "gaps": [
+        "Human teacher/student messages accepted; actual AI tutor generation pending provider gate"
+      ]
+    },
+    {
+      "id": "learning.practice",
+      "commands": "/learning practice; /ai practice",
+      "roles": [
+        "student"
+      ],
+      "nativeRoutes": [
+        "POST /api/student/learning/practice"
+      ],
+      "sourceServer": "server/student_learning.py",
+      "sourceUi": "src/StudentWorkspace.tsx",
+      "acceptanceCriteria": [
+        "native allowed subject",
+        "actual native generator or honest unavailable",
+        "no synthetic success reported as live AI"
+      ],
+      "status": "native_off_contract_pass_real_provider_pending",
+      "confirmedPercent": 60,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_real_native_role_guards_ai_off_and_recovery_views",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_ai_endpoints_validate_commands_and_honestly_remain_off"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Самостоятельная практика",
+          "sourceEvidence": {
+            "path": "src/StudentWorkspace.tsx",
+            "line": 25,
+            "selector": "practice"
+          },
+          "botCommand": "/learning practice; /ai practice",
+          "handler": "LearningAssistant._command/_execute(practice_create)",
+          "nativeCalls": [
+            "GET /api/student/learning",
+            "POST /api/student/learning/practice"
+          ],
+          "nativeRoles": [
+            "student"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_real_native_role_guards_ai_off_and_recovery_views",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_ai_endpoints_validate_commands_and_honestly_remain_off"
+          ],
+          "proof": "native OFF503 preserves assignment list; provider generation pending",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ],
+      "gaps": [
+        "Practice native capability, validation and OFF state accepted; actual generated practice pending provider gate"
+      ]
+    },
+    {
+      "id": "learning.recovery",
+      "commands": "/recovery",
+      "roles": [
+        "teacher",
+        "student"
+      ],
+      "nativeRoutes": [
+        "GET /api/{teacher|student}/learning",
+        "GET /api/student/schedule",
+        "native assignment operations"
+      ],
+      "sourceServer": "server/student_learning.py",
+      "sourceUi": "src/StudentRecovery.tsx",
+      "acceptanceCriteria": [
+        "overdue/unreviewed/revision assignment views",
+        "missed lesson context from native own schedule",
+        "uses actual learning actions; no fabricated recovery route"
+      ],
+      "status": "native_adapter_acceptance_pass",
+      "confirmedPercent": 100,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_real_native_role_guards_ai_off_and_recovery_views"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Требуют внимания",
+          "sourceEvidence": {
+            "path": "src/StudentRecovery.tsx",
+            "line": 8,
+            "selector": "assignments"
+          },
+          "botCommand": "/recovery list/revision/overdue/submitted/all",
+          "handler": "LearningAssistant._command",
+          "nativeCalls": [
+            "GET /api/student/learning; own status/deadline filters"
+          ],
+          "nativeRoles": [
+            "teacher",
+            "student"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_real_native_role_guards_ai_off_and_recovery_views"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "По прошедшему уроку",
+          "sourceEvidence": {
+            "path": "src/StudentRecovery.tsx",
+            "line": 9,
+            "selector": "lesson"
+          },
+          "botCommand": "/recovery lessons → choose N",
+          "handler": "LearningAssistant._selected(recovery_lesson)",
+          "nativeCalls": [
+            "GET /api/student/schedule",
+            "GET /api/student/learning; own subject filter, no invented absence/assignment lesson binding"
+          ],
+          "nativeRoles": [
+            "teacher",
+            "student"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_real_native_role_guards_ai_off_and_recovery_views"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ]
+    },
+    {
+      "id": "journal.views",
+      "commands": "/journal",
+      "roles": [
+        "teacher",
+        "student",
+        "director"
+      ],
+      "nativeRoutes": [
+        "GET /api/{teacher|student|director}/lesson-progress"
+      ],
+      "sourceServer": "server/lesson_progress_views.py",
+      "sourceUi": "src/LessonProgressPanel.tsx",
+      "acceptanceCriteria": [
+        "period,class,subject,page filters",
+        "role-scoped real history",
+        "grade/attendance aggregates with null distinct from zero"
+      ],
+      "status": "native_adapter_acceptance_pass",
+      "confirmedPercent": 100,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_native_scoped_journal_and_consultation_lists",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_journal_guarded_import_export_and_scoped_analytics",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_director_native_journal_import_and_all_form_options_are_reachable"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Успеваемость и явка",
+          "sourceEvidence": {
+            "path": "src/LessonProgressPanel.tsx",
+            "line": 13,
+            "selector": "summary"
+          },
+          "botCommand": "/journal view",
+          "handler": "LearningAssistant._journal",
+          "nativeCalls": [
+            "GET /api/{student|teacher|director}/lesson-progress"
+          ],
+          "nativeRoles": [
+            "teacher",
+            "student",
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_native_scoped_journal_and_consultation_lists",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_journal_guarded_import_export_and_scoped_analytics",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_director_native_journal_import_and_all_form_options_are_reachable"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Выбрать период",
+          "sourceEvidence": {
+            "path": "src/LessonProgressPanel.tsx",
+            "line": 15,
+            "selector": "filters"
+          },
+          "botCommand": "/journal period → dates/subject/class → confirm",
+          "handler": "LearningAssistant._execute(journal_view)",
+          "nativeCalls": [
+            "GET /api/{student|teacher|director}/lesson-progress?start&end&subject&className"
+          ],
+          "nativeRoles": [
+            "teacher",
+            "student",
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_journal_guarded_import_export_and_scoped_analytics"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "История записей",
+          "sourceEvidence": {
+            "path": "src/LessonProgressPanel.tsx",
+            "line": 14,
+            "selector": "history"
+          },
+          "botCommand": "/journal history N",
+          "handler": "LearningAssistant._journal",
+          "nativeCalls": [
+            "GET /api/student/lesson-progress?page=N"
+          ],
+          "nativeRoles": [
+            "teacher",
+            "student",
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_journal_guarded_import_export_and_scoped_analytics"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ]
+    },
+    {
+      "id": "journal.write",
+      "commands": "/journal new/export",
+      "roles": [
+        "director",
+        "platform_admin"
+      ],
+      "nativeRoutes": [
+        "GET /api/school/data-exchange/catalog",
+        "GET /api/school/data-exchange/lesson-progress-references",
+        "POST /api/school/data-exchange/preview",
+        "POST /api/school/data-exchange/apply",
+        "POST /api/school/data-exchange/export"
+      ],
+      "sourceServer": "server/school_data_exchange.py",
+      "sourceUi": "src/SchoolDataExchange.tsx",
+      "acceptanceCriteria": [
+        "confirmed publication/lesson/student and roster mapping",
+        "native immutable lessonProgress record; no invented PATCH/archive",
+        "native previewHash and dataset revision checked on apply",
+        "CSV export uses actual dataset",
+        "teacher/student cannot use owner import"
+      ],
+      "status": "native_adapter_acceptance_pass",
+      "confirmedPercent": 100,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_journal_guarded_import_export_and_scoped_analytics",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_director_native_journal_import_and_all_form_options_are_reachable"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Внести запись журнала",
+          "sourceEvidence": {
+            "path": "src/SchoolDataExchange.tsx",
+            "line": 17,
+            "selector": "lessonProgress"
+          },
+          "botCommand": "/journal new → student → lesson → attendance/grade → confirm",
+          "handler": "LearningAssistant._journal_form/_advance/_execute(journal_create)",
+          "nativeCalls": [
+            "GET /api/school/data-exchange/catalog",
+            "GET /api/school/data-exchange/lesson-progress-references",
+            "POST /api/school/data-exchange/preview",
+            "POST /api/school/data-exchange/apply"
+          ],
+          "nativeRoles": [
+            "director",
+            "platform_admin"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_journal_guarded_import_export_and_scoped_analytics",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_director_native_journal_import_and_all_form_options_are_reachable"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Выгрузить журнал",
+          "sourceEvidence": {
+            "path": "src/SchoolDataExchange.tsx",
+            "line": 53,
+            "selector": "export"
+          },
+          "botCommand": "/journal export",
+          "handler": "LearningAssistant._command",
+          "nativeCalls": [
+            "POST /api/school/data-exchange/export kind=lessonProgress format=csv"
+          ],
+          "nativeRoles": [
+            "director",
+            "platform_admin"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_journal_guarded_import_export_and_scoped_analytics",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_director_native_journal_import_and_all_form_options_are_reachable"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ]
+    },
+    {
+      "id": "consultations",
+      "commands": "/consultations",
+      "roles": [
+        "teacher",
+        "student"
+      ],
+      "nativeRoutes": [
+        "GET /api/{teacher|student}/consultations",
+        "POST /api/teacher/consultations",
+        "POST /api/{teacher|student}/consultations/{id}/decision"
+      ],
+      "sourceServer": "server/consultations.py",
+      "sourceUi": "src/ConsultationWorkspace.tsx",
+      "acceptanceCriteria": [
+        "teacher native visible student",
+        "timezone-aware date and valid duration",
+        "student books/cancels; teacher cancels",
+        "native collision checks and revision"
+      ],
+      "status": "native_adapter_acceptance_pass",
+      "confirmedPercent": 100,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_native_scoped_journal_and_consultation_lists",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_consultation_offer_book_cancel_and_time_collision_guard"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Мои консультации",
+          "sourceEvidence": {
+            "path": "src/ConsultationWorkspace.tsx",
+            "line": 9,
+            "selector": "items"
+          },
+          "botCommand": "/consultations list → choose N",
+          "handler": "LearningAssistant._selected(consultation_open)",
+          "nativeCalls": [
+            "GET /api/{teacher|student}/consultations"
+          ],
+          "nativeRoles": [
+            "teacher",
+            "student"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_native_scoped_journal_and_consultation_lists",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_consultation_offer_book_cancel_and_time_collision_guard"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Предложить консультацию",
+          "sourceEvidence": {
+            "path": "src/ConsultationWorkspace.tsx",
+            "line": 71,
+            "selector": "Предложить консультацию"
+          },
+          "botCommand": "/consultations new → answers → confirm",
+          "handler": "LearningAssistant._execute(consultation_create)",
+          "nativeCalls": [
+            "GET /api/teacher/consultations",
+            "POST /api/teacher/consultations"
+          ],
+          "nativeRoles": [
+            "teacher"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_consultation_offer_book_cancel_and_time_collision_guard"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Подтвердить запись",
+          "sourceEvidence": {
+            "path": "src/ConsultationWorkspace.tsx",
+            "line": 88,
+            "selector": "Подтвердить запись"
+          },
+          "botCommand": "/consultations book → confirm",
+          "handler": "LearningAssistant._execute(consultation_decision)",
+          "nativeCalls": [
+            "POST /api/student/consultations/{id}/decision decision=book"
+          ],
+          "nativeRoles": [
+            "student"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_consultation_offer_book_cancel_and_time_collision_guard"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Отменить консультацию",
+          "sourceEvidence": {
+            "path": "src/ConsultationWorkspace.tsx",
+            "line": 89,
+            "selector": "Отменить консультацию"
+          },
+          "botCommand": "/consultations cancel_booking → confirm",
+          "handler": "LearningAssistant._execute(consultation_decision)",
+          "nativeCalls": [
+            "POST /api/{teacher|student}/consultations/{id}/decision decision=cancel"
+          ],
+          "nativeRoles": [
+            "teacher",
+            "student"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_consultation_offer_book_cancel_and_time_collision_guard"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ]
+    },
+    {
+      "id": "clubs.admin",
+      "commands": "/clubs programs/enrollments",
+      "roles": [
+        "director"
+      ],
+      "nativeRoutes": [
+        "GET /api/school/clubs",
+        "POST,PATCH /api/school/clubs/programs[/{id}]",
+        "POST,PATCH /api/school/clubs/enrollments[/{id}]",
+        "POST /api/school/clubs/{programs|enrollments}/{id}/{archive|restore}"
+      ],
+      "sourceServer": "server/school_clubs.py",
+      "sourceUi": "src/SchoolClubs.tsx",
+      "acceptanceCriteria": [
+        "program details and integer kopeks",
+        "enrollment active/paused/completed",
+        "current native student/program ids",
+        "archive/restore and revision"
+      ],
+      "status": "native_adapter_acceptance_pass",
+      "confirmedPercent": 100,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_club_edits_enrollment_archive_and_positive_charge_cancel"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Программы кружков",
+          "sourceEvidence": {
+            "path": "src/SchoolClubs.tsx",
+            "line": 10,
+            "selector": "programs"
+          },
+          "botCommand": "/clubs programs → choose N",
+          "handler": "LearningAssistant._clubs/_club_selected",
+          "nativeCalls": [
+            "GET /api/school/clubs"
+          ],
+          "nativeRoles": [
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Создать программу",
+          "sourceEvidence": {
+            "path": "src/SchoolClubs.tsx",
+            "line": 10,
+            "selector": "programs"
+          },
+          "botCommand": "/clubs program_new → answers → confirm",
+          "handler": "LearningAssistant._execute(program_create)",
+          "nativeCalls": [
+            "POST /api/school/clubs/programs"
+          ],
+          "nativeRoles": [
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Редактировать программу",
+          "sourceEvidence": {
+            "path": "src/SchoolClubs.tsx",
+            "line": 10,
+            "selector": "programs"
+          },
+          "botCommand": "/clubs program_edit → answers → confirm",
+          "handler": "LearningAssistant._execute(program_update)",
+          "nativeCalls": [
+            "PATCH /api/school/clubs/programs/{id}"
+          ],
+          "nativeRoles": [
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_club_edits_enrollment_archive_and_positive_charge_cancel"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Записать ученика",
+          "sourceEvidence": {
+            "path": "src/SchoolClubs.tsx",
+            "line": 10,
+            "selector": "enrollments"
+          },
+          "botCommand": "/clubs enrollment_new → answers → confirm",
+          "handler": "LearningAssistant._execute(enrollment_create)",
+          "nativeCalls": [
+            "POST /api/school/clubs/enrollments"
+          ],
+          "nativeRoles": [
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Изменить участие",
+          "sourceEvidence": {
+            "path": "src/SchoolClubs.tsx",
+            "line": 10,
+            "selector": "enrollments"
+          },
+          "botCommand": "/clubs enrollment_edit → status/comment → confirm",
+          "handler": "LearningAssistant._execute(enrollment_update)",
+          "nativeCalls": [
+            "PATCH /api/school/clubs/enrollments/{id}"
+          ],
+          "nativeRoles": [
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_club_edits_enrollment_archive_and_positive_charge_cancel"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Архивировать / восстановить",
+          "sourceEvidence": {
+            "path": "src/SchoolClubs.tsx",
+            "line": 6,
+            "selector": "archive"
+          },
+          "botCommand": "/clubs record_archive|record_restore → confirm",
+          "handler": "LearningAssistant._execute(club_action)",
+          "nativeCalls": [
+            "POST /api/school/clubs/{programs|enrollments}/{id}/{archive|restore}"
+          ],
+          "nativeRoles": [
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_club_edits_enrollment_archive_and_positive_charge_cancel"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ]
+    },
+    {
+      "id": "clubs.charges",
+      "commands": "/clubs charges",
+      "roles": [
+        "director"
+      ],
+      "nativeRoutes": [
+        "POST /api/school/clubs/charges/preview",
+        "POST /api/school/clubs/charges",
+        "POST /api/school/clubs/charges/{id}/{confirm|cancel}"
+      ],
+      "sourceServer": "server/school_clubs.py",
+      "sourceUi": "src/SchoolClubs.tsx",
+      "acceptanceCriteria": [
+        "preview hash binds exact proposal",
+        "integer money and explicit period/quantity",
+        "native confirm/cancel guards"
+      ],
+      "status": "native_adapter_acceptance_pass",
+      "confirmedPercent": 100,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_club_edits_enrollment_archive_and_positive_charge_cancel"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Начисления",
+          "sourceEvidence": {
+            "path": "src/SchoolClubs.tsx",
+            "line": 10,
+            "selector": "charges"
+          },
+          "botCommand": "/clubs charges → choose N",
+          "handler": "LearningAssistant._clubs/_club_selected",
+          "nativeCalls": [
+            "GET /api/school/clubs"
+          ],
+          "nativeRoles": [
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Рассчитать начисление",
+          "sourceEvidence": {
+            "path": "src/SchoolClubs.tsx",
+            "line": 62,
+            "selector": "preview"
+          },
+          "botCommand": "/clubs charge_new → enrollment/period/quantity",
+          "handler": "LearningAssistant._advance(charge_create)",
+          "nativeCalls": [
+            "POST /api/school/clubs/charges/preview"
+          ],
+          "nativeRoles": [
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Создать начисление",
+          "sourceEvidence": {
+            "path": "src/SchoolClubs.tsx",
+            "line": 10,
+            "selector": "charges"
+          },
+          "botCommand": "/clubs confirm",
+          "handler": "LearningAssistant._execute(charge_create)",
+          "nativeCalls": [
+            "POST /api/school/clubs/charges expectedHash"
+          ],
+          "nativeRoles": [
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Подтвердить начисление",
+          "sourceEvidence": {
+            "path": "src/SchoolClubs.tsx",
+            "line": 8,
+            "selector": "confirm"
+          },
+          "botCommand": "/clubs charge_confirm → confirm",
+          "handler": "LearningAssistant._execute(club_action)",
+          "nativeCalls": [
+            "POST /api/school/clubs/charges/{id}/confirm"
+          ],
+          "nativeRoles": [
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Отменить начисление",
+          "sourceEvidence": {
+            "path": "src/SchoolClubs.tsx",
+            "line": 8,
+            "selector": "cancel"
+          },
+          "botCommand": "/clubs charge_cancel → confirm",
+          "handler": "LearningAssistant._execute(club_action)",
+          "nativeCalls": [
+            "POST /api/school/clubs/charges/{id}/cancel"
+          ],
+          "nativeRoles": [
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_club_edits_enrollment_archive_and_positive_charge_cancel",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ]
+    },
+    {
+      "id": "clubs.student",
+      "commands": "/clubs mine",
+      "roles": [
+        "student"
+      ],
+      "nativeRoutes": [
+        "GET /api/student/clubs"
+      ],
+      "sourceServer": "server/school_clubs.py",
+      "sourceUi": "src/StudentClubs.tsx",
+      "acceptanceCriteria": [
+        "own participation only",
+        "receipts and notices when supported"
+      ],
+      "status": "native_adapter_acceptance_pass",
+      "confirmedPercent": 100,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_club_edits_enrollment_archive_and_positive_charge_cancel"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Мои кружки",
+          "sourceEvidence": {
+            "path": "src/StudentClubs.tsx",
+            "line": 19,
+            "selector": "items"
+          },
+          "botCommand": "/clubs mine",
+          "handler": "LearningAssistant._clubs",
+          "nativeCalls": [
+            "GET /api/student/clubs own items/receipts/receiptNotices"
+          ],
+          "nativeRoles": [
+            "student"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_club_edits_enrollment_archive_and_positive_charge_cancel"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ]
+    },
+    {
+      "id": "clubs.pdf",
+      "commands": "/clubs documents; /clubs choose N; /clubs document_status",
+      "roles": [
+        "student"
+      ],
+      "nativeRoutes": [
+        "POST /api/student/clubs/documents/prepare",
+        "native document job polling when queued"
+      ],
+      "sourceServer": "server/club_documents.py",
+      "sourceUi": "src/StudentClubs.tsx",
+      "acceptanceCriteria": [
+        "native current personal document list and revision",
+        "actual PDF via independent local document jobs using original business validations",
+        "base64/header/size and available sha256 checked before bridge delivery",
+        "parent document delivery separately tested by root",
+        "queued/running/error represented honestly"
+      ],
+      "status": "native_adapter_acceptance_pass",
+      "confirmedPercent": 100,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive",
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_cancelled_document_never_reappears_from_conversation_or_pending_max_cache"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Мои документы",
+          "sourceEvidence": {
+            "path": "src/StudentClubs.tsx",
+            "line": 19,
+            "selector": "documents"
+          },
+          "botCommand": "/clubs documents → choose N",
+          "handler": "LearningAssistant._club_selected(club_document)/_pdf_result",
+          "nativeCalls": [
+            "GET /api/student/clubs current documents",
+            "POST /api/student/clubs/documents/prepare documentId/revision; native file envelope"
+          ],
+          "nativeRoles": [
+            "student"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive",
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_cancelled_document_never_reappears_from_conversation_or_pending_max_cache"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ]
+    },
+    {
+      "id": "clubs.reconciliation",
+      "commands": "/clubs reconcile",
+      "roles": [
+        "director"
+      ],
+      "nativeRoutes": [
+        "GET /api/director/club-reconciliation",
+        "POST /api/director/club-reconciliation/{binding|preview|apply}"
+      ],
+      "sourceServer": "server/club_payment_reconciliation.py",
+      "sourceUi": "src/ClubReconciliation.tsx",
+      "acceptanceCriteria": [
+        "synthetic account binding only",
+        "source-confirmed receipt with bounded date/money",
+        "preview hash and request replay",
+        "not actual bank transfer or payment"
+      ],
+      "status": "native_adapter_acceptance_pass",
+      "confirmedPercent": 100,
+      "tests": [
+        "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive"
+      ],
+      "classification": "active_school_mode",
+      "actions": [
+        {
+          "uiAction": "Сверка поступлений",
+          "sourceEvidence": {
+            "path": "src/ClubReconciliation.tsx",
+            "line": 11,
+            "selector": "preview"
+          },
+          "botCommand": "/clubs reconcile → choose N",
+          "handler": "LearningAssistant._clubs/_club_selected",
+          "nativeCalls": [
+            "GET /api/director/club-reconciliation"
+          ],
+          "nativeRoles": [
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Привязать тестовую запись",
+          "sourceEvidence": {
+            "path": "src/ClubReconciliation.tsx",
+            "line": 13,
+            "selector": "binding"
+          },
+          "botCommand": "/clubs bind_account → synthetic account → confirm",
+          "handler": "LearningAssistant._execute(reconciliation_bind)",
+          "nativeCalls": [
+            "POST /api/director/club-reconciliation/binding"
+          ],
+          "nativeRoles": [
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        },
+        {
+          "uiAction": "Учесть поступление",
+          "sourceEvidence": {
+            "path": "src/ClubReconciliation.tsx",
+            "line": 13,
+            "selector": "apply"
+          },
+          "botCommand": "/clubs record_receipt → amount/date/source/ref → confirm",
+          "handler": "LearningAssistant._advance/_execute(reconciliation_apply)",
+          "nativeCalls": [
+            "POST /api/director/club-reconciliation/preview",
+            "POST /api/director/club-reconciliation/apply previewHash"
+          ],
+          "nativeRoles": [
+            "director"
+          ],
+          "testCases": [
+            "tests.test_platform_learning.NativeLearningAdapterTests.test_actual_clubs_charges_pdf_reconciliation_and_archive"
+          ],
+          "proof": "actual_native_auth_and_api",
+          "testResult": "PASS (full educational suite27 tests68.029s; final full-preview label change covered by2 focused file/native regressions)"
+        }
+      ]
+    }
+  ],
+  "sourceFilesSha256": {
+    "server/club_documents.py": "a270eeba21b8f9159e1002acb7e2613237895d34c9b2bb964ea1fb802e7e799b",
+    "server/club_payment_reconciliation.py": "2c0566ad211837b3f57380ce7bd0b55b3f661ed2a24ff23c356253e18008a099",
+    "server/consultations.py": "dea4bca2d6e022972494b6ca138f960b4fda47d0c0e09546f3deb01a8f1e71c9",
+    "server/lesson_progress_views.py": "c5d4b22b79cf4db41718a48df333b3d3523a4488637756def43bb703978fa8a6",
+    "server/replacement_materials.py": "73d260a19b9d2cf0e2e71efd12025806ca97a7e1318b1d9f65ce573e4c8e042d",
+    "server/school_clubs.py": "808ff6fc5f56a08acb673ddbedb93a816686fd166681723f31e3956dec464bfe",
+    "server/school_data_exchange.py": "1e59abaaebeb33be5e843559d507f6f2017363a7922a4c92cafc03b4a12b54ae",
+    "server/school_lesson_progress.py": "747ff3d8ba2e1d962eed5a60ce95c00fd7c202779d72d688c6ef13d61a0c10c1",
+    "server/student_learning.py": "8baa2706efc624198bf3897a759cad78c0bdff9622c46598b154143a15bfd1d5",
+    "server/teacher_preparation.py": "e8af58ee82e5ba1a401c0e2abf7833a4e1cde28cffbaf9b8676ed1cf332345e8",
+    "src/App.tsx": "ca10459e1f6022ce6b12996c19c3080abbaf49ab3aa223027834f6a9c838ae55",
+    "src/ClubReconciliation.tsx": "d3f73436dd0837a21d93528d9276cb39e236bd2db71e66b7205dd0798023eb55",
+    "src/ConsultationWorkspace.tsx": "233cae747c069d11d7b7590870530516e1e003d2743cd8ffe225e137e45b5c57",
+    "src/LearningThread.tsx": "e3d67a7c7f5da68233366dbf760294eb77d140f2092a05d2fa88874b54f1b4c3",
+    "src/LessonProgressPanel.tsx": "abecc84ae4f7bcc65a95642612727f4ae7b18b64c401ec2f71bc1540c151b44d",
+    "src/ReplacementMaterials.tsx": "94f343a96be6828702e4ad5b270b9b82ba4a9c6235cc122b784d9fddb3e8c95a",
+    "src/SchoolClubs.tsx": "05edea205d7f8b4375318ebfa1da24792c21c1a839c3cdbd1c81eb5c24e751e0",
+    "src/SchoolDataExchange.tsx": "cbf215f5da5c74e81ee3d37ca1d407ee3507e955ed8d963dcd68d294b76d8287",
+    "src/StudentClubs.tsx": "456a03ee8331dd0cd6f600822a2b9218bd2e0c30f526ba503514a5265bf7c438",
+    "src/StudentRecovery.tsx": "7404339f24f3e1548722cb325e62f89fb39cb990be9741eb4e05edf234716f6c",
+    "src/StudentWorkspace.tsx": "7f195e35a1aff0f692a6c7121651f04f4d03e9850a4d3cce0224c32a9d6321f8",
+    "src/TeacherPersonalTasks.tsx": "52e66c9dfebf6bc252f4238453b1b97c7995fba60996a43626d7129996727986",
+    "src/TeacherPreparation.tsx": "d5c8b44d5669de0e0ffc4ae9cbf903dee69d50318fff0e5aed188c360b8312d8"
+  },
+  "gaps": [
+    "Actual NanoGPT/free model generation remains pending provider configuration and explicit live smoke test",
+    "Full real MAX transport/file delivery and whole-product tests are root gates, not claimed by this educational adapter suite"
+  ],
+  "realProviderCalls": 0,
+  "actionCount": 56,
+  "nativeNonAiFamilies": 15,
+  "aiDependentFamilies": 3,
+  "excludedFeatures": [
+    {
+      "id": "legacy_demo.assignments",
+      "classification": "outside_active_school_mode",
+      "nativeRoutes": [
+        "POST /api/assignments/{id}/submit",
+        "POST /api/assignments/{id}/review"
+      ],
+      "sourceEvidence": {
+        "path": "src/App.tsx",
+        "line": 68,
+        "selector": "workspaceMode==='school')return <SchoolApp"
+      },
+      "reason": "Legacy AcademicPages appears only after early SchoolApp return; root explicitly excludes inactive demo auth/database."
+    },
+    {
+      "id": "legacy_demo.lesson_complete",
+      "classification": "outside_active_school_mode",
+      "nativeRoutes": [
+        "POST /api/lessons/{id}/complete"
+      ],
+      "sourceEvidence": {
+        "path": "src/App.tsx",
+        "line": 68,
+        "selector": "workspaceMode==='school')return <SchoolApp"
+      },
+      "reason": "Not an active SchoolApp/StaffWorkspace action; no new legacy auth or third database created."
+    },
+    {
+      "id": "learning.combined_ai_assignment",
+      "classification": "forbidden_by_active_native_policy",
+      "sourceEvidence": {
+        "path": "server/student_learning.py",
+        "line": 381,
+        "selector": "Сначала подготовьте и проверьте личный черновик"
+      },
+      "reason": "Active school mode returns422 for generate=true. Adapter uses saved checked material then manual generate=false assignment."
+    }
+  ],
+  "crossCuttingAcceptance": {
+    "dynamicRoles": "runtime.profiles current safe registry; actual newly claimed teacher/student native acceptance test",
+    "conversation": "atomic actor+session scoped ChatState, restart/cancel/namespace isolation tested",
+    "nativeIntent": "persisted at action start; lost response after actual native commit then new confirmation reuses exact payload/key and produces one effect",
+    "ownership": "native sessions and role guards on every RPC; Sasha and Slavik cannot access each other assignment or teacher answers/materials",
+    "paging": "8 choices/page and all form options reachable; scoped command semantics",
+    "documents": "base64 files only, no private filesystem paths; PDF real native business validation",
+    "sourceProjectionQualification": "next lesson positive adapter branch uses synthetic time-dependent projection of actual owned lesson; final native material save real, actual no-next guard tested",
+    "resourceCache": "Private resourceGuards persist with cached reply and queued MAX payload: current native documentId/revision or material grant read checked by root boundary before replay and claim/send. Actual cancelled PDF404 and revoked grant403 while actor active200 cannot be resent after outer rollback or pending-delivery changes.",
+    "allPrivateReadSnapshots": "ContextVar native GET data/file canonical fingerprints are committed inside child ChatState replies; subsequent readonly form/selection renders retain snapshot guards, fresh reads replace them. Root validator rechecks before replay/render/send. The fixed teacher_preparation projection excludes only volatile lessonRefreshInMs. Mutating acknowledgements drop pre-write baseline guards; readonly previews/exports retain read guards. Actual still-authorized teacher cannot replay former pupil assignment/list after native student archive."
+  },
+  "evidence": {
+    "testModule": "tests/test_platform_learning.py",
+    "command": "python -B -m unittest tests.test_platform_learning -v",
+    "status": "PASS",
+    "expectedTests": 27,
+    "network": "No real MAX or AI provider calls; fork-native auth/API and disposable synthetic data",
+    "tests": 27,
+    "durationSeconds": 68.029,
+    "finalPreviewLabelCheck": "2 actual MAX TXT/native regression cases passed after readable option labels in full confirmation preview"
+  },
+  "inputAdaptation": {
+    "maxMessageBoundary": 4000,
+    "longText": "UTF-8 .txt accepted only at active matching text field, no execution or command interpretation",
+    "nativeCharacterLimits": {
+      "materialContent": 24000,
+      "materialAnswers": 12000,
+      "assignmentContent": 4000,
+      "assignmentAnswers": 8000,
+      "studentDraftOrSubmission": 8000
+    },
+    "preservation": "exact valid Unicode text including leading/trailing whitespace; full confirmation TXT before native mutation",
+    "rejections": "wrong extension, invalid UTF8, C0/C1 controls including NUL, overlimit; pending field unchanged",
+    "replay": "lost outer MAX commit after file step recovers cached receipt without advancing to the next field again"
+  }
+}

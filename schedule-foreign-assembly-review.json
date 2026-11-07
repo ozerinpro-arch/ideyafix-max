@@ -1,0 +1,25 @@
+{
+  "kind": "bounded-foreign-assembly-source-review",
+  "status": "PASS_WITH_LIMITS",
+  "reviewedSourceHashes": {
+    "app/platform_assistant.py": "d3187e4151c52639f26bacde877a30e0832a02253df50a343ddb735f20b8a6ae",
+    "app/platform_store.py": "fa620424930374241770f808c3b30d107052f83893937b7ae3e306403a412a03",
+    "app/platform_chat.py": "a23209b2d77b260a51672ac10b78835d5475d20ab706f14da69110d0aec7bc9a",
+    "app/platform_wire.py": "cdac00ca22984960f8896d99fcb9a3139e446d4abba960d3d94cbc0f8d57d534",
+    "app/platform_transport.py": "c00eba7c16192571ccfcf136617824638cf31d7fa4de85fd598fff4548649045",
+    "app/polling.py": "0a8fde93dc837352107c55fa4fc33426dc3245bd94d2e2cac248e23876c278e8"
+  },
+  "verified": [
+    "Fresh native authorize precedes router/child cached replies and file handling.",
+    "Fresh GET native_read validation uses exact compact canonical data/file hash; no POST replay; denied/stale queued private responses removed or replaced without document.",
+    "Polling stages received batch durably before ingest; storage exceptions propagate before cursor acknowledgement; transient transport failures do not advance cursor.",
+    "OS flock encompasses provider wait/intake/send in CLI; recovered started sends remain unknown, transport failure records unknown.",
+    "File-only input retains original wire hash and passes native personal-dialog parser; CDN downloads use separate unauthenticated bounded nonredirecting media client."
+  ],
+  "limits": [
+    "Read-only source review of foreign assembly; no real credentials, private DB/log/config, provider network or live user messages inspected.",
+    "Owned ScheduleAssistant and its tests excluded from independent review claim.",
+    "Full active UI parity still awaits exact remaining-route probes and parent whole-suite/Docker acceptance."
+  ],
+  "confirmedDefects": []
+}

@@ -1,0 +1,9 @@
+{
+  "enabled": false,
+  "platformEnabled": true,
+  "botUsername": "ideya_fiks_150_bot",
+  "tokenFile": "/run/private/max-token.txt",
+  "caFile": "/run/private/additional-ca.pem",
+  "dbPath": "/app/runtime/ideyafix-demo.sqlite3",
+  "activatedAtMs": 0
+}

@@ -1,0 +1,4120 @@
+{
+  "kind": "synthetic-native-schedule-verification",
+  "status": "PASS",
+  "tests": 39,
+  "failures": [],
+  "errors": [],
+  "seconds": 64.616,
+  "sourceHashes": {
+    "app/platform_schedule.py": "3ed84fe9bcd8736b982be8177df94d586e5913e6413c9ba0456adb9c27c551a7",
+    "tests/test_platform_schedule.py": "3b333c7448165e1600cdf56eb51774cf9035d3855fea36bb2a689786ed4be8ee",
+    "app/platform_schedule_inventory.json": "a158a701b8a013d308b22ff79fc08455ab56ae148c49a35256e1c26401ecba59"
+  },
+  "sourceUnchangedDuringRun": true,
+  "nativeCalls": [
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/timetable/history",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/timetable/dated-draft",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/planning/readiness",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/planning/template",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/planning/questions",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/planning/sources",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/planning/school-source-registry",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/schedule-agent/status",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/schedule-agent/rules",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/school/replacements",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/school/requests/status",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/staff/directory",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/staff/absences",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/school/schedule-notifications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/school/teacher-preferences",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/school/replacement-outcomes",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/school/data-exchange/catalog",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/school/data-exchange/lesson-progress-references",
+      "status": 200,
+      "file": true
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/launch/tasks",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/launch/outbox",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/staff/my-schedule",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/teacher/preferences",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/teacher/replacement-outcomes",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/staff/schedule-notifications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_active_read_families_and_exact_schema_inventory",
+      "method": "GET",
+      "path": "/api/school/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 422,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "PATCH",
+      "path": "/api/school/records/{kind}/{record_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/archive",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/restore",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 422,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "PATCH",
+      "path": "/api/school/records/{kind}/{record_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/archive",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/restore",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 422,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "PATCH",
+      "path": "/api/school/records/{kind}/{record_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/archive",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/restore",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 422,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "PATCH",
+      "path": "/api/school/records/{kind}/{record_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/archive",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/restore",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 422,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "PATCH",
+      "path": "/api/school/records/{kind}/{record_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/archive",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/restore",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 422,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "PATCH",
+      "path": "/api/school/records/{kind}/{record_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/archive",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/restore",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 422,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "PATCH",
+      "path": "/api/school/records/{kind}/{record_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/archive",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/restore",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 422,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "PATCH",
+      "path": "/api/school/records/{kind}/{record_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/archive",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/restore",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_all_eight_generic_record_kinds_crud_validation_and_replay",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_archived_student_cached_pages_require_current_scope_guard",
+      "method": "GET",
+      "path": "/api/student/schedule",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_archived_student_cached_pages_require_current_scope_guard",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_archived_student_cached_pages_require_current_scope_guard",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/archive",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_archived_student_cached_pages_require_current_scope_guard",
+      "method": "GET",
+      "path": "/api/staff/directory",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_archived_student_cached_pages_require_current_scope_guard",
+      "method": "GET",
+      "path": "/api/student/schedule",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "PATCH",
+      "path": "/api/school/calendar/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "POST",
+      "path": "/api/school/calendar/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "POST",
+      "path": "/api/school/calendar/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "POST",
+      "path": "/api/school/calendar/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "POST",
+      "path": "/api/school/calendar/preview",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "POST",
+      "path": "/api/school/calendar/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "PATCH",
+      "path": "/api/school/calendar/records/{kind}/{identity}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/school/calendar/effective",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_configuration_all_record_models_effective_and_relative_date",
+      "method": "POST",
+      "path": "/api/school/calendar/resolve-date",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_typed_create_archive_restore",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_typed_create_archive_restore",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_typed_create_archive_restore",
+      "method": "POST",
+      "path": "/api/school/calendar/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_typed_create_archive_restore",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_typed_create_archive_restore",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_typed_create_archive_restore",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_typed_create_archive_restore",
+      "method": "POST",
+      "path": "/api/school/calendar/records/{kind}/{identity}/{action}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_typed_create_archive_restore",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_typed_create_archive_restore",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_typed_create_archive_restore",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_typed_create_archive_restore",
+      "method": "POST",
+      "path": "/api/school/calendar/records/{kind}/{identity}/{action}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_calendar_typed_create_archive_restore",
+      "method": "GET",
+      "path": "/api/school/calendar",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_exchange_csv_preview_continue_apply_and_export_document",
+      "method": "GET",
+      "path": "/api/school/data-exchange/catalog",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_exchange_csv_preview_continue_apply_and_export_document",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_exchange_csv_preview_continue_apply_and_export_document",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_exchange_csv_preview_continue_apply_and_export_document",
+      "method": "POST",
+      "path": "/api/school/data-exchange/preview",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_exchange_csv_preview_continue_apply_and_export_document",
+      "method": "POST",
+      "path": "/api/school/data-exchange/apply",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_exchange_csv_preview_continue_apply_and_export_document",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_exchange_csv_preview_continue_apply_and_export_document",
+      "method": "GET",
+      "path": "/api/school/data-exchange/catalog",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_exchange_csv_preview_continue_apply_and_export_document",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_exchange_csv_preview_continue_apply_and_export_document",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_exchange_csv_preview_continue_apply_and_export_document",
+      "method": "POST",
+      "path": "/api/school/data-exchange/export",
+      "status": 200,
+      "file": true
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/sources",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "POST",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school/{experiment_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school/{experiment_id}/version",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/sources",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school/{experiment_id}/version",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school/{experiment_id}/makeups",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "POST",
+      "path": "/api/planning/experimental-school/{experiment_id}/edits/preview",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "POST",
+      "path": "/api/planning/experimental-school/{experiment_id}/edits/apply",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school/{experiment_id}/makeups",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/sources",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school/{experiment_id}/version",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school/{experiment_id}/makeups",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "POST",
+      "path": "/api/planning/experimental-school/{experiment_id}/makeups/preview",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "POST",
+      "path": "/api/planning/experimental-school/{experiment_id}/makeups/apply",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school/{experiment_id}/makeups",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/sources",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school/{experiment_id}/version",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school/{experiment_id}/makeups",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "POST",
+      "path": "/api/planning/experimental-school/{experiment_id}/week-preview",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/sources",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school/{experiment_id}/version",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school/{experiment_id}/makeups",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "POST",
+      "path": "/api/planning/experimental-school/{experiment_id}/approval",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/sources",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school/{experiment_id}/version",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/planning/experimental-school/{experiment_id}/makeups",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "POST",
+      "path": "/api/planning/experimental-school/{experiment_id}/publication/preview",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "POST",
+      "path": "/api/planning/experimental-school/{experiment_id}/publication/publish",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_experiment_cancel_and_verified_makeup_lifecycle",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/status",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/outbox",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "POST",
+      "path": "/api/launch/tasks",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/outbox",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks/{task_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "POST",
+      "path": "/api/launch/tasks/{task_id}/transition",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks/{task_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/outbox",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks/{task_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "POST",
+      "path": "/api/launch/tasks/{task_id}/transition",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks/{task_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/outbox",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks/{task_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "POST",
+      "path": "/api/launch/tasks/{task_id}/questions",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks/{task_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks/{task_id}",
+      "status": 404,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/outbox",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks/{task_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/outbox",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "POST",
+      "path": "/api/launch/questions/{question_id}/answer",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks/{task_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/outbox",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks/{task_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "POST",
+      "path": "/api/launch/tasks/{task_id}/transition",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/outbox",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "POST",
+      "path": "/api/launch/recover",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/outbox",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "POST",
+      "path": "/api/launch/tasks",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/outbox",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks/{task_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "POST",
+      "path": "/api/launch/tasks/{task_id}/transition",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_launch_local_task_question_reply_transition_and_recovery",
+      "method": "GET",
+      "path": "/api/launch/tasks/{task_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_long_text_file_preserves_confirmation_and_limits",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_long_text_file_preserves_confirmation_and_limits",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_long_text_file_preserves_confirmation_and_limits",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_read_guard_changes_after_record_mutation_without_auth_revocation",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_read_guard_changes_after_record_mutation_without_auth_revocation",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_read_guard_changes_after_record_mutation_without_auth_revocation",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_read_guard_changes_after_record_mutation_without_auth_revocation",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_record_crud_preserves_staff_denial",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_record_crud_preserves_staff_denial",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_record_crud_preserves_staff_denial",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_record_crud_preserves_staff_denial",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_record_crud_preserves_staff_denial",
+      "method": "PATCH",
+      "path": "/api/school/records/{kind}/{record_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_record_crud_preserves_staff_denial",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_record_crud_preserves_staff_denial",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/archive",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_record_crud_preserves_staff_denial",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_record_crud_preserves_staff_denial",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_record_crud_preserves_staff_denial",
+      "method": "POST",
+      "path": "/api/school/records/{kind}/{record_id}/restore",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_record_crud_preserves_staff_denial",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_record_crud_preserves_staff_denial",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_settings_and_director_schedule_analytics",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_settings_and_director_schedule_analytics",
+      "method": "PATCH",
+      "path": "/api/school/settings",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_settings_and_director_schedule_analytics",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_settings_and_director_schedule_analytics",
+      "method": "GET",
+      "path": "/api/school/analytics/schedule",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_settings_and_director_schedule_analytics",
+      "method": "GET",
+      "path": "/api/school/analytics/director",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_settings_and_director_schedule_analytics",
+      "method": "GET",
+      "path": "/api/school/analytics/director",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_owner_settings_and_director_schedule_analytics",
+      "method": "GET",
+      "path": "/api/school/analytics/director",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_prepare_notices_and_personal_acknowledgement",
+      "method": "GET",
+      "path": "/api/school/schedule-notifications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_prepare_notices_and_personal_acknowledgement",
+      "method": "POST",
+      "path": "/api/school/schedule-notifications/prepare",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_prepare_notices_and_personal_acknowledgement",
+      "method": "GET",
+      "path": "/api/staff/schedule-notifications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_prepare_notices_and_personal_acknowledgement",
+      "method": "GET",
+      "path": "/api/staff/schedule-notifications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_prepare_notices_and_personal_acknowledgement",
+      "method": "POST",
+      "path": "/api/staff/schedule-notifications/{identifier}/acknowledge",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_prepare_notices_and_personal_acknowledgement",
+      "method": "GET",
+      "path": "/api/staff/schedule-notifications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "POST",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "GET",
+      "path": "/api/school/replacements",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "POST",
+      "path": "/api/school/replacements/preview",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "POST",
+      "path": "/api/school/replacements/apply",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "GET",
+      "path": "/api/school/replacements",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "POST",
+      "path": "/api/school/replacements/{identifier}/publish-preview",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "POST",
+      "path": "/api/school/replacements/{identifier}/publish",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "GET",
+      "path": "/api/teacher/replacement-outcomes",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "GET",
+      "path": "/api/teacher/replacement-outcomes",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "POST",
+      "path": "/api/teacher/replacement-outcomes",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "GET",
+      "path": "/api/school/replacement-outcomes",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "POST",
+      "path": "/api/school/replacement-outcomes/{identifier}/preview",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "POST",
+      "path": "/api/school/replacement-outcomes/{identifier}/decision",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_outcome_report_manager_preview_and_decision",
+      "method": "GET",
+      "path": "/api/teacher/replacement-outcomes",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "POST",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "GET",
+      "path": "/api/school/replacements",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "GET",
+      "path": "/api/school/replacements",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "GET",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "POST",
+      "path": "/api/school/replacements/preview",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "GET",
+      "path": "/api/school/replacements",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "GET",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "POST",
+      "path": "/api/school/replacements/apply",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "GET",
+      "path": "/api/school/replacements",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "GET",
+      "path": "/api/school/replacements",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "GET",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "POST",
+      "path": "/api/school/replacements/{identifier}/publish-preview",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "GET",
+      "path": "/api/school/replacements",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "GET",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "POST",
+      "path": "/api/school/replacements/{identifier}/publish",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_replacement_preview_apply_and_publish_with_current_versions",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_restore_alias_cas_history_replay_and_student_denial",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_restore_alias_cas_history_replay_and_student_denial",
+      "method": "GET",
+      "path": "/api/timetable/history",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_restore_alias_cas_history_replay_and_student_denial",
+      "method": "GET",
+      "path": "/api/timetable/history/{revision}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_restore_alias_cas_history_replay_and_student_denial",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_restore_alias_cas_history_replay_and_student_denial",
+      "method": "GET",
+      "path": "/api/timetable/history",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_restore_alias_cas_history_replay_and_student_denial",
+      "method": "POST",
+      "path": "/api/timetable/restore",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_restore_alias_cas_history_replay_and_student_denial",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_restore_alias_cas_history_replay_and_student_denial",
+      "method": "POST",
+      "path": "/api/timetable/restore",
+      "status": 409,
+      "file": false
+    },
+    {
+      "test": "test_native_restore_alias_cas_history_replay_and_student_denial",
+      "method": "POST",
+      "path": "/api/timetable/restore",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "POST",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/staff/my-schedule",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "POST",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "POST",
+      "path": "/api/school/requests/{ident}/question",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "POST",
+      "path": "/api/school/requests/{ident}/reply",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/school/requests/{ident}",
+      "status": 404,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "POST",
+      "path": "/api/school/requests/{ident}/proposal",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "POST",
+      "path": "/api/school/requests/{ident}/decision",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_school_request_addressed_question_reply_manual_proposal_and_decision",
+      "method": "GET",
+      "path": "/api/school/requests/{ident}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "POST",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "POST",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/runs/{run_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/readiness",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/runs/{run_id}/projection",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/runs/{run_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "POST",
+      "path": "/api/planning/runs/{run_id}/propose",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "POST",
+      "path": "/api/planning/runs/{run_id}/propose",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/schedule-agent/tasks/{task_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "POST",
+      "path": "/api/schedule-agent/tasks/{task_id}/decision",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "POST",
+      "path": "/api/school/publications/preview",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "POST",
+      "path": "/api/school/publications/publish",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_solver_proposal_approval_and_full_publication",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/school-source-registry",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/sources",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "POST",
+      "path": "/api/planning/school-source-registry",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/school-source-registry",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/sources",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "POST",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/sources",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "POST",
+      "path": "/api/planning/sources/preview",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/sources",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "POST",
+      "path": "/api/planning/sources/import",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/sources",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_source_registry_typed_mapping_preview_and_import",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/staff/directory",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "POST",
+      "path": "/api/staff/nominations",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/staff/directory",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/staff/directory",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "POST",
+      "path": "/api/staff/invites",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "POST",
+      "path": "/api/staff/members/{member_id}/approve-revoke",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/staff/directory",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "POST",
+      "path": "/api/staff/members/{member_id}/approve-revoke",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/staff/directory",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/staff/directory",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "POST",
+      "path": "/api/staff/revocations/{approval_id}/execute",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/staff/directory",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "GET",
+      "path": "/api/staff/directory",
+      "status": 401,
+      "file": false
+    },
+    {
+      "test": "test_native_staff_nomination_invite_approval_execution_and_guards",
+      "method": "POST",
+      "path": "/api/staff/members/{member_id}/revoke",
+      "status": 409,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/school/workspace",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "POST",
+      "path": "/api/school/records/{kind}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/staff/student-access",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/staff/student-access",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/staff/directory",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "POST",
+      "path": "/api/staff/student-access/invitations",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/staff/student-access",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/staff/directory",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/staff/student-schedule-bindings",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "POST",
+      "path": "/api/staff/student-schedule-bindings",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/student/schedule",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/student/schedule",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/staff/student-schedule-bindings",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/staff/directory",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/staff/directory",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "POST",
+      "path": "/api/staff/members/{member_id}/revoke",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_student_invitation_claim_binding_and_revocation",
+      "method": "GET",
+      "path": "/api/student/schedule",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_absence_request_confirm_and_durable_replay",
+      "method": "GET",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_absence_request_confirm_and_durable_replay",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_absence_request_confirm_and_durable_replay",
+      "method": "GET",
+      "path": "/api/launch/respondents",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_absence_request_confirm_and_durable_replay",
+      "method": "GET",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_absence_request_confirm_and_durable_replay",
+      "method": "POST",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_absence_request_confirm_and_durable_replay",
+      "method": "GET",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_absence_request_confirm_and_durable_replay",
+      "method": "GET",
+      "path": "/api/school/requests",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_absence_request_confirm_and_durable_replay",
+      "method": "POST",
+      "path": "/api/school/requests",
+      "status": 403,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_preference_manager_preview_and_approval",
+      "method": "GET",
+      "path": "/api/teacher/preferences",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_preference_manager_preview_and_approval",
+      "method": "GET",
+      "path": "/api/teacher/preferences",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_preference_manager_preview_and_approval",
+      "method": "POST",
+      "path": "/api/teacher/preferences",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_preference_manager_preview_and_approval",
+      "method": "GET",
+      "path": "/api/school/teacher-preferences",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_preference_manager_preview_and_approval",
+      "method": "GET",
+      "path": "/api/teacher/preferences",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_preference_manager_preview_and_approval",
+      "method": "POST",
+      "path": "/api/teacher/preferences/{identifier}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_preference_manager_preview_and_approval",
+      "method": "GET",
+      "path": "/api/school/teacher-preferences",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_preference_manager_preview_and_approval",
+      "method": "POST",
+      "path": "/api/school/teacher-preferences/{identifier}/preview",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_preference_manager_preview_and_approval",
+      "method": "GET",
+      "path": "/api/school/teacher-preferences",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_preference_manager_preview_and_approval",
+      "method": "POST",
+      "path": "/api/school/teacher-preferences/{identifier}/decision",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_teacher_preference_manager_preview_and_approval",
+      "method": "GET",
+      "path": "/api/teacher/preferences",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "POST",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "POST",
+      "path": "/api/timetable/lessons/{lesson_id}",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/timetable",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/planning/config",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/planning/runs",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/school/publications",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "GET",
+      "path": "/api/planning/experimental-school",
+      "status": 200,
+      "file": false
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "POST",
+      "path": "/api/timetable/export",
+      "status": 200,
+      "file": true
+    },
+    {
+      "test": "test_native_xlsx_preview_manual_import_editor_and_export",
+      "method": "POST",
+      "path": "/api/timetable/lessons/{lesson_id}",
+      "status": 403,
+      "file": false
+    }
+  ],
+  "scope": "Owned adapter tests, actual isolated synthetic native engine; not independent whole product acceptance; no real MAX/network/credentials.",
+  "rpcExceptions": []
+}

@@ -1,0 +1,23 @@
+{
+  "status": "PASS native educational adapter; AI provider acceptance pending",
+  "tests": 27,
+  "durationSeconds": 68.029,
+  "activeFamilies": 18,
+  "uiActionsTraced": 56,
+  "nativeNonAiFamilies": 15,
+  "aiDependentFamiliesPending": 3,
+  "realMaxCalls": 0,
+  "realAiProviderCalls": 0,
+  "sourceOriginalRuntimeImports": 0,
+  "sourceFiles": {
+    "app/platform_learning.py": "8c1edfb288a424c4a9b5d2a22c56f785d82720dbd8fc2ea4cd5bc16a96d5ce02",
+    "tests/test_platform_learning.py": "edf369d8e61570429ace92b857d5f878093de5a97b401da8725780b4cdda8ac7",
+    "app/platform_learning_inventory.json": "dc4e7dda48e2f4117a5911a3fa00ac03d47324c14544352ea71047cc906c52c5"
+  },
+  "scope": "Own independent native fork/auth/API, all synthetic domain data, disposable0700roots",
+  "qualification": "Time-dependent positive nextLesson adapter projection is synthetic; actual owned lesson/native save and no-next guard are real. Full MAX delivery and provider generation are separate root acceptance gates.",
+  "resourceCacheRegression": "PASS actual cancelled document and revoked grant: cached recovery and pending delivery suppress PDF/private text",
+  "allPrivateReadSnapshots": "PASS cached assignment/list after native pupil archive; new fresh teacher list remainsusable",
+  "messageHistory": "PASS actual8+message fullTXT and sourcepermission revalidation afterarchive",
+  "longTextNativeMaxInput": "PASS actual wire/file→native24k material/12k teacheranswers/8k draft andsubmission; invalidUTF8/NUL/bounds rejected; loss/replay and fullpreview checked"
+}

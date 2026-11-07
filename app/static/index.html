@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Идеяфикс — локальный тестовый симулятор MAX-бота для хакатона и обучения.">
+  <title>Идеяфикс — тестовый стенд</title>
+  <link rel="icon" type="image/svg+xml" href="/static/assets/idea-mark.svg">
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#message-input">Перейти к сообщению</a>
+  <div class="app-shell">
+    <header class="topbar glass">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none"><path d="M12 22h8M13 26h6M10 17a8 8 0 1 1 12 0c-1.5 1.4-2 2.3-2 5h-8c0-2.7-.5-3.6-2-5Z"/><path d="m13 12 2.5 2.5L20 10"/></svg>
+        </div>
+        <div><span class="brand-name">Идеяфикс</span><span class="brand-caption">Хорошие идеи становятся действием</span></div>
+      </div>
+      <div class="theme-control" role="group" aria-label="Оформление">
+        <button type="button" data-theme-choice="light" aria-pressed="true" title="Светлая тема"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><span>Светлая</span></button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false" title="Тёмная тема"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.2A8.6 8.6 0 0 1 8.8 4a8.6 8.6 0 1 0 11.2 11.2Z"/></svg><span>Тёмная</span></button>
+      </div>
+    </header>
+
+    <div class="page-intro">
+      <div><p class="eyebrow">Идеи, команды и новые навыки</p><h1>Попробуем в деле</h1></div>
+      <span class="demo-label"><span class="demo-dot" aria-hidden="true"></span><span id="demo-label-text">Тестовый стенд • имитация MAX</span></span>
+    </div>
+
+    <section class="identity-panel glass" aria-labelledby="identity-heading">
+      <div class="identity-field"><label id="identity-heading" for="actor-select">Тестовый пользователь</label><select id="actor-select" disabled><option>Загружаем пользователей…</option></select></div>
+      <div class="identity-note"><span id="actor-role" class="role-badge">Демонстрационный профиль</span><p>Меняйте роль, чтобы пройти сценарий с другой стороны. Все имена и данные вымышлены.</p></div>
+    </section>
+
+    <div id="request-error" class="request-error" role="alert" hidden><div><strong id="error-title">Не удалось загрузить стенд</strong><p id="error-message"></p></div><button id="retry-button" class="button" type="button">Повторить</button></div>
+
+    <main class="workspace">
+      <section class="chat-panel glass" aria-labelledby="chat-heading" aria-busy="true">
+        <div class="chat-heading-row">
+          <div class="bot-avatar" aria-hidden="true">и<span>·</span></div>
+          <div class="bot-heading"><h2 id="chat-heading">Идеяфикс</h2><p id="bot-status"><span class="status-dot" aria-hidden="true"></span>Загружаем диалог…</p></div>
+          <span class="simulation-tag">Бот-симулятор</span>
+        </div>
+        <nav class="scenario-nav" aria-label="Сценарии бота">
+          <button type="button" class="scenario-button" data-scenario="hackathon" aria-pressed="true" disabled><span class="scenario-icon" aria-hidden="true">↗</span><span>Хакатон</span><span class="scenario-caption">Команда и идея</span></button>
+          <button type="button" class="scenario-button" data-scenario="education" aria-pressed="false" disabled><span class="scenario-icon" aria-hidden="true">✦</span><span>Обучение</span><span class="scenario-caption">Задание и обратная связь</span></button>
+        </nav>
+        <div id="messages" class="messages" role="log" aria-label="Диалог с Идеяфиксом" aria-live="polite" aria-relevant="additions text" tabindex="0"><div class="chat-empty"><span class="empty-symbol" aria-hidden="true">✦</span><h3>Здесь начинается диалог</h3><p>Выберите тестового пользователя, затем отправьте команду или воспользуйтесь готовым действием.</p></div></div>
+        <div class="chat-controls">
+          <div class="quick-heading"><span>Быстрые действия</span><span id="quick-hint">Подсказки зависят от роли</span></div>
+          <div id="quick-actions" class="quick-actions" aria-label="Быстрые действия бота"></div>
+          <form id="message-form" class="composer">
+            <label class="sr-only" for="message-input">Сообщение боту</label>
+            <textarea id="message-input" name="message" rows="2" maxlength="2000" placeholder="Напишите сообщение или /start" disabled required></textarea>
+            <button id="send-button" class="send-button" type="submit" aria-label="Отправить сообщение" disabled><span>Отправить</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 14-7-5 14-3-6-6-1Zm6 1 8-8"/></svg></button>
+          </form>
+          <div class="composer-meta"><span>Enter — отправить · Shift + Enter — новая строка</span><span id="message-count">0 / 2000</span></div>
+        </div>
+      </section>
+
+      <aside class="state-column" aria-label="Состояние тестового сценария">
+        <section class="max-panel glass" aria-labelledby="max-heading">
+          <div class="panel-heading"><h2 id="max-heading">Настоящий бот MAX</h2><button id="max-refresh" class="icon-button" type="button" aria-label="Обновить статус MAX" title="Обновить статус MAX"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6 7a7 7 0 0 1 12-1l2 3M4 15l2 3a7 7 0 0 0 12-1"/></svg></button></div>
+          <p class="max-username">@ideya_fiks_150_bot</p>
+          <p id="max-status" class="max-status" role="status">Проверяем локальный процесс…</p>
+          <p id="max-counts" class="max-counts" hidden></p>
+          <button id="max-connect" class="button full-width" type="button" disabled>Подключить в MAX <span aria-hidden="true">↗</span></button>
+          <div id="max-invite" class="max-invite" hidden><a id="max-invite-link" class="button full-width" target="_blank" rel="noreferrer">Открыть бота MAX <span aria-hidden="true">↗</span></a><p id="max-invite-expiry"></p></div>
+          <p id="max-error" class="max-error" role="alert" hidden></p>
+          <p class="max-note">Данные и роли остаются тестовыми. Настоящий диалог — внутри MAX.<br><strong>/role</strong> — сменить тестовую роль.<br>Компьютер и процесс должны работать.</p>
+        </section>
+        <section class="state-panel glass" aria-labelledby="state-heading" aria-busy="true">
+          <div class="panel-heading"><div><p class="eyebrow">По ту сторону диалога</p><h2 id="state-heading">Состояние сценария</h2></div><button id="refresh-button" class="icon-button" type="button" disabled aria-label="Обновить состояние" title="Обновить состояние"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6 7a7 7 0 0 1 12-1l2 3M4 15l2 3a7 7 0 0 0 12-1"/></svg></button></div>
+          <div id="summary" class="summary" aria-label="Сводка тестовых данных"></div>
+          <div class="state-section-heading"><h3 id="state-section-heading">Команда и идея</h3><span id="state-count" class="count-badge">—</span></div>
+          <div id="state-content" class="state-content"><p class="empty-copy">Загружаем состояние…</p></div>
+        </section>
+
+        <details class="command-panel glass" open>
+          <summary><span><span aria-hidden="true">⌘</span> Как попробовать</span><span class="details-chevron" aria-hidden="true">⌄</span></summary>
+          <div class="command-content"><p id="scenario-help">Соберите команду, сохраните идею и передайте заявку организатору.</p><ol id="scenario-steps"><li>Создайте команду или войдите по коду.</li><li>Опишите идею и подайте заявку.</li><li>Переключитесь на организатора для решения.</li></ol><button type="button" id="start-button" class="button full-width" disabled>Показать меню бота <span aria-hidden="true">↗</span></button><p class="small-note">Сообщения из этого веб-чата остаются в локальном демо. Настоящий диалог — в приложении MAX.</p></div>
+        </details>
+      </aside>
+    </main>
+    <footer><span class="footer-mark">✦</span><span>Идеяфикс · Локальная демонстрация</span><span class="footer-separator">/</span><span>Тестовые роли и данные. Локальный чат — имитация MAX.</span></footer>
+    <div id="status-announcement" class="sr-only" role="status" aria-live="polite"></div>
+  </div>
+</body>
+</html>

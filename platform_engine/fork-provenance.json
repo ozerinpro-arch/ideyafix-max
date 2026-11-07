@@ -1,0 +1,655 @@
+{
+  "schema": 1,
+  "purpose": "Independent backend-only source fork; no original databases, env, logs, private credentials, website frontend or real input assets",
+  "files": [
+    {
+      "path": "server/__init__.py",
+      "sourceSha256": "702da866cfbcbd3eb9f6633a9a9944727246c5bf42c45af4571bd7d074733744",
+      "targetSha256": "702da866cfbcbd3eb9f6633a9a9944727246c5bf42c45af4571bd7d074733744",
+      "change": null
+    },
+    {
+      "path": "server/agent_rules.py",
+      "sourceSha256": "23ba9c1719f13c209a6d15b1299aeac0ab03e6e70d7edb0fecc4c52f97d2c0b6",
+      "targetSha256": "23ba9c1719f13c209a6d15b1299aeac0ab03e6e70d7edb0fecc4c52f97d2c0b6",
+      "change": null
+    },
+    {
+      "path": "server/auth.py",
+      "sourceSha256": "27a1dbd84865ef72fb4e15b9149d7d6db586d283da2150dc51f1a6bad1836985",
+      "targetSha256": "27a1dbd84865ef72fb4e15b9149d7d6db586d283da2150dc51f1a6bad1836985",
+      "change": null
+    },
+    {
+      "path": "server/calendar_models.py",
+      "sourceSha256": "0aee9489034d65f15062699495f1b35ccd53da26c3e825fac879fbd51676f4de",
+      "targetSha256": "0aee9489034d65f15062699495f1b35ccd53da26c3e825fac879fbd51676f4de",
+      "change": null
+    },
+    {
+      "path": "server/candidate_projection.py",
+      "sourceSha256": "d228ccc0b41d9bbb1e52db9b5b1a340bda164fd2ff39bd5e5574b6a27be41423",
+      "targetSha256": "d228ccc0b41d9bbb1e52db9b5b1a340bda164fd2ff39bd5e5574b6a27be41423",
+      "change": null
+    },
+    {
+      "path": "server/clean_demo.py",
+      "sourceSha256": "59b8d23562d7a3b5895a1698a0db824893ccaf3135bbaad85e76e93788598891",
+      "targetSha256": "59b8d23562d7a3b5895a1698a0db824893ccaf3135bbaad85e76e93788598891",
+      "change": null
+    },
+    {
+      "path": "server/club_documents.py",
+      "sourceSha256": "a270eeba21b8f9159e1002acb7e2613237895d34c9b2bb964ea1fb802e7e799b",
+      "targetSha256": "3d40f70eba5554547bdde3ed1756a8396983b78c44067218cb533d5ee5e1cfd7",
+      "change": "Independent platform PDF branding; native business validators and renderer retained"
+    },
+    {
+      "path": "server/club_payment_reconciliation.py",
+      "sourceSha256": "2c0566ad211837b3f57380ce7bd0b55b3f661ed2a24ff23c356253e18008a099",
+      "targetSha256": "8d80d07d5c1238a243ce51672699d23b3b93dd3c5e7b37d5fe822035c3261747",
+      "change": "Independent fictional school scope for native reconciliation"
+    },
+    {
+      "path": "server/consultations.py",
+      "sourceSha256": "dea4bca2d6e022972494b6ca138f960b4fda47d0c0e09546f3deb01a8f1e71c9",
+      "targetSha256": "dea4bca2d6e022972494b6ca138f960b4fda47d0c0e09546f3deb01a8f1e71c9",
+      "change": null
+    },
+    {
+      "path": "server/core.py",
+      "sourceSha256": "081183b6347f36d01d580e9af46e784c70bce6472642ad3b2a2ff6772bb2fb2a",
+      "targetSha256": "c0df668ae62063585ac7ef02a809b4e2991a02b20fdc1aec62674335ef4832d8",
+      "change": "Independent platform branding"
+    },
+    {
+      "path": "server/dated_student_groups.py",
+      "sourceSha256": "a868ef5e702455f32808063178c196369d4511cfd2a92b35aa4a0931dda042fa",
+      "targetSha256": "a868ef5e702455f32808063178c196369d4511cfd2a92b35aa4a0931dda042fa",
+      "change": null
+    },
+    {
+      "path": "server/dated_timetable.py",
+      "sourceSha256": "ff80aac3ef01b336aa1405aea5525f0d1a35f368707216aebcb60dba55afb537",
+      "targetSha256": "8480dfe398ce8399e525094e2cc11ca5d0583f5372afa541e04da2ed4dba5855",
+      "change": "Independent fictional three-day historical review bound to exact own confirmed model and source fingerprints; original organisation basis/filename/holiday assertions removed; native CAS, receipt, closed-day and publication-block guards retained"
+    },
+    {
+      "path": "server/db.py",
+      "sourceSha256": "0942c7093eb4589d2fa80517e859a75a822bbddf8b65b763a5a21301ae32712c",
+      "targetSha256": "0942c7093eb4589d2fa80517e859a75a822bbddf8b65b763a5a21301ae32712c",
+      "change": null
+    },
+    {
+      "path": "server/director_analytics.py",
+      "sourceSha256": "193975d2f20a9fe8fec7badb4f92214cd2bf1579a6f6aa575b21a8e2f1802361",
+      "targetSha256": "193975d2f20a9fe8fec7badb4f92214cd2bf1579a6f6aa575b21a8e2f1802361",
+      "change": null
+    },
+    {
+      "path": "server/experimental_edit_routes.py",
+      "sourceSha256": "2907306f1109c3b53665316c921f7e11e583e6937e7fa3e33c744bc171944ec2",
+      "targetSha256": "2907306f1109c3b53665316c921f7e11e583e6937e7fa3e33c744bc171944ec2",
+      "change": null
+    },
+    {
+      "path": "server/experimental_edits.py",
+      "sourceSha256": "1a742541467a8749272c02935253fb8e2bc3f6d4b383662df6eb7529379e979d",
+      "targetSha256": "1a742541467a8749272c02935253fb8e2bc3f6d4b383662df6eb7529379e979d",
+      "change": null
+    },
+    {
+      "path": "server/experimental_publications.py",
+      "sourceSha256": "892afa998d02ddb7e934e847ee553510baec813f89dafdcf051c850ad60fdec7",
+      "targetSha256": "892afa998d02ddb7e934e847ee553510baec813f89dafdcf051c850ad60fdec7",
+      "change": null
+    },
+    {
+      "path": "server/experimental_school.py",
+      "sourceSha256": "41230ed294969edfb92ecbbe31e5f21cd22628c619cd355a55eb5bc6af981d14",
+      "targetSha256": "41230ed294969edfb92ecbbe31e5f21cd22628c619cd355a55eb5bc6af981d14",
+      "change": null
+    },
+    {
+      "path": "server/finance.py",
+      "sourceSha256": "8ab848e92a9cd625e49d2502ca63f3c2e4a9bf996c5c61ae32c7dfe8000470bd",
+      "targetSha256": "e9de1344dbf331ce6dc5eb5fc01f91105ac75d2b9af0b59083cc494794896b27",
+      "change": "Independent platform branding"
+    },
+    {
+      "path": "server/import_header_analysis.py",
+      "sourceSha256": "af8863497615f07031da9fd90647dc4c8dcdb8e57248eda8b651b4b14589feaf",
+      "targetSha256": "af8863497615f07031da9fd90647dc4c8dcdb8e57248eda8b651b4b14589feaf",
+      "change": null
+    },
+    {
+      "path": "server/integration_settings.py",
+      "sourceSha256": "7b0e2ff36e46ade46867182e64ad4442e5f6868eea0cb5ec6cd8bd8129e2813e",
+      "targetSha256": "7b0e2ff36e46ade46867182e64ad4442e5f6868eea0cb5ec6cd8bd8129e2813e",
+      "change": null
+    },
+    {
+      "path": "server/integration_storage.py",
+      "sourceSha256": "52eb42dce9d4288ebe77b704b541b17e1e19998c2f4b64f79ca09d3df4d13592",
+      "targetSha256": "52eb42dce9d4288ebe77b704b541b17e1e19998c2f4b64f79ca09d3df4d13592",
+      "change": null
+    },
+    {
+      "path": "server/integrations_cli.py",
+      "sourceSha256": "88bfbf1b6aaa8d9aeb1d27608ef9f972b05a2ee9d2c450e11615ed72e8463806",
+      "targetSha256": "bdadce9d22f122356d1ddf83cd15c7f3388078b01d491a676d5501c55593943c",
+      "change": "Independent platform branding in the copied operator CLI description; no business or credential behavior changed"
+    },
+    {
+      "path": "server/launch_identity.py",
+      "sourceSha256": "3d479e9e6ac41b2632014339e67ff0653044f47c70db3e0a411cea7bb07872b5",
+      "targetSha256": "3d479e9e6ac41b2632014339e67ff0653044f47c70db3e0a411cea7bb07872b5",
+      "change": null
+    },
+    {
+      "path": "server/launch_runtime.py",
+      "sourceSha256": "8e38921db61169767f0dd5fa38452b7a8b13611f83169945b506ffdaa9af3414",
+      "targetSha256": "8e38921db61169767f0dd5fa38452b7a8b13611f83169945b506ffdaa9af3414",
+      "change": null
+    },
+    {
+      "path": "server/lesson_makeups.py",
+      "sourceSha256": "18ead36a712ba160a50a383aaaf53e12c7fa6f6fd64c0ca11a17626282dc2823",
+      "targetSha256": "18ead36a712ba160a50a383aaaf53e12c7fa6f6fd64c0ca11a17626282dc2823",
+      "change": null
+    },
+    {
+      "path": "server/lesson_progress_views.py",
+      "sourceSha256": "c5d4b22b79cf4db41718a48df333b3d3523a4488637756def43bb703978fa8a6",
+      "targetSha256": "c5d4b22b79cf4db41718a48df333b3d3523a4488637756def43bb703978fa8a6",
+      "change": null
+    },
+    {
+      "path": "server/local_runtime_storage.py",
+      "sourceSha256": "e9cbbaabc6aa7922135b34603ab869b68eeb7b1aa7e0b6c02773be40f08ce1e7",
+      "targetSha256": "e9cbbaabc6aa7922135b34603ab869b68eeb7b1aa7e0b6c02773be40f08ce1e7",
+      "change": null
+    },
+    {
+      "path": "server/max_adapter.py",
+      "sourceSha256": "f27b8f3f1dd0b29d5439bedb104bea6b29ad0a3cf0fa6adf081837f26be7a5c3",
+      "targetSha256": "f27b8f3f1dd0b29d5439bedb104bea6b29ad0a3cf0fa6adf081837f26be7a5c3",
+      "change": null
+    },
+    {
+      "path": "server/max_app.py",
+      "sourceSha256": "d37e5f141f1de779ce982120d5256a670a9ae1fee17c6e6bcc1675a214ae2d50",
+      "targetSha256": "d37e5f141f1de779ce982120d5256a670a9ae1fee17c6e6bcc1675a214ae2d50",
+      "change": null
+    },
+    {
+      "path": "server/max_identity.py",
+      "sourceSha256": "10726371d4dee8a83db722913858ea6d3608683980d37dbfa236c9defd2dfaba",
+      "targetSha256": "10726371d4dee8a83db722913858ea6d3608683980d37dbfa236c9defd2dfaba",
+      "change": null
+    },
+    {
+      "path": "server/max_polling.py",
+      "sourceSha256": "7956b55b480210c3c94d79b882d4758f18726be6525cd91767c1ec5f1758f895",
+      "targetSha256": "7956b55b480210c3c94d79b882d4758f18726be6525cd91767c1ec5f1758f895",
+      "change": null
+    },
+    {
+      "path": "server/max_runtime.py",
+      "sourceSha256": "a5491c1778a569a26df8bc5df5437f8f93b90d23ae6d9220f1c8c79409fb76ef",
+      "targetSha256": "a5491c1778a569a26df8bc5df5437f8f93b90d23ae6d9220f1c8c79409fb76ef",
+      "change": null
+    },
+    {
+      "path": "server/max_transport.py",
+      "sourceSha256": "4956ab5a75ba646dd319742df81f6e4de6ae1f36d4c6b99b4574c6188565b3c0",
+      "targetSha256": "4956ab5a75ba646dd319742df81f6e4de6ae1f36d4c6b99b4574c6188565b3c0",
+      "change": null
+    },
+    {
+      "path": "server/max_wire.py",
+      "sourceSha256": "9665ba98e96d34ba01745fe2d3f08c89f93a711a5d503cc4dd5ce6c9bd8bed67",
+      "targetSha256": "9665ba98e96d34ba01745fe2d3f08c89f93a711a5d503cc4dd5ce6c9bd8bed67",
+      "change": null
+    },
+    {
+      "path": "server/notice_jobs.py",
+      "sourceSha256": "27029825111fe7a6dfd70429fe7efabe3d8583a30c5b02e16399d9d475764ae6",
+      "targetSha256": "27029825111fe7a6dfd70429fe7efabe3d8583a30c5b02e16399d9d475764ae6",
+      "change": null
+    },
+    {
+      "path": "server/notice_worker.py",
+      "sourceSha256": "58ce5befd53b1f9a384267a89ac6bb26f6a83c6a2928a8e43244e6fe79ed204a",
+      "targetSha256": "58ce5befd53b1f9a384267a89ac6bb26f6a83c6a2928a8e43244e6fe79ed204a",
+      "change": null
+    },
+    {
+      "path": "server/planning.py",
+      "sourceSha256": "bfbb1228bd064e01cb6bbca21234d7102553c58babd1c95c572b2152edaccf61",
+      "targetSha256": "bfbb1228bd064e01cb6bbca21234d7102553c58babd1c95c572b2152edaccf61",
+      "change": null
+    },
+    {
+      "path": "server/portal_app.py",
+      "sourceSha256": "0ded50036da31b24c4395cfc1b22f980d0dc30d529c775226d0ee28f507d8517",
+      "targetSha256": "053081b5346d4d52892b745fd8ff4942c3f2a38653f0f9b10b9d469312e4ab1e",
+      "change": "Independent platform branding"
+    },
+    {
+      "path": "server/portal_security.py",
+      "sourceSha256": "45f50918b441ebdbef50fe7aca00b4680801e9ab3ee47483e01f430c56ef71c9",
+      "targetSha256": "45f50918b441ebdbef50fe7aca00b4680801e9ab3ee47483e01f430c56ef71c9",
+      "change": null
+    },
+    {
+      "path": "server/replacement_materials.py",
+      "sourceSha256": "73d260a19b9d2cf0e2e71efd12025806ca97a7e1318b1d9f65ce573e4c8e042d",
+      "targetSha256": "73d260a19b9d2cf0e2e71efd12025806ca97a7e1318b1d9f65ce573e4c8e042d",
+      "change": null
+    },
+    {
+      "path": "server/replacement_outcomes.py",
+      "sourceSha256": "1980e5137330a043e84bed6f3b878782626ab0c124d5bdf0a5030aac5a397fe8",
+      "targetSha256": "1980e5137330a043e84bed6f3b878782626ab0c124d5bdf0a5030aac5a397fe8",
+      "change": null
+    },
+    {
+      "path": "server/replacement_postgres.py",
+      "sourceSha256": "2077459a54db66293c1851410e0a454dd08b080b9f6a9c5617d8b9cd635df220",
+      "targetSha256": "2077459a54db66293c1851410e0a454dd08b080b9f6a9c5617d8b9cd635df220",
+      "change": null
+    },
+    {
+      "path": "server/request_extraction.py",
+      "sourceSha256": "d7542e80e8a44df1c003749e5840d87bac62d319b3c48dd0faa8bd9f49707aff",
+      "targetSha256": "d7542e80e8a44df1c003749e5840d87bac62d319b3c48dd0faa8bd9f49707aff",
+      "change": null
+    },
+    {
+      "path": "server/request_intents.py",
+      "sourceSha256": "05f5c665974d4e3344f7e9719fcf60a2248dbbda84d7411c30fd2ea6cda64f64",
+      "targetSha256": "05f5c665974d4e3344f7e9719fcf60a2248dbbda84d7411c30fd2ea6cda64f64",
+      "change": null
+    },
+    {
+      "path": "server/request_planning.py",
+      "sourceSha256": "498f43f19e823c9ec614cc1bfcd49851326f59462a308859a19eb9e0f2315440",
+      "targetSha256": "498f43f19e823c9ec614cc1bfcd49851326f59462a308859a19eb9e0f2315440",
+      "change": null
+    },
+    {
+      "path": "server/schedule_agent.py",
+      "sourceSha256": "fa7c67f0bd4d90fd529c539ab7e7b81088c5b74cb3f9e82e00ecba1d74a85a87",
+      "targetSha256": "fa7c67f0bd4d90fd529c539ab7e7b81088c5b74cb3f9e82e00ecba1d74a85a87",
+      "change": null
+    },
+    {
+      "path": "server/schedule_notifications.py",
+      "sourceSha256": "e8e7f1fe836c2e400c8cca51e045328138058a5d3348b951c901807ae38db1c6",
+      "targetSha256": "e8e7f1fe836c2e400c8cca51e045328138058a5d3348b951c901807ae38db1c6",
+      "change": null
+    },
+    {
+      "path": "server/schedule_week_preview.py",
+      "sourceSha256": "e60c849fa169aa009891234da892790c1ec584719de0df162becebdd50b71ed5",
+      "targetSha256": "e60c849fa169aa009891234da892790c1ec584719de0df162becebdd50b71ed5",
+      "change": null
+    },
+    {
+      "path": "server/scheduling_local_search.py",
+      "sourceSha256": "8a3253f28bddf0bde863cf42dc0c828976d796093a34f32ca422d4e5482e467c",
+      "targetSha256": "8a3253f28bddf0bde863cf42dc0c828976d796093a34f32ca422d4e5482e467c",
+      "change": null
+    },
+    {
+      "path": "server/scheduling_models.py",
+      "sourceSha256": "98866d29eca3542bce66ddc0c400f3363a0d5a4630a6395d6885a29f85f7f616",
+      "targetSha256": "98866d29eca3542bce66ddc0c400f3363a0d5a4630a6395d6885a29f85f7f616",
+      "change": null
+    },
+    {
+      "path": "server/scheduling_solver.py",
+      "sourceSha256": "2864e535d0f9bc86d99cd8c9636acb13adf696c7d3d3f78861dd20025262feda",
+      "targetSha256": "2864e535d0f9bc86d99cd8c9636acb13adf696c7d3d3f78861dd20025262feda",
+      "change": null
+    },
+    {
+      "path": "server/school_analytics.py",
+      "sourceSha256": "da6ebfea1a6ff08ff58c6e01cace9996687e04446ace7284791a26ec8d4cd454",
+      "targetSha256": "da6ebfea1a6ff08ff58c6e01cace9996687e04446ace7284791a26ec8d4cd454",
+      "change": null
+    },
+    {
+      "path": "server/school_calendar.py",
+      "sourceSha256": "9598bed58dc66acf9d217f8406a6ec9abd2d058b40fe46407a1829479383f20f",
+      "targetSha256": "9598bed58dc66acf9d217f8406a6ec9abd2d058b40fe46407a1829479383f20f",
+      "change": null
+    },
+    {
+      "path": "server/school_clubs.py",
+      "sourceSha256": "808ff6fc5f56a08acb673ddbedb93a816686fd166681723f31e3956dec464bfe",
+      "targetSha256": "808ff6fc5f56a08acb673ddbedb93a816686fd166681723f31e3956dec464bfe",
+      "change": null
+    },
+    {
+      "path": "server/school_data_exchange.py",
+      "sourceSha256": "1e59abaaebeb33be5e843559d507f6f2017363a7922a4c92cafc03b4a12b54ae",
+      "targetSha256": "1e59abaaebeb33be5e843559d507f6f2017363a7922a4c92cafc03b4a12b54ae",
+      "change": null
+    },
+    {
+      "path": "server/school_experiment_builder.py",
+      "sourceSha256": "0785aa45077d0ed359b7ec08b74d28ee7c4eef6a2defaf80a2e803f3311f1044",
+      "targetSha256": "6800a5d4fb6a9e38e79bcc138fb03c23430192c81b4afe395ba5745b1fa8a47b",
+      "change": "Replace original organisation cells, named people and assumptions with native generic compile_source_plan over own confirmed constraints; preserve pins/chains/rooms and native experiment pipeline"
+    },
+    {
+      "path": "server/school_integrations.py",
+      "sourceSha256": "dca26fed36335472fe990ee1587153096a674d5d9c07be1642b1b5259c76b365",
+      "targetSha256": "dca26fed36335472fe990ee1587153096a674d5d9c07be1642b1b5259c76b365",
+      "change": null
+    },
+    {
+      "path": "server/school_lesson_progress.py",
+      "sourceSha256": "747ff3d8ba2e1d962eed5a60ce95c00fd7c202779d72d688c6ef13d61a0c10c1",
+      "targetSha256": "747ff3d8ba2e1d962eed5a60ce95c00fd7c202779d72d688c6ef13d61a0c10c1",
+      "change": null
+    },
+    {
+      "path": "server/school_lesson_progress_postgres.py",
+      "sourceSha256": "2d916b2f1ccd95492a2a97c7a1dd2c57b3ec5dcb5cb286b005d552cbd8945141",
+      "targetSha256": "2d916b2f1ccd95492a2a97c7a1dd2c57b3ec5dcb5cb286b005d552cbd8945141",
+      "change": null
+    },
+    {
+      "path": "server/school_max.py",
+      "sourceSha256": "a343164554ffb9dbbd890a8ef45bfcdb901d798a16e4159e6dbb4034db472a2e",
+      "targetSha256": "a343164554ffb9dbbd890a8ef45bfcdb901d798a16e4159e6dbb4034db472a2e",
+      "change": null
+    },
+    {
+      "path": "server/school_max_store.py",
+      "sourceSha256": "ae21bf307e49769e40a5b1ec6981d5156ae244792085180dbfa123689760cbea",
+      "targetSha256": "ae21bf307e49769e40a5b1ec6981d5156ae244792085180dbfa123689760cbea",
+      "change": null
+    },
+    {
+      "path": "server/school_notice_jobs.py",
+      "sourceSha256": "3f3d3b52f74364212d617e508752ffcba4f4734c17720cc5d7f1e5f331f82112",
+      "targetSha256": "3f3d3b52f74364212d617e508752ffcba4f4734c17720cc5d7f1e5f331f82112",
+      "change": null
+    },
+    {
+      "path": "server/school_ops.py",
+      "sourceSha256": "545cb4f81383020ed9b6b624e702078f592924c352bd3e86ff1db18249469891",
+      "targetSha256": "766495a9e9b863ff6b4b2f445bfce5860a34d34bb872598195d70b7b2f93b28e",
+      "change": "Independent platform branding"
+    },
+    {
+      "path": "server/school_plan_imports.py",
+      "sourceSha256": "0e16838859adc1b303c7c8d418ed35e1028d18ba26d5e90001c0a474ff312f04",
+      "targetSha256": "0e16838859adc1b303c7c8d418ed35e1028d18ba26d5e90001c0a474ff312f04",
+      "change": null
+    },
+    {
+      "path": "server/school_plan_sources.py",
+      "sourceSha256": "c7f5298b6b8ec15bf3ac9571b73e927b0b6fdc038043893a25fb86375cb65aec",
+      "targetSha256": "c7f5298b6b8ec15bf3ac9571b73e927b0b6fdc038043893a25fb86375cb65aec",
+      "change": null
+    },
+    {
+      "path": "server/school_plan_suggestions.py",
+      "sourceSha256": "6b2260b6af33a5bf23cd77cfd49bde446d108d95f260c56135274510ddc22215",
+      "targetSha256": "6b2260b6af33a5bf23cd77cfd49bde446d108d95f260c56135274510ddc22215",
+      "change": null
+    },
+    {
+      "path": "server/school_postgres.py",
+      "sourceSha256": "16b7840de7b107b928d93d5ce213990d5e8d1be36b1039463f6772be6014982e",
+      "targetSha256": "16b7840de7b107b928d93d5ce213990d5e8d1be36b1039463f6772be6014982e",
+      "change": null
+    },
+    {
+      "path": "server/school_publications.py",
+      "sourceSha256": "bdfe06dc094b77c4ade72ef81777b47e59c90b2b88f4266e938a25f2a505a17d",
+      "targetSha256": "bdfe06dc094b77c4ade72ef81777b47e59c90b2b88f4266e938a25f2a505a17d",
+      "change": null
+    },
+    {
+      "path": "server/school_replacements.py",
+      "sourceSha256": "4e6cab61873df8028dbcdf2c75b89085ead6ff53260115d21374513d7ba08bf6",
+      "targetSha256": "4e6cab61873df8028dbcdf2c75b89085ead6ff53260115d21374513d7ba08bf6",
+      "change": null
+    },
+    {
+      "path": "server/school_requests.py",
+      "sourceSha256": "566a9f46b0bb6e1df75cca3d6f41e4336427b4a31f0f63615b5cb61d0569b328",
+      "targetSha256": "566a9f46b0bb6e1df75cca3d6f41e4336427b4a31f0f63615b5cb61d0569b328",
+      "change": null
+    },
+    {
+      "path": "server/school_restore.py",
+      "sourceSha256": "4009434d931a6f4f1c386174f3cee7a9a932c7dc3afcba50d915ed7b280b7b03",
+      "targetSha256": "4009434d931a6f4f1c386174f3cee7a9a932c7dc3afcba50d915ed7b280b7b03",
+      "change": null
+    },
+    {
+      "path": "server/school_restore_files.py",
+      "sourceSha256": "b3d93ef92a34cdbcc5515549fd3a2486abe5d85c660410eee64091d9888ed561",
+      "targetSha256": "b3d93ef92a34cdbcc5515549fd3a2486abe5d85c660410eee64091d9888ed561",
+      "change": null
+    },
+    {
+      "path": "server/school_rule_updates.py",
+      "sourceSha256": "895584649a65cb670125ed5ce46eac8e1ae4157cc16add638b324d1b545a78de",
+      "targetSha256": "895584649a65cb670125ed5ce46eac8e1ae4157cc16add638b324d1b545a78de",
+      "change": null
+    },
+    {
+      "path": "server/school_runtime_gate.py",
+      "sourceSha256": "e125c81bf731051753b21fb5b9a8ef8a511a9f430683052e31b991deea88114c",
+      "targetSha256": "e125c81bf731051753b21fb5b9a8ef8a511a9f430683052e31b991deea88114c",
+      "change": null
+    },
+    {
+      "path": "server/school_schedule_rules.py",
+      "sourceSha256": "cfb95d54d4719d3c9f333b8b3d746595b695d840c9e59dd5b65620cff4895384",
+      "targetSha256": "cfb95d54d4719d3c9f333b8b3d746595b695d840c9e59dd5b65620cff4895384",
+      "change": null
+    },
+    {
+      "path": "server/school_source_registry.py",
+      "sourceSha256": "a08b00f0a5ce14193a69dba0d83be6a9e0615f99d2cfc68ef09bb5a53a54f3ac",
+      "targetSha256": "a08b00f0a5ce14193a69dba0d83be6a9e0615f99d2cfc68ef09bb5a53a54f3ac",
+      "change": null
+    },
+    {
+      "path": "server/school_source_rules.py",
+      "sourceSha256": "20d7f2ae50e2328e9ec3f6277d73487c32edaa07fada956dabc5fe4b6c3450f1",
+      "targetSha256": "017adba3144657acc669a59027f84901877ce2a47ebe2675f38201bae1ac5da0",
+      "change": "Remove original named-person rules and reviewed source hashes; unknown conditions retain native explicit-resolution gate"
+    },
+    {
+      "path": "server/seed.py",
+      "sourceSha256": "843ecf8c58ade1cb6d0f66ad1b98258fba1eb91d4e9b2a5a00b2f80e58df30e9",
+      "targetSha256": "843ecf8c58ade1cb6d0f66ad1b98258fba1eb91d4e9b2a5a00b2f80e58df30e9",
+      "change": null
+    },
+    {
+      "path": "server/short_week_draft.py",
+      "sourceSha256": "f668293200e6c700341773ecadcd261bff23d833e06287b0f6a62af7c9eca372",
+      "targetSha256": "f668293200e6c700341773ecadcd261bff23d833e06287b0f6a62af7c9eca372",
+      "change": null
+    },
+    {
+      "path": "server/sql/replacement_material_state.sql",
+      "sourceSha256": "8ef091b71eca0f092c90e485ca975c04892f3497af560d3ef5e150bccbf9c819",
+      "targetSha256": "8ef091b71eca0f092c90e485ca975c04892f3497af560d3ef5e150bccbf9c819",
+      "change": null
+    },
+    {
+      "path": "server/sql/school_document_jobs.sql",
+      "sourceSha256": "5498d4c2cbf442a0a438e76d6067b0a4329cc8ff980b71396f337c1533eebc05",
+      "targetSha256": "5498d4c2cbf442a0a438e76d6067b0a4329cc8ff980b71396f337c1533eebc05",
+      "change": null
+    },
+    {
+      "path": "server/sql/school_domain_metadata.sql",
+      "sourceSha256": "18249ed6ed98a2fe50c28991c638fcc0c4adea84daa9999f178e3a17da370102",
+      "targetSha256": "18249ed6ed98a2fe50c28991c638fcc0c4adea84daa9999f178e3a17da370102",
+      "change": null
+    },
+    {
+      "path": "server/staff_access.py",
+      "sourceSha256": "792cf29e9196b5613e4de6ba3c42e7e9e9c07fe7a98fa8bc4a0061170ceba976",
+      "targetSha256": "792cf29e9196b5613e4de6ba3c42e7e9e9c07fe7a98fa8bc4a0061170ceba976",
+      "change": null
+    },
+    {
+      "path": "server/staff_app.py",
+      "sourceSha256": "6103022f177fafbbd4c001993efc834f49abe2f1bb55272759fb780d6202e942",
+      "targetSha256": "6103022f177fafbbd4c001993efc834f49abe2f1bb55272759fb780d6202e942",
+      "change": null
+    },
+    {
+      "path": "server/staff_bootstrap.py",
+      "sourceSha256": "f8c5d6d4f7bd8d8a963f0f90b4c6d430952e57a55dfb2ba3f144045449c20dbd",
+      "targetSha256": "f8c5d6d4f7bd8d8a963f0f90b4c6d430952e57a55dfb2ba3f144045449c20dbd",
+      "change": null
+    },
+    {
+      "path": "server/staff_operator.py",
+      "sourceSha256": "19e100a02053fec0a986f540da8e56ea6964591d585e6b4b11ed60bdd9506ada",
+      "targetSha256": "19e100a02053fec0a986f540da8e56ea6964591d585e6b4b11ed60bdd9506ada",
+      "change": null
+    },
+    {
+      "path": "server/staff_policy.py",
+      "sourceSha256": "270abc919480040c6e726c945e02a16436f7d7f54f4a9a9bdd8c3801b497f275",
+      "targetSha256": "f3a3c4ffebd7a60955f64b5e6b23c770089dbb0b609a4984747566c9e1ff5e02",
+      "change": "Explicit director-only club CRUD boundary for independent MAX; ordinary generic staff denials retained"
+    },
+    {
+      "path": "server/student_learning.py",
+      "sourceSha256": "8baa2706efc624198bf3897a759cad78c0bdff9622c46598b154143a15bfd1d5",
+      "targetSha256": "8baa2706efc624198bf3897a759cad78c0bdff9622c46598b154143a15bfd1d5",
+      "change": null
+    },
+    {
+      "path": "server/student_schedule.py",
+      "sourceSha256": "6714b38437ca791624e95578136a8ae5a646017e6d304072b02f126e1bc3aca1",
+      "targetSha256": "6714b38437ca791624e95578136a8ae5a646017e6d304072b02f126e1bc3aca1",
+      "change": null
+    },
+    {
+      "path": "server/subject_names.py",
+      "sourceSha256": "30fb1920ecfd59df37f0e3558fd0ee3f79f525bc13a4bb446fd81c23ea4a6744",
+      "targetSha256": "30fb1920ecfd59df37f0e3558fd0ee3f79f525bc13a4bb446fd81c23ea4a6744",
+      "change": null
+    },
+    {
+      "path": "server/teacher_absences.py",
+      "sourceSha256": "6d6d877959e668bd489d8fc7f8b41cb70a4c6957c33f4df077c4be7275619162",
+      "targetSha256": "6d6d877959e668bd489d8fc7f8b41cb70a4c6957c33f4df077c4be7275619162",
+      "change": null
+    },
+    {
+      "path": "server/teacher_preferences.py",
+      "sourceSha256": "25f099a91069e5bbc2af2a9d4801acafcd6a15df0858e0e3302ddb1942ec7f4d",
+      "targetSha256": "25f099a91069e5bbc2af2a9d4801acafcd6a15df0858e0e3302ddb1942ec7f4d",
+      "change": null
+    },
+    {
+      "path": "server/teacher_preparation.py",
+      "sourceSha256": "e8af58ee82e5ba1a401c0e2abf7833a4e1cde28cffbaf9b8676ed1cf332345e8",
+      "targetSha256": "e8af58ee82e5ba1a401c0e2abf7833a4e1cde28cffbaf9b8676ed1cf332345e8",
+      "change": null
+    },
+    {
+      "path": "server/test_isolation.py",
+      "sourceSha256": "6a930213e378941f5ed53582827bc8c80bf87004cc7436ec1e4f7263693f51d2",
+      "targetSha256": "6a930213e378941f5ed53582827bc8c80bf87004cc7436ec1e4f7263693f51d2",
+      "change": null
+    },
+    {
+      "path": "server/text_conversations.py",
+      "sourceSha256": "24714db6985641ecdb6a068018e20d5fec84675e9f22b1840d9635924daf2dfd",
+      "targetSha256": "24714db6985641ecdb6a068018e20d5fec84675e9f22b1840d9635924daf2dfd",
+      "change": null
+    },
+    {
+      "path": "server/text_edit_models.py",
+      "sourceSha256": "103f5dcf968032b221ba5dc7fa26fb3fff84df9be2c3d947b6f1c6335f722f0a",
+      "targetSha256": "103f5dcf968032b221ba5dc7fa26fb3fff84df9be2c3d947b6f1c6335f722f0a",
+      "change": null
+    },
+    {
+      "path": "server/text_edits.py",
+      "sourceSha256": "dc61b409776995ae35831402e26eba3378a89a20e17715951dadd7d51efbc73d",
+      "targetSha256": "dc61b409776995ae35831402e26eba3378a89a20e17715951dadd7d51efbc73d",
+      "change": null
+    },
+    {
+      "path": "server/timetable.py",
+      "sourceSha256": "b82ca0150790a90cf43d6c9aa6c21df37b73952ca2fce29cac96d41f8b4de732",
+      "targetSha256": "b82ca0150790a90cf43d6c9aa6c21df37b73952ca2fce29cac96d41f8b4de732",
+      "change": null
+    },
+    {
+      "path": "server/workspace.py",
+      "sourceSha256": "0693b50dcc39cf87e0ffc1923d613d4f31ff379f8e9209a3cecd318a5218b57e",
+      "targetSha256": "0fc9085db4ca725edc583a98c7464a70d742ef47ecc2166a610ef88220cce27f",
+      "change": "Independent platform branding"
+    },
+    {
+      "path": "server/assets/Inter.ttf",
+      "sourceSha256": "5a75e0a7d96869c3930b6e5c8dfba82edc6ecd435ab7f306ff115b32ee82ebab",
+      "targetSha256": "5a75e0a7d96869c3930b6e5c8dfba82edc6ecd435ab7f306ff115b32ee82ebab",
+      "change": null
+    },
+    {
+      "path": "scripts/school_local_storage.py",
+      "sourceSha256": "6c2a67263c782ac6bd523478427fabe45fefb9f83d0f9843f3b69245f115869d",
+      "targetSha256": "6c2a67263c782ac6bd523478427fabe45fefb9f83d0f9843f3b69245f115869d",
+      "change": null
+    },
+    {
+      "path": "server/assets/OFL.txt",
+      "sourceSha256": "5b9321a4298cfeb6b34354164a1c3afc3db114569984c502b9b35d988fd58c57",
+      "targetSha256": "5b9321a4298cfeb6b34354164a1c3afc3db114569984c502b9b35d988fd58c57",
+      "change": null
+    }
+  ],
+  "newFiles": [
+    {
+      "path": "__init__.py",
+      "sha256": "0ed99c4069d51d7f736d14c13e9074c9cb7e9f8df4f0a5be75fa4888460bc714"
+    },
+    {
+      "path": "internal_ui/index.html",
+      "sha256": "365c1b0468d8ce9d638eb60e51228ed1dea5bb355f91b7f78586b9b02c817904"
+    },
+    {
+      "path": "local_extensions.py",
+      "sha256": "dd52b66c43968bbb46836bee99d2a4fb3766db50749bb6d6945d0ba55f9656c2"
+    },
+    {
+      "path": "provider_config.py",
+      "sha256": "9b4a7d41ac06e089468e8ea3de4ca6f3a2473686c162ebeaa93ecdfd1899de20"
+    },
+    {
+      "path": "runtime_child.py",
+      "sha256": "169fdd246d75e5f7ad1eaf3457ca4fdd0058446f7967fb5efe3ce0f0d21277c2"
+    },
+    {
+      "path": "server/assets/ideyafix-source-basis.txt",
+      "sha256": "a29bb7856d6a4acdf4e635ccedde953cba9a1734853f4b344bb181642b5d3774"
+    },
+    {
+      "path": "server/assets/school-inputs-2026-10-24.json",
+      "sha256": "dac743d3dd1528b733db3e38c0be853aa2463e29eb25d7078247a772998522ab"
+    }
+  ],
+  "deployment": "Independent private native staff+owner core; token-owned onboarding and durable dynamic registry; provider disabled unless separately authorized; no original organisation source facts"
+}

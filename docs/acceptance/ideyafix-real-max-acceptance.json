@@ -1,0 +1,27 @@
+{
+  "status": "PASS actual MAX UI; no mocked transport in these observations",
+  "checkedAt": "2026-11-07T01:19:11.812917+00:00",
+  "botUrl": "https://max.ru/ideya_fiks_150_bot",
+  "publicWebhook": false,
+  "platformEnabled": true,
+  "observed": [
+    "/start full personal home with native inline buttons",
+    "profile chooser shows nine separate fictional profiles",
+    "switch to Slavik, open personal task: only his issued compare-fractions task",
+    "switch to Marina, list and open own material",
+    "export material: native MAX downloadable material.txt,439bytes",
+    "restore Slavik personal home",
+    "local console: Long Polling works, sending enabled,13accepted0rejected0queued"
+  ],
+  "oldUnknownReceipt": {
+    "count": 1,
+    "scope": "historical compatibility bot; preserved, no automatic retry"
+  },
+  "aiCalls": 0,
+  "domainData": "fictional only; real MAX transport binding private",
+  "evidence": {
+    "ideyafix-max-live-file.jpg": "077b6d946b3d72c7f671383dc1e3d04bf8ab426216f3e570104feeb8dd2e59ff",
+    "ideyafix-max-live.jpg": "170fc5d4a7ba54891305700a5afee7d10bdb89dd5546b311c293aeb0c449972c"
+  },
+  "qualification": "Live UI sampling plus201hosttests; not every domain operation was manually repeated in real MAX."
+}

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "packageId": "ideyafix-fictional-inputs-v1",
+  "asOf": "2026-11-07",
+  "sources": [
+    {
+      "id": "ifx-fictional-source",
+      "title": "Явно вымышленные учебные данные Идеяфикс",
+      "type": "synthetic",
+      "sha256": "a29bb7856d6a4acdf4e635ccedde953cba9a1734853f4b344bb181642b5d3774",
+      "file": "ideyafix-source-basis.txt",
+      "name": "Идеяфикс — вымышленная нормативная таблица"
+    }
+  ],
+  "cells": [
+    {
+      "sourceCell": "C2",
+      "sourceId": "ifx-fictional-source",
+      "sourceLocator": "Вымышленная учебная строка C2",
+      "row": 2,
+      "classLabel": "ИФ-7А",
+      "rawCount": 1,
+      "teacher": "Марина Демо",
+      "rawSubject": "Математика",
+      "normalizedSubjects": [
+        {
+          "subject": "Математика",
+          "weeklyCount": 1
+        }
+      ],
+      "status": "confirmed",
+      "blockers": []
+    },
+    {
+      "sourceCell": "C3",
+      "sourceId": "ifx-fictional-source",
+      "sourceLocator": "Вымышленная учебная строка C3",
+      "row": 3,
+      "classLabel": "ИФ-8А",
+      "rawCount": 1,
+      "teacher": "Олег Демо",
+      "rawSubject": "Математика",
+      "normalizedSubjects": [
+        {
+          "subject": "Математика",
+          "weeklyCount": 1
+        }
+      ],
+      "status": "confirmed",
+      "blockers": []
+    },
+    {
+      "sourceCell": "C4",
+      "sourceId": "ifx-fictional-source",
+      "sourceLocator": "Вымышленная учебная строка C4",
+      "row": 4,
+      "classLabel": "ИФ-7А",
+      "rawCount": 1,
+      "teacher": "Лера Демо",
+      "rawSubject": "Информатика",
+      "normalizedSubjects": [
+        {
+          "subject": "Информатика",
+          "weeklyCount": 1
+        }
+      ],
+      "status": "confirmed",
+      "blockers": []
+    }
+  ],
+  "conditions": [],
+  "sourceRows": [],
+  "groupObservations": [],
+  "confirmedCorrections": [],
+  "unresolvedQuestions": [],
+  "confirmedCounts": {},
+  "curriculumObservations": [],
+  "countPatterns": {},
+  "ruleUpdates": []
+}

@@ -1,0 +1,26 @@
+services:
+  bot:
+    image: "${IDEYAFIX_IMAGE:-ideyafix-max:local}"
+    build: .
+    user: "${IDEYAFIX_UID:-10001}:${IDEYAFIX_GID:-10001}"
+    init: true
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    volumes:
+      - type: bind
+        source: "${IDEYAFIX_PRIVATE_DIR:?Set IDEYAFIX_PRIVATE_DIR to an absolute private directory}"
+        target: /run/private
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: "${IDEYAFIX_RUNTIME_DIR:?Set IDEYAFIX_RUNTIME_DIR to an absolute empty owned runtime directory}"
+        target: /app/runtime
+        bind:
+          create_host_path: false
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,mode=1777
+      - /private/tmp:rw,nosuid,nodev,mode=1777
+    # The bot makes outgoing Long Polling requests. No published port or webhook.

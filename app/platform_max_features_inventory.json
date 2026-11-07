@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "sourceOperations": 6,
+  "currentLongPolling": true,
+  "routes": [
+    {
+      "sourceEndpoint": "GET /api/school/integrations/status",
+      "command": "/max status",
+      "implementation": "current channel safe counters; no old integration resources"
+    },
+    {
+      "sourceEndpoint": "GET /api/school/integrations/max/me",
+      "command": "/max me",
+      "implementation": "current confirmed MAX binding supplied by the outer store"
+    },
+    {
+      "sourceEndpoint": "POST /api/school/integrations/max/link",
+      "command": "/max link",
+      "implementation": "native MAX invite acceptance; /people creates a one-time invitation"
+    },
+    {
+      "sourceEndpoint": "POST /api/school/integrations/max/revoke",
+      "command": "/max revoke → /max confirm",
+      "implementation": "private unlinkMax intent; outer store revokes its current binding"
+    },
+    {
+      "sourceEndpoint": "GET /api/school/integrations/max/schedule-notices",
+      "command": "/max notices",
+      "implementation": "current native publication and inbox; confirmed bound teachers only"
+    },
+    {
+      "sourceEndpoint": "POST /api/school/integrations/max/schedule-notices/queue",
+      "command": "/max choose <profile> → /max confirm",
+      "implementation": "private scheduleNoticeIntent; outer durable outbox rechecks before send"
+    }
+  ],
+  "nativeOwnerNoticeScope": "Closed portal owner has no native staff-manager membership; action fails closed, director executes native notices",
+  "currentDeliveryStates": [
+    "queued",
+    "started",
+    "accepted",
+    "unknown",
+    "rejected"
+  ],
+  "maxConfirmedTeacherButtons": 500,
+  "paginationOwner": "Outer MAX store; 18 buttons per page",
+  "evidence": "app/platform_max_features-proof-r3.json",
+  "nativeCurrentChannelDeliveryEvidence": "platform-notice-delivery-result.json"
+}

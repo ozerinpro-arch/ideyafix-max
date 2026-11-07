@@ -1,0 +1,8 @@
+{
+  "kind": "public_x509_root_certificate_not_a_private_key",
+  "source": "https://gu-st.ru/content/lending/russian_trusted_root_ca_pem.crt",
+  "officialInstructions": "https://www.gosuslugi.ru/crt",
+  "derSha256": "d26d2d0231b7c39f92cc738512ba54103519e4405d68b5bd703e9788ca8ecf31",
+  "fileSha256": "936a43fea6e8e525bcc0f81acd9c3d21b4fc4b9b68acea7906d698005afc6504",
+  "usage": "Explicit scoped MAX client CA file only; no system trust changes"
+}

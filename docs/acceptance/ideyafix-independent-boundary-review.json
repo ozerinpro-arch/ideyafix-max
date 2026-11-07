@@ -1,0 +1,142 @@
+{
+  "status": "PASS reviewed common/MAX boundaries; all reproduced findings closed",
+  "independentScope": [
+    "app/platform_store.py",
+    "app/platform_assistant.py",
+    "app/platform_chat.py",
+    "app/platform_transport.py",
+    "app/platform_wire.py",
+    "app/polling.py",
+    "app/max_settings.py",
+    "app/main.py",
+    "app/static/app.js",
+    "platform_engine/runtime_child.py",
+    "app/platform_max_features.py"
+  ],
+  "notIndependentScope": [
+    "app/platform_learning.py educational implementation",
+    "original static UI implementation",
+    "Docker packaging implementation"
+  ],
+  "findings": [
+    {
+      "id": "B01",
+      "priority": "P1",
+      "area": "Current native authority before cached conversation/page/outbox",
+      "before": "Native member revoked200; current native me401; a NEW cached-directory page still returned the earlier2654-character directory.",
+      "fix": "Uncached runtime.authorize before dispatch/file/store paths and original outbox owner check at claim.",
+      "verification": "PASS: fresh cached page and original event receipt both accessDenied, no previous directory; root native integration also rejects previously queued private reply.",
+      "status": "fixed_verified"
+    },
+    {
+      "id": "B02",
+      "priority": "P2",
+      "area": "Disabled MAX with full-platform flag",
+      "before": "Valid enabled=false/platformEnabled=true config produced bootstrap500 and state500 because live_store was None.",
+      "fix": "Disabled catalog fallback, no live object dereference; full-mode write endpoint remainsclosed.",
+      "verification": "PASS: bootstrap200,state200,invite409,events403; nonexistent tokenfile stayedabsent and socketconnect blocked.",
+      "status": "fixed_verified"
+    },
+    {
+      "id": "B03",
+      "priority": "P1",
+      "area": "Resource revocation beyond current membership",
+      "before": "After lost outer transaction, cached actual PDF/closed grant still queued although charge cancellation gave new prepare404 or grant revocation gave new read403; actor remained active200.",
+      "fix": "Private resourceGuards on reply/cache/outbox; root validates current native resource before render/replay/claim.",
+      "verification": "PASS: both actual native regressions suppress stale PDF/grant text for recovered outer event and already queued delivery. Educational metadata changes belong to reviewer; their implementation is not labelled independent.",
+      "status": "fixed_verified"
+    },
+    {
+      "id": "B04",
+      "priority": "P1",
+      "area": "Archived personal student record",
+      "before": "Actual owner archives student200; membershipauthorize200 but fresh personal schedule403; NEW cached schedule page still returned682characters.",
+      "fix": "Native authorize includes personal-domain binding/current school record guard; native request replay also checks this scope.",
+      "verification": "PASS: archive200,authorize403,freshschedule403,new cachedpage and original receipt both denied; root engine15tests cover archive/restart/restore.",
+      "status": "fixed_verified"
+    },
+    {
+      "id": "B05",
+      "priority": "P1",
+      "area": "First Long Polling batch before initial cursor",
+      "before": "Changing-latest synthetic provider plus first-batch intake failure reused markerNone and could replace an unprocessed event with newer updates.",
+      "fix": "Durable raw batch staged before intake; pending batch consumed before fetch; completion atomically advances cursor and deletes batch.",
+      "verification": "PASS3 blackbox tests: retry withoutnewfetch, processrestart withoutnewfetch, committedprefix dedup + unprocessedtail recovery.",
+      "primaryContract": "https://dev.max.ru/docs-api/methods/GET/updates",
+      "status": "fixed_verified"
+    }
+  ],
+  "openVerifiedDefects": [],
+  "tests": {
+    "rootBoundaryModules": 33,
+    "rootBoundarySeconds": 27.256,
+    "educationalResourceRegressionIncludedInOwnSuite": 27,
+    "educationalSuiteSeconds": 68.029,
+    "newIndependentBatchTests": 3,
+    "newBatchSeconds": 1.714,
+    "staticJsSyntax": "PASS",
+    "dockerCandidateArm64Previous": 93,
+    "dockerCandidateAmd64Previous": 37,
+    "dockerArm64Broad": 96,
+    "dockerArm64BroadSeconds": 195.14,
+    "dockerAmd64Focused": 40,
+    "dockerAmd64FocusedSeconds": 130.411,
+    "finalChangedDatedCasesArm64": {
+      "tests": 2,
+      "seconds": 7.355,
+      "status": "PASS"
+    },
+    "finalChangedDatedCasesAmd64": {
+      "tests": 2,
+      "seconds": 11.822,
+      "status": "PASS"
+    },
+    "finalImageSourceFiles": 171,
+    "finalImageMissingExtraChanged": 0
+  },
+  "network": "No authenticated MAX calls, sends or AI provider calls. Explicit public TLS check only: two unauthenticated GET /me responses401, plus two expected stock-trust TLS handshake failures.",
+  "checks": [
+    "Actor-bound opaque callbacks: sender/chat/actor/TTL/used gates",
+    "Ordinary personal profile cannot switch roles; privileged test operator explicit",
+    "Native invitation owner reserved before IPC and recovered after lost native acceptance reply",
+    "Unknown send never automatically retried; started recovery becomesunknown",
+    "Fixed MAX API origin, verified TLS, no redirects/proxy environment; upload/download CDN doesnotreceive bot Authorization",
+    "Bounded PDF/upload/download and native personal ownership",
+    "Original website code/data/config never used at runtime"
+  ],
+  "qualifications": [
+    "No claim of actual AI generation or live authenticated full-platform MAX pilot.",
+    "Own educational/static/Docker implementations are excluded from the independent implementation-review claim; their actual tests are reported separately.",
+    "Broad Docker96/40 tests preceded only the final dated-module/public-CA changes; two focused actual native dated/upload cases passed on each final architecture and all171image/sourcefiles match.",
+    "Root whole final host suite is a separate release gate."
+  ],
+  "sourceHashesAtReport": {
+    "app/platform_store.py": "fa620424930374241770f808c3b30d107052f83893937b7ae3e306403a412a03",
+    "app/platform_assistant.py": "d3187e4151c52639f26bacde877a30e0832a02253df50a343ddb735f20b8a6ae",
+    "app/platform_chat.py": "a23209b2d77b260a51672ac10b78835d5475d20ab706f14da69110d0aec7bc9a",
+    "app/platform_transport.py": "c00eba7c16192571ccfcf136617824638cf31d7fa4de85fd598fff4548649045",
+    "app/platform_wire.py": "cdac00ca22984960f8896d99fcb9a3139e446d4abba960d3d94cbc0f8d57d534",
+    "app/polling.py": "0a8fde93dc837352107c55fa4fc33426dc3245bd94d2e2cac248e23876c278e8",
+    "app/max_settings.py": "16fbc778589cd6a4dc4fd72825b84d656bf7f34a33a9c48644862581d44e6dd7",
+    "app/main.py": "e57d500f41e175ad655abb65d7c66cd2f42eff9a3422680be124d9ba377e306e",
+    "app/static/app.js": "63c3feb905409ab7278c1e61d48daebca756fefd45330c7f66811cf3de4e866f",
+    "platform_engine/runtime_child.py": "169fdd246d75e5f7ad1eaf3457ca4fdd0058446f7967fb5efe3ce0f0d21277c2",
+    "app/platform_max_features.py": "99e5eada4fb196c9adaffa0ada629634349de552fa429605a7b0768a06e22d3c"
+  },
+  "additionalExternalReview": {
+    "assignmentReadCache": "A3 independently reproduced archive→teacherstillactive→native404→cachedprivateassignment; educational native_read metadata added, a3actualMAXoutbox regressionPASS",
+    "cachedWriteResponse": "A3 native engine checks current resource before returning completed private write receipt; source engine16testsPASS",
+    "legacyGuardlessCache": "Root deploymentmetadata verified fullModeHasNotRun=true and old outerMAXdb hasno platform_reply_payloads; no legacyfullmode unguardedreadcache exists"
+  },
+  "publicTlsCheck": {
+    "stockTrustFails": true,
+    "scopedPublicCaSucceeds401": true,
+    "architectures": [
+      "linux/arm64",
+      "linux/amd64"
+    ],
+    "authorizationHeader": false,
+    "publicDerSha256": "d26d2d0231b7c39f92cc738512ba54103519e4405d68b5bd703e9788ca8ecf31",
+    "systemTrustChanged": false
+  }
+}
