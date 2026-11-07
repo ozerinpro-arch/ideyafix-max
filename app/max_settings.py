@@ -17,6 +17,7 @@ class MaxSettings:
     platform_enabled: bool = False
     nanogpt_config: Path | None = None
     web_demo_accounts_file: Path | None = None
+    school_notifications_token_file: Path | None = None
 
     def __repr__(self):
         return '<MaxSettings credentials=redacted>'
@@ -32,7 +33,8 @@ class MaxSettings:
         try:
             value = json.loads(path.read_bytes())
             required = {'enabled', 'botUsername', 'tokenFile', 'caFile', 'dbPath', 'activatedAtMs'}
-            if type(value) is not dict or not required <= set(value) or set(value)-required-{'platformEnabled','nanogptConfig','webDemoAccountsFile'} or type(value['enabled']) is not bool:
+            optional = {'platformEnabled', 'nanogptConfig', 'webDemoAccountsFile', 'schoolNotificationsTokenFile'}
+            if type(value) is not dict or not required <= set(value) or set(value)-required-optional or type(value['enabled']) is not bool:
                 raise ValueError()
             if type(value.get('platformEnabled',False))is not bool:raise ValueError()
             nanogpt=value.get('nanogptConfig')
@@ -40,6 +42,11 @@ class MaxSettings:
             demo_file = value.get('webDemoAccountsFile')
             if demo_file is not None and (not value.get('platformEnabled', False)
                     or not isinstance(demo_file, str) or not Path(demo_file).is_absolute()):
+                raise ValueError()
+            school_token = value.get('schoolNotificationsTokenFile')
+            if school_token is not None and (not value.get('platformEnabled', False)
+                    or not isinstance(school_token, str) or not Path(school_token).is_absolute()
+                    or os.path.abspath(school_token) == os.path.abspath(value['tokenFile'])):
                 raise ValueError()
             if not re.fullmatch(r'[A-Za-z0-9_]{3,80}', value['botUsername']):
                 raise ValueError()
@@ -52,6 +59,6 @@ class MaxSettings:
                 raise ValueError()
             return cls(value['enabled'], value['botUsername'], Path(value['tokenFile']),
                        Path(value['caFile']) if value['caFile'] else None, Path(value['dbPath']), value['activatedAtMs'],value.get('platformEnabled',False),Path(nanogpt)if nanogpt else None,
-                       Path(demo_file) if demo_file else None)
+                       Path(demo_file) if demo_file else None, Path(school_token) if school_token else None)
         except (ValueError, TypeError, KeyError, UnicodeError):
             raise ValueError('invalid_private_max_config') from None

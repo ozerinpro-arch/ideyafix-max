@@ -46,6 +46,12 @@ class PlatformStore(LiveStore):
                 issuer INTEGER NOT NULL,expires_at INTEGER NOT NULL,used INTEGER NOT NULL DEFAULT 0);
             CREATE TABLE IF NOT EXISTS platform_notice_queue(notice_id TEXT PRIMARY KEY,outbox_id TEXT NOT NULL UNIQUE,
                 target_actor INTEGER NOT NULL,publication_version INTEGER NOT NULL);
+            CREATE TABLE IF NOT EXISTS school_notification_links(
+                event_id TEXT PRIMARY KEY, token TEXT NOT NULL, chat_id TEXT NOT NULL, sender_id TEXT NOT NULL,
+                requested_at INTEGER NOT NULL, retry_at INTEGER NOT NULL DEFAULT 0, warned INTEGER NOT NULL DEFAULT 0);
+            CREATE TABLE IF NOT EXISTS school_notification_deliveries(
+                claim_id TEXT PRIMARY KEY, status TEXT NOT NULL CHECK(status IN ('started','accepted','rejected','unknown')),
+                reported INTEGER NOT NULL DEFAULT 0);
             ''')
             if db.execute("SELECT 1 FROM live_meta WHERE key='platform_permissions_initialized'").fetchone()is None:
                 # Previously admitted demo testers already had all test roles.
@@ -271,15 +277,98 @@ class PlatformStore(LiveStore):
                 reply['image'] = image
         return reply
 
-    def ingest(self,normalized):
+    def _queue_reply(self, db, event_id, chat_id, reply, owner):
+        outbox_id = digest('ideyafix-live-outbox:' + event_id)
+        db.execute("INSERT INTO live_outbox VALUES(?,?,?,?,'queued',NULL,NULL)",
+                   (outbox_id, event_id, chat_id, reply['text']))
+        db.execute('INSERT INTO platform_reply_payloads VALUES(?,?)',
+                   (outbox_id, json.dumps(reply, ensure_ascii=False)))
+        db.execute('INSERT INTO platform_reply_owners VALUES(?,?)', (outbox_id, owner))
+
+    def next_school_link(self):
+        with self.connection() as db:
+            row = db.execute('SELECT * FROM school_notification_links WHERE retry_at<=? ORDER BY rowid LIMIT 1',
+                             (stamp(),)).fetchone()
+            return dict(row) if row else None
+
+    def _cancel_school_links(self, event):
+        with self.connection() as db:
+            db.execute('BEGIN IMMEDIATE')
+            scope = 'sender_id=? AND chat_id=? AND requested_at<=?'
+            values = event['senderId'], event['chatId'], event['timestamp']
+            db.execute("UPDATE live_events SET state='rejected' WHERE event_id IN "
+                       f"(SELECT event_id FROM school_notification_links WHERE {scope})", values)
+            db.execute(f'DELETE FROM school_notification_links WHERE {scope}', values)
+
+    def school_link_result(self, event_id, linked):
+        with self.connection() as db:
+            db.execute('BEGIN IMMEDIATE')
+            row = db.execute('SELECT * FROM school_notification_links WHERE event_id=?', (event_id,)).fetchone()
+            if row is None:
+                return
+            if linked is None:
+                db.execute('UPDATE school_notification_links SET retry_at=?,warned=1 WHERE event_id=?',
+                           (stamp() + 10000, event_id))
+                if row['warned']:
+                    return
+                original_id = event_id
+                event_id = digest('school-link-waiting:' + original_id)
+                db.execute("INSERT INTO live_events SELECT ?,payload_hash,'queued' FROM live_events WHERE event_id=?",
+                           (event_id, original_id))
+                text = 'Школа временно недоступна. Запрос сохранён, подключение повторится автоматически.'
+            else:
+                db.execute('DELETE FROM school_notification_links WHERE event_id=?', (event_id,))
+                if linked:
+                    text = 'Уведомления школы подключены к этому чату.'
+                else:
+                    text = 'Ссылка недействительна, истекла или уже использована. Получите новую ссылку в школе.'
+            self._queue_reply(db, event_id, row['chat_id'], {
+                'text': text, 'buttons': [{'label': 'Открыть школу', 'url': SCHOOL_STAFF_URL}],
+                'document': None, 'resourceGuards': [],
+            }, 0)
+
+    def start_school_delivery(self, claim_id):
+        with self.connection() as db:
+            result = db.execute("INSERT OR IGNORE INTO school_notification_deliveries(claim_id,status) VALUES(?,'started')",
+                                (claim_id,))
+            return result.rowcount == 1
+
+    def school_delivery_result(self, claim_id, status):
+        with self.connection() as db:
+            db.execute("UPDATE school_notification_deliveries SET status=? WHERE claim_id=? AND status='started'",
+                       (status, claim_id))
+
+    def pending_school_receipt(self):
+        with self.connection() as db:
+            row = db.execute('SELECT claim_id,status FROM school_notification_deliveries WHERE reported=0 ORDER BY rowid LIMIT 1').fetchone()
+            if row is None:
+                return None
+            return row['claim_id'], 'unknown' if row['status'] == 'started' else row['status']
+
+    def school_receipt_reported(self, claim_id, status):
+        with self.connection() as db:
+            db.execute('UPDATE school_notification_deliveries SET status=?,reported=1 WHERE claim_id=? AND reported=0',
+                       (status, claim_id))
+
+    def ingest(self,normalized, *, school_link=None):
         event,document,callback=self._validate_platform(normalized)
-        if event['eventType']=='bot_stopped':return super().ingest(event)
+        if event['eventType']=='bot_stopped':
+            result = super().ingest(event)
+            # A staged MAX batch replays this cancellation even after a crash
+            # following the independent local session-stop commit.
+            self._cancel_school_links(event)
+            return result
         with self.connection()as db:
             db.execute('BEGIN IMMEDIATE')
             old=db.execute('SELECT payload_hash FROM live_events WHERE event_id=?',(event['eventId'],)).fetchone()
             if old:
                 if old['payload_hash']!=event['payloadHash']:raise HTTPException(409,'Событие повторено иначе')
                 return {'duplicate':True,'queued':0}
+            if school_link is not None:
+                db.execute('INSERT INTO school_notification_links(event_id,token,chat_id,sender_id,requested_at) VALUES(?,?,?,?,?)',
+                           (event['eventId'], school_link, event['chatId'], event['senderId'], event['timestamp']))
+                db.execute("INSERT INTO live_events VALUES(?,?,'queued')", (event['eventId'], event['payloadHash']))
+                return {'duplicate': False, 'queued': 0}
             session=db.execute('SELECT * FROM live_sessions WHERE sender_id=? AND chat_id=?',(event['senderId'],event['chatId'])).fetchone()
             if event['eventType']=='bot_started'and event['startPayload']is not None:
                 actor=self._accept(db,event)
@@ -410,10 +499,8 @@ class PlatformStore(LiveStore):
             denied=reply.pop('accessDenied',False)
             if reply.pop('_native',False):native=reply
             else:native=self._paged(db,session or {'actor_id':0},event,reply)
-            outbox_id=digest('ideyafix-live-outbox:'+event['eventId'])
-            db.execute("INSERT INTO live_outbox VALUES(?,?,?,?,'queued',NULL,NULL)",(outbox_id,event['eventId'],event['chatId'],native['text']))
-            db.execute('INSERT INTO platform_reply_payloads VALUES(?,?)',(outbox_id,json.dumps(native,ensure_ascii=False)))
-            db.execute('INSERT INTO platform_reply_owners VALUES(?,?)',(outbox_id,session['actor_id']if session is not None and not denied else 0))
+            self._queue_reply(db, event['eventId'], event['chatId'], native,
+                              session['actor_id'] if session is not None and not denied else 0)
             db.execute('INSERT INTO live_events VALUES(?,?,?)',(event['eventId'],event['payloadHash'],'queued'))
             return {'duplicate':False,'queued':1}
 

@@ -13,7 +13,14 @@ from fastapi import HTTPException
 from .live_store import LiveStore
 from .live_transport import LiveMaxClient
 from .max_settings import MaxSettings
+from .school_demo_links import SCHOOL_STAFF_URL
+from .school_notification_client import (
+    DELIVERY_STATES, SchoolNotificationClient, SchoolNotificationsUnavailable, school_link_token,
+)
 from .vendor.max_wire import normalize_update, MaxWireError
+
+SCHOOL_POLL_INTERVAL = 5
+SCHOOL_RETRY_INTERVAL = 10
 
 @contextmanager
 def exclusive_worker(database):
@@ -36,10 +43,13 @@ def exclusive_worker(database):
         os.close(fd)
 
 class Poller:
-    def __init__(self, settings, *, client=None, platform_assistant=None):
+    def __init__(self, settings, *, client=None, platform_assistant=None, school_client=None):
         if not settings.enabled:
             raise ValueError('real_max_disabled')
         self.settings = settings
+        self.school_token_file = settings.school_notifications_token_file if settings.platform_enabled else None
+        self.school_client = school_client if self.school_token_file is not None else None
+        self.next_school_claim = self.school_retry_after = 0
         self.assistant=None
         if settings.platform_enabled:
             from .platform_assistant import PlatformAssistant
@@ -105,11 +115,15 @@ class Poller:
             if native['timestamp'] < self.settings.activated_at_ms:
                 skipped += 1
                 continue
+            school_link = school_link_token(native) if self.school_token_file is not None else None
             if native.get('file')is not None:
                 try:native['file']=self.client.download_document(native['file'])
                 except Exception:native['file']={'error':'download_unavailable'}
             try:
-                self.store.ingest(native)
+                if school_link is None:
+                    self.store.ingest(native)
+                else:
+                    self.store.ingest(native, school_link=school_link)
             except HTTPException as error:
                 # A native shape can pass the wire parser yet fail the stricter
                 # domain-input contract. Its atomic ingest rolled back; malformed
@@ -126,34 +140,91 @@ class Poller:
         self.store.complete_batch()
         self.store.heartbeat()
         sent = self.send_one()
+        self._poll_school()
         return dict(state='polled', accepted=accepted, skipped=skipped, sendState=sent)
+
+    def _report_school_receipt(self, claim_id, status):
+        # Both true (stored) and false (terminal refusal) settle the local receipt.
+        self.school_client.finish(claim_id, status)
+        self.store.school_receipt_reported(claim_id, status)
+
+    def _poll_school(self):
+        now = time.monotonic()
+        if self.school_token_file is None or now < self.school_retry_after:
+            return
+        link = None
+        try:
+            receipt = self.store.pending_school_receipt()
+            if receipt is None:
+                link = self.store.next_school_link()
+                if link is None and now < self.next_school_claim:
+                    return
+            if self.school_client is None:
+                try:
+                    self.school_client = SchoolNotificationClient(self.school_token_file)
+                except ValueError:
+                    raise SchoolNotificationsUnavailable() from None
+            if receipt is not None:
+                self._report_school_receipt(*receipt)
+                return
+            if link is not None:
+                linked = self.school_client.link(link['token'], link['chat_id'], link['sender_id'])
+                self.store.school_link_result(link['event_id'], linked)
+                return
+            self.next_school_claim = now + SCHOOL_POLL_INTERVAL
+            notice = self.school_client.claim()
+            if notice is None or not self.store.start_school_delivery(notice['claimId']):
+                return
+            status = self._send_school_notice(notice)
+            self.store.school_delivery_result(notice['claimId'], status)
+            self._report_school_receipt(notice['claimId'], status)
+        except SchoolNotificationsUnavailable:
+            self.school_retry_after = time.monotonic() + SCHOOL_RETRY_INTERVAL
+            if link is not None:
+                self.store.school_link_result(link['event_id'], None)
+
+    def _send_school_notice(self, notice):
+        try:
+            outcome = self._send_to_chat(notice['chatId'], self.client.send_reply, notice['text'],
+                                         buttons=[{'label': 'Открыть школу', 'url': SCHOOL_STAFF_URL}])
+            if outcome.status in DELIVERY_STATES and (outcome.status != 'accepted' or outcome.provider_message_id):
+                return outcome.status
+        except Exception:
+            pass
+        return 'unknown'
+
+    def _send_to_chat(self, chat, send, *args, **kwargs):
+        wait = .55 - (time.monotonic() - self.last_send.get(chat, 0))
+        if wait > 0:
+            time.sleep(wait)
+        try:
+            return send(int(chat), *args, **kwargs)
+        finally:
+            self.last_send[chat] = time.monotonic()
 
     def send_one(self):
         item = self.store.claim_next()
         if item is None:
             return 'idle'
         chat = item['chat_id']
-        wait = .55 - (time.monotonic() - self.last_send.get(chat, 0))
-        if wait > 0:
-            time.sleep(wait)
         try:
             if item.get('reply')is not None:
                 reply=item['reply']
                 options={'buttons':reply.get('buttons',()),'document':reply.get('document')}
                 if reply.get('image') is not None:
                     options.update(image=reply['image'],image_guard=lambda:self.store.image_is_current(item))
-                outcome=self.client.send_reply(int(chat),reply['text'],**options)
+                outcome=self._send_to_chat(chat,self.client.send_reply,reply['text'],**options)
             else:
-                outcome = self.client.send_message(int(chat), item['text'])
+                outcome = self._send_to_chat(chat,self.client.send_message,item['text'])
         except Exception:
             self.store.finish(item['id'], dict(status='unknown', code='transport_failure', provider_message_id=None))
-            self.last_send[chat] = time.monotonic()
             return 'unknown'
-        self.last_send[chat] = time.monotonic()
         value = dict(status=outcome.status, code=outcome.code, provider_message_id=outcome.provider_message_id)
         return self.store.finish(item['id'], value)['state']
 
     def close(self):
+        if self.school_client is not None:
+            self.school_client.close()
         self.client.close()
         if self.assistant is not None:self.assistant.close()
 
