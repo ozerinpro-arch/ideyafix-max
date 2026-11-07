@@ -12,7 +12,10 @@ from .live_store import LiveStore,_validate,_text,_identifier
 from .platform_profiles import PROFILES,ALIASES
 from .platform_chat import ChatState
 from .platform_transport import document_bytes, image_bytes
-from .school_demo_links import ALLOWED_URLS, REUSABLE_NAVIGATION, SCHOOL_STAFF_URL, demo_role_reply, web_demo_reply
+from .school_demo_links import (
+    ALLOWED_URLS, REUSABLE_NAVIGATION, SCHOOL_STAFF_URL,
+    demo_role_reply, web_demo_reply, web_demo_role,
+)
 from .platform_navigation import cover_image
 from . import domain
 
@@ -258,9 +261,11 @@ class PlatformStore(LiveStore):
             return None
         return action['command']
 
-    def _web_demo_reply(self, role, session):
+    def _web_demo_reply(self, role, session, *, welcome=False, hint=None):
         reply = web_demo_reply(role, self.web_demo_accounts, personal_cabinet=session is not None)
-        if role not in self.web_demo_accounts:
+        if hint:
+            reply['text'] = hint + '\n\n' + reply['text']
+        if welcome:
             image = cover_image('hackathon-school')
             if image:
                 reply['image'] = image
@@ -288,8 +293,16 @@ class PlatformStore(LiveStore):
             if self.web_demo_accounts and session is None:
                 if callback:
                     incoming = self._callback_command(db, event, 0)
-                verb, _, role = (incoming or '').strip().casefold().partition(' ')
-                reply = self._web_demo_reply(role if verb == '/demo' else '', None)
+                text = (incoming or '').strip().casefold()
+                verb, _, argument = text.partition(' ')
+                role = web_demo_role(argument if verb == '/demo' else text)
+                hint = None
+                if callback and incoming is None:
+                    hint = 'Кнопка устарела. Выберите роль в новом меню ниже.'
+                elif event['startPayload'] is not None:
+                    hint = 'Ссылка для личного входа недействительна. Попросите администратора прислать новую.'
+                reply = self._web_demo_reply(role, None, welcome=text == '/start' and not callback and not hint,
+                                             hint=hint)
             elif session is None:
                 reply = {
                     'text': ('Идеяфикс · школьный кабинет. Откройте школу по кнопке. '
@@ -304,6 +317,8 @@ class PlatformStore(LiveStore):
                     incoming = self._callback_command(db, event, session['actor_id'])
                     if incoming is None:
                         reply={'text':'Эта кнопка уже использована, устарела или относится к другому профилю. Откройте актуальный кабинет.','buttons':[{'label':'Личный кабинет','command':'/home'}]}
+                        if self.web_demo_accounts:
+                            reply['buttons'].append({'label':'Выбрать демо-роль','command':'/demo'})
                 # Rejecting a stale tap must not invalidate a newer keyboard.
                 # Only exact, stateless navigation can survive a successful tap.
                 if reply is None:
@@ -311,9 +326,9 @@ class PlatformStore(LiveStore):
                 if reply is None:
                     verb,_,argument=incoming.strip().partition(' ')
                     if self.web_demo_accounts and verb.casefold() == '/start' and not event['startPayload']:
-                        reply = self._web_demo_reply('', session)
+                        reply = self._web_demo_reply('', session, welcome=not callback)
                     elif verb.casefold() == '/demo':
-                        reply = (self._web_demo_reply(argument.casefold(), session) if self.web_demo_accounts
+                        reply = (self._web_demo_reply(web_demo_role(argument), session) if self.web_demo_accounts
                                  else demo_role_reply(argument.casefold()))
                     if verb=='/role':
                         target=ALIASES.get(argument.casefold())

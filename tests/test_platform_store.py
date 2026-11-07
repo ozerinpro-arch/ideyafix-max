@@ -44,6 +44,12 @@ class PlatformSessionTests(unittest.TestCase):
         self.store.ingest(event)
         return event
 
+    def enable_web_demo(self):
+        accounts = {role: {'login': f'ifx.demo.{role}', 'password': f'sample_{role}_password'}
+                    for role in DEMO_ROLES}
+        self.store = PlatformStore(self.path, self.assistant, web_demo_accounts=accounts)
+        return accounts
+
     def test_personal_profile_cannot_switch_roles_or_bind_twice(self):
         self.bind()
         self.assertEqual(self.assistant.calls[-1],(710007,'/start'))
@@ -64,9 +70,7 @@ class PlatformSessionTests(unittest.TestCase):
             self.assertEqual(db.execute('SELECT COUNT(*) FROM live_sessions').fetchone()[0], 0)
 
     def test_public_demo_role_button_returns_only_that_roles_login(self):
-        accounts = {role: {'login': f'ifx.demo.{role}', 'password': f'sample_{role}_password'}
-                    for role in DEMO_ROLES}
-        self.store = PlatformStore(self.path, self.assistant, web_demo_accounts=accounts)
+        accounts = self.enable_web_demo()
         self.store.ingest(native('bot_started'))
         welcome_item = self.store.claim_next()
         welcome = welcome_item['reply']
@@ -89,6 +93,73 @@ class PlatformSessionTests(unittest.TestCase):
         self.assertIn(accounts['student']['password'], reply['text'])
         self.assertNotIn(accounts['director']['password'], reply['text'])
         self.assertEqual(self.assistant.calls, [])
+
+    def test_public_help_and_typed_demo_roles_are_text_only(self):
+        accounts = self.enable_web_demo()
+        self.store.ingest(native(text='/help'))
+        help_reply = self.store.claim_next()['reply']
+        self.assertIn('напишите название роли', help_reply['text'])
+        self.assertEqual(len(help_reply['buttons']), len(DEMO_ROLES))
+        self.assertNotIn('image', help_reply)
+        for text, role in (
+            ('  УЧЕНИК ', 'student'), ('/demo    teacher', 'teacher'),
+            ('/demo Завуч', 'planner'), ('Директор', 'director'),
+        ):
+            with self.subTest(role=role):
+                self.store.ingest(native(text=text))
+                reply = self.store.claim_next()['reply']
+                self.assertEqual(reply['buttons'][0]['copy'], accounts[role]['login'])
+                self.assertEqual(reply['buttons'][1]['copy'], accounts[role]['password'])
+                self.assertEqual(reply['buttons'][2]['url'], SCHOOL_STAFF_URL)
+                self.assertIn('введите их на сайте', reply['text'])
+                self.assertNotIn('image', reply)
+        self.assertEqual(self.assistant.calls, [])
+        with self.store.connection() as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM live_sessions').fetchone()[0], 0)
+
+    def test_expired_public_button_and_invalid_invite_offer_recovery(self):
+        accounts = self.enable_web_demo()
+        with patch('app.platform_store.stamp') as now:
+            initial = int(time.time() * 1000)
+            now.return_value = initial
+            self.store.ingest(native(text='/start'))
+            first = self.store.claim_next()['reply']
+            self.assertIn('image', first)
+            expired = first['buttons'][0]['payload']
+
+            now.return_value = initial + 16 * 60 * 1000
+            self.store.ingest(native('message_callback', payload=expired))
+            recovery = self.store.claim_next()['reply']
+            self.assertIn('Кнопка устарела', recovery['text'])
+            self.assertNotIn('image', recovery)
+            fresh = recovery['buttons'][0]['payload']
+            self.assertNotEqual(fresh, expired)
+            self.store.ingest(native('message_callback', payload=fresh))
+            self.assertEqual(self.store.claim_next()['reply']['buttons'][0]['copy'],
+                             accounts['student']['login'])
+
+            self.store.ingest(native('bot_started', payload='invalid-invite'))
+            invalid = self.store.claim_next()['reply']
+            self.assertIn('Ссылка для личного входа недействительна', invalid['text'])
+            self.assertEqual(len(invalid['buttons']), len(DEMO_ROLES))
+            self.assertNotIn('image', invalid)
+        self.assertEqual(self.assistant.calls, [])
+
+    def test_bound_demo_selection_can_return_to_same_private_cabinet(self):
+        self.enable_web_demo()
+        self.bind()
+        private = self.store.claim_next()['reply']
+        demo = next(button['payload'] for button in private['buttons'] if button['label'] == 'Открыть школу')
+        self.store.ingest(native('message_callback', payload=demo))
+        menu = self.store.claim_next()['reply']
+        self.assertNotIn('image', menu)
+        director = next(button['payload'] for button in menu['buttons'] if button['label'] == 'Директор')
+        self.store.ingest(native('message_callback', payload=director))
+        chosen = self.store.claim_next()['reply']
+        home = next(button['payload'] for button in chosen['buttons'] if button['label'] == 'Мой кабинет MAX')
+        self.store.ingest(native('message_callback', payload=home))
+        self.assertEqual(self.store.claim_next()['text'], 'Профиль 710007')
+        self.assertEqual(self.assistant.calls, [(710007, '/start'), (710007, '/home')])
 
     def test_operator_can_switch_but_old_button_does_not_change_new_profile(self):
         self.bind(710001,True)

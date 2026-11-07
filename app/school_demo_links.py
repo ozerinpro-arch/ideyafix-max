@@ -64,34 +64,45 @@ def load_web_demo_accounts(path: Path):
         raise ValueError('invalid_web_demo_accounts_file') from None
 
 
+def web_demo_role(value):
+    name = value.strip().casefold()
+    return next((role for role, details in DEMO_ROLES.items()
+                 if name in (role, details[0].casefold())), '')
+
+
 def web_demo_reply(role, accounts, *, personal_cabinet=False):
     if role not in accounts:
         buttons = [{'label': details[0], 'command': f'/demo {key}'}
                    for key, details in DEMO_ROLES.items()]
+        keyboard_hint = 'Если кнопки не видны, напишите название роли.'
         if personal_cabinet:
             buttons.append({'label': 'Мой кабинет MAX', 'command': '/home'})
+            keyboard_hint = 'Если кнопки не видны, отправьте /demo и название роли.'
         return {
             'text': ('Школа действия · хакатон Идеяфикс\n\n'
-                     'Выберите роль, с которой хотите познакомиться со школой. '
-                     'Бот выдаст демо-логин и пароль для выбранного кабинета. '
-                     'Во всех четырёх кабинетах — вымышленные учебные данные для просмотра.'),
+                     'Выберите роль. Бот покажет логин и пароль для входа на сайт школы. '
+                     'Во всех кабинетах вымышленные данные.\n\n'
+                     + keyboard_hint),
             'buttons': buttons,
         }
     label = DEMO_ROLES[role][0]
     description = WEB_ROLE_DESCRIPTIONS[role]
     account = accounts[role]
     login, password = account['login'], account['password']
+    buttons = [
+        {'label': 'Скопировать логин', 'copy': login},
+        {'label': 'Скопировать пароль', 'copy': password},
+        {'label': 'Перейти в школу', 'url': SCHOOL_STAFF_URL},
+        {'label': 'Выбрать другую роль', 'command': '/demo'},
+    ]
+    if personal_cabinet:
+        buttons.append({'label': 'Мой кабинет MAX', 'command': '/home'})
     return {
         'text': (f'Демо-кабинет · {label}\n{description}\n\n'
                  f'Логин: {login}\nПароль: {password}\n\n'
-                 'Скопируйте данные и войдите в школу с этой ролью. Если сайт уже открыт '
-                 'в другом кабинете, нажмите там «Выйти» и войдите с новым логином.'),
-        'buttons': [
-            {'label': 'Скопировать логин', 'copy': login},
-            {'label': 'Скопировать пароль', 'copy': password},
-            {'label': 'Перейти в школу', 'url': SCHOOL_STAFF_URL},
-            {'label': 'Выбрать другую роль', 'command': '/demo'},
-        ],
+                 'Скопируйте логин и пароль, нажмите «Перейти в школу» и введите их на сайте. '
+                 'Если там уже открыт другой кабинет, нажмите «Выйти» перед новым входом.'),
+        'buttons': buttons,
     }
 
 
