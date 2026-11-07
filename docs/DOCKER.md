@@ -22,10 +22,10 @@ docker run --rm --network none --entrypoint python ideyafix-max:local \
 ```sh
 # Linux x86-64:
 docker load -i ideyafix-max-linux-amd64.tar.gz
-export IDEYAFIX_IMAGE=ideyafix-max:school-2026-11-08-amd64
+export IDEYAFIX_IMAGE=ideyafix-max:school-demo-2026-11-08-amd64
 # Для Apple Silicon / Linux ARM64 вместо этого:
 # docker load -i ideyafix-max-linux-arm64.tar.gz
-# export IDEYAFIX_IMAGE=ideyafix-max:school-2026-11-08-arm64
+# export IDEYAFIX_IMAGE=ideyafix-max:school-demo-2026-11-08-arm64
 docker tag "$IDEYAFIX_IMAGE" ideyafix-max:local
 ```
 
@@ -111,6 +111,16 @@ docker run --rm --network none --user "$(id -u):$(id -g)" \
 к отчётам. Запустите приёмник, откройте ссылку в MAX и нажмите «Начать».
 Этот первоначальный оператор может переключать вымышленные профили через `/role`.
 Обычные приглашённые пользователи получают отдельный профиль с закреплёнными правами.
+
+На развёрнутом стенде хакатона `/start` показывает обложку и выбор роли для
+отдельной веб-школы. Для такого режима добавьте в `connection.json` поле
+`webDemoAccountsFile` с абсолютным путём к приватному JSON (в контейнере
+например `/run/private/web-demo-accounts.json`). Файл принадлежит пользователю
+процесса и имеет режим 0600. В нём четыре ключа: `student`, `teacher`, `planner`,
+`director`. Значение каждого ключа — объект с полями `login` (`ifx.demo.<роль>`)
+и `password` вымышленной учётной записи на демонстрационном стенде. Эти пары
+показываются всем, кто открывает бота, поэтому подходят только для общих
+учётных записей с тестовыми данными. Без файла используется обычный вход.
 
 До запуска приёмника также можно подготовить необязательный вымышленный пример:
 

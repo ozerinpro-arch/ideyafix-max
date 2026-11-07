@@ -62,6 +62,18 @@ class NativePlatformTransportTests(unittest.TestCase):
             result=self.client.send_reply(456,'Школьный кабинет',buttons=[{**link,'url':url}])
             self.assertEqual(result.status,'rejected')
 
+    def test_native_copy_buttons_precede_the_school_link(self):
+        result = self.client.send_reply(456, 'Демо-кабинет', buttons=[
+            {'label': 'Скопировать логин', 'copy': 'ifx.demo.student'},
+            {'label': 'Скопировать пароль', 'copy': 'sample_student_password'},
+            {'label': 'Перейти в школу', 'url': 'https://taskfloww.site/school-staff/'},
+        ])
+        self.assertEqual(result.status, 'accepted')
+        keyboard = json.loads(self.api[-1].content)['attachments'][0]['payload']['buttons']
+        self.assertEqual([row[0]['type'] for row in keyboard], ['clipboard', 'clipboard', 'link'])
+        self.assertEqual(keyboard[0][0]['payload'], 'ifx.demo.student')
+        self.assertEqual(keyboard[1][0]['payload'], 'sample_student_password')
+
     def test_document_upload_does_not_forward_bot_credentials(self):
         document={'name':'пример.pdf','contentType':'application/pdf','base64':base64.b64encode(b'%PDF-1.4 synthetic').decode()}
         with patch('time.sleep'):

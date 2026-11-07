@@ -125,9 +125,11 @@ class PlatformMaxClient(LiveMaxClient):
                 if not isinstance(button,dict) or not _text(button.get('label'),128):raise ValueError()
                 if set(button) == {'label', 'url'} and isinstance(button['url'], str) and button['url'] in ALLOWED_URLS:
                     item = {'type':'link','text':button['label'],'url':button['url']}
+                elif set(button) == {'label', 'copy'} and _text(button['copy'], 1024):
+                    item = {'type': 'clipboard', 'text': button['label'], 'payload': button['copy']}
                 else:
                     item={'type':'callback','text':button['label'],'payload':opaque_payload(button.get('payload'))}
-                wide = len(buttons) <= 30 and (len(button['label']) > 22 or item['type'] == 'link')
+                wide = len(buttons) <= 30 and (len(button['label']) > 22 or item['type'] in {'link', 'clipboard'})
                 if wide:
                     if pair:
                         rows.append(pair)

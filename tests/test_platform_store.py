@@ -9,6 +9,7 @@ from uuid import uuid4
 from fastapi import HTTPException
 from app.platform_store import PlatformStore
 from app.live_store import LiveStore
+from app.school_demo_links import DEMO_ROLES, SCHOOL_STAFF_URL
 from app.vendor.max_wire import normalize_update
 
 def native(kind='message_created',sender=123,chat=456,text='/start',payload=None):
@@ -61,6 +62,33 @@ class PlatformSessionTests(unittest.TestCase):
         self.assertEqual(self.assistant.calls, [])
         with self.store.connection() as db:
             self.assertEqual(db.execute('SELECT COUNT(*) FROM live_sessions').fetchone()[0], 0)
+
+    def test_public_demo_role_button_returns_only_that_roles_login(self):
+        accounts = {role: {'login': f'ifx.demo.{role}', 'password': f'sample_{role}_password'}
+                    for role in DEMO_ROLES}
+        self.store = PlatformStore(self.path, self.assistant, web_demo_accounts=accounts)
+        self.store.ingest(native('bot_started'))
+        welcome_item = self.store.claim_next()
+        welcome = welcome_item['reply']
+        self.assertEqual(welcome['image']['name'], 'hackathon-school.jpg')
+        self.assertTrue(self.store.image_is_current(welcome_item))
+        self.assertEqual([button['label'] for button in welcome['buttons']],
+                         ['Ученик', 'Преподаватель', 'Завуч', 'Директор'])
+        token = welcome['buttons'][0]['payload']
+
+        self.store.ingest(native('message_callback', sender=124, chat=457, payload=token))
+        self.assertNotIn(accounts['student']['password'], self.store.claim_next()['text'])
+
+        self.store.ingest(native('message_callback', payload=token))
+        reply = self.store.claim_next()['reply']
+        self.assertEqual(reply['buttons'][:3], [
+            {'label': 'Скопировать логин', 'copy': accounts['student']['login']},
+            {'label': 'Скопировать пароль', 'copy': accounts['student']['password']},
+            {'label': 'Перейти в школу', 'url': SCHOOL_STAFF_URL},
+        ])
+        self.assertIn(accounts['student']['password'], reply['text'])
+        self.assertNotIn(accounts['director']['password'], reply['text'])
+        self.assertEqual(self.assistant.calls, [])
 
     def test_operator_can_switch_but_old_button_does_not_change_new_profile(self):
         self.bind(710001,True)

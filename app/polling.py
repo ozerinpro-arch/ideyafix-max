@@ -45,8 +45,11 @@ class Poller:
             from .platform_assistant import PlatformAssistant
             from .platform_store import PlatformStore
             from .platform_transport import PlatformMaxClient
+            from .school_demo_links import load_web_demo_accounts
+            demo_file = settings.web_demo_accounts_file
+            demo_accounts = load_web_demo_accounts(demo_file) if demo_file else None
             self.assistant=platform_assistant if platform_assistant is not None else PlatformAssistant(nanogpt_config=settings.nanogpt_config)
-            self.store=PlatformStore(settings.db_path,self.assistant,bot_username=settings.bot_username)
+            self.store=PlatformStore(settings.db_path,self.assistant,bot_username=settings.bot_username,web_demo_accounts=demo_accounts)
             self.client=client if client is not None else PlatformMaxClient(settings.token_file,settings.ca_file)
         else:
             self.store = LiveStore(settings.db_path)

@@ -1,5 +1,10 @@
 """Fixed local entry points for the fictional school cabinets."""
 from urllib.parse import urlencode
+import json
+from pathlib import Path
+import re
+import stat
+import os
 
 
 DEMO_PORT = 5212
@@ -9,6 +14,12 @@ DEMO_ROLES = {
     'teacher': ('Преподаватель', 'Мои уроки, материалы и работы учеников.', 'Мои материалы', 'materials'),
     'planner': ('Завуч', 'Расписание школы, замены и публикации.', 'Замены уроков', 'replacements'),
     'director': ('Директор', 'Расписание, учебные отчёты и управление.', 'Управление', 'management'),
+}
+WEB_ROLE_DESCRIPTIONS = {
+    'student': 'Личные задания и переписка по учебным работам.',
+    'teacher': 'Свои уроки, материалы и работы учеников.',
+    'planner': 'Расписание, календарь и планирование учебной недели.',
+    'director': 'Публикации расписания, учебные отчёты и доступы.',
 }
 
 
@@ -30,6 +41,58 @@ REUSABLE_NAVIGATION = (
     '/home', '/start', '/help', '/role', '/section study', '/section school',
     '/section management', '/demo', *(f'/demo {role}' for role in DEMO_ROLES),
 )
+
+def load_web_demo_accounts(path: Path):
+    if any(part.is_symlink() for part in (path, *path.parents)):
+        raise ValueError('invalid_web_demo_accounts_file')
+    info = path.stat()
+    if (not stat.S_ISREG(info.st_mode) or stat.S_IMODE(info.st_mode) != 0o600
+            or info.st_uid != os.getuid() or info.st_nlink != 1 or info.st_size > 4096):
+        raise ValueError('invalid_web_demo_accounts_file')
+    try:
+        accounts = json.loads(path.read_bytes())
+        if not isinstance(accounts, dict) or set(accounts) != set(DEMO_ROLES):
+            raise ValueError()
+        for role, account in accounts.items():
+            if (not isinstance(account, dict) or set(account) != {'login', 'password'}
+                    or account['login'] != f'ifx.demo.{role}'
+                    or not isinstance(account['password'], str)
+                    or not re.fullmatch(r'[A-Za-z0-9_-]{16,80}', account['password'])):
+                raise ValueError()
+        return accounts
+    except (ValueError, UnicodeError):
+        raise ValueError('invalid_web_demo_accounts_file') from None
+
+
+def web_demo_reply(role, accounts, *, personal_cabinet=False):
+    if role not in accounts:
+        buttons = [{'label': details[0], 'command': f'/demo {key}'}
+                   for key, details in DEMO_ROLES.items()]
+        if personal_cabinet:
+            buttons.append({'label': 'Мой кабинет MAX', 'command': '/home'})
+        return {
+            'text': ('Школа действия · хакатон Идеяфикс\n\n'
+                     'Выберите роль, с которой хотите познакомиться со школой. '
+                     'Бот выдаст демо-логин и пароль для выбранного кабинета. '
+                     'Во всех четырёх кабинетах — вымышленные учебные данные для просмотра.'),
+            'buttons': buttons,
+        }
+    label = DEMO_ROLES[role][0]
+    description = WEB_ROLE_DESCRIPTIONS[role]
+    account = accounts[role]
+    login, password = account['login'], account['password']
+    return {
+        'text': (f'Демо-кабинет · {label}\n{description}\n\n'
+                 f'Логин: {login}\nПароль: {password}\n\n'
+                 'Скопируйте данные и войдите в школу с этой ролью. Если сайт уже открыт '
+                 'в другом кабинете, нажмите там «Выйти» и войдите с новым логином.'),
+        'buttons': [
+            {'label': 'Скопировать логин', 'copy': login},
+            {'label': 'Скопировать пароль', 'copy': password},
+            {'label': 'Перейти в школу', 'url': SCHOOL_STAFF_URL},
+            {'label': 'Выбрать другую роль', 'command': '/demo'},
+        ],
+    }
 
 
 def demo_role_reply(role):

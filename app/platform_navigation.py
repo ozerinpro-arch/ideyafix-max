@@ -151,9 +151,9 @@ def section_parent(role, command):
     return None
 
 
-@lru_cache(maxsize=3)
+@lru_cache(maxsize=4)
 def cover_image(key):
-    if key not in {'home', 'study', 'operations'}:
+    if key not in {'home', 'study', 'operations', 'hackathon-school'}:
         return None
     name = key + '.jpg'
     try:

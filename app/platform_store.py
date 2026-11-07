@@ -12,17 +12,19 @@ from .live_store import LiveStore,_validate,_text,_identifier
 from .platform_profiles import PROFILES,ALIASES
 from .platform_chat import ChatState
 from .platform_transport import document_bytes, image_bytes
-from .school_demo_links import ALLOWED_URLS, REUSABLE_NAVIGATION, SCHOOL_STAFF_URL, demo_role_reply
+from .school_demo_links import ALLOWED_URLS, REUSABLE_NAVIGATION, SCHOOL_STAFF_URL, demo_role_reply, web_demo_reply
+from .platform_navigation import cover_image
 from . import domain
 
 def stamp():return int(time.time()*1000)
 def digest(text):return hashlib.sha256(text.encode()).hexdigest()
 
 class PlatformStore(LiveStore):
-    def __init__(self,path,assistant=None,*,bot_username='ideya_fiks_150_bot'):
+    def __init__(self,path,assistant=None,*,bot_username='ideya_fiks_150_bot',web_demo_accounts=None):
         super().__init__(path)
         self.assistant=assistant
         self.bot_username=bot_username
+        self.web_demo_accounts = web_demo_accounts
         self.claims=ChatState(self.path.with_name('platform-claims.sqlite3'))
         with self.connection()as db:
             db.executescript('''
@@ -222,6 +224,9 @@ class PlatformStore(LiveStore):
             if set(button)=={'label','url'} and isinstance(button['url'],str) and button['url'] in ALLOWED_URLS:
                 native.append(button.copy())
                 continue
+            if set(button) == {'label', 'copy'} and _text(button['copy'], 1024):
+                native.append(button.copy())
+                continue
             if not _text(button.get('command'),2000):
                 raise ValueError('invalid_platform_button')
             token=secrets.token_urlsafe(32)
@@ -244,6 +249,23 @@ class PlatformStore(LiveStore):
                 result['image']=image
         return result
 
+    def _callback_command(self, db, event, actor_id):
+        action = db.execute('SELECT * FROM platform_actions WHERE hash=?',
+                            (digest(event['callbackPayload']),)).fetchone()
+        if (action is None or action['used'] or action['expires_at'] <= stamp()
+                or action['sender_id'] != event['senderId'] or action['chat_id'] != event['chatId']
+                or action['actor_id'] != actor_id):
+            return None
+        return action['command']
+
+    def _web_demo_reply(self, role, session):
+        reply = web_demo_reply(role, self.web_demo_accounts, personal_cabinet=session is not None)
+        if role not in self.web_demo_accounts:
+            image = cover_image('hackathon-school')
+            if image:
+                reply['image'] = image
+        return reply
+
     def ingest(self,normalized):
         event,document,callback=self._validate_platform(normalized)
         if event['eventType']=='bot_stopped':return super().ingest(event)
@@ -260,9 +282,15 @@ class PlatformStore(LiveStore):
             permission=db.execute('SELECT operator FROM platform_session_permissions WHERE sender_id=?',(event['senderId'],)).fetchone()
             operator=bool(permission and permission['operator'])
             incoming='/start'if event['eventType']=='bot_started'else event.get('text')
-            school_link = {'label': 'Открыть школу', 'url': SCHOOL_STAFF_URL}
+            school_link = ({'label': 'Открыть школу', 'command': '/demo'} if self.web_demo_accounts
+                           else {'label': 'Открыть школу', 'url': SCHOOL_STAFF_URL})
             reply=None
-            if session is None:
+            if self.web_demo_accounts and session is None:
+                if callback:
+                    incoming = self._callback_command(db, event, 0)
+                verb, _, role = (incoming or '').strip().casefold().partition(' ')
+                reply = self._web_demo_reply(role if verb == '/demo' else '', None)
+            elif session is None:
                 reply = {
                     'text': ('Идеяфикс · школьный кабинет. Откройте школу по кнопке. '
                              'Для личного кабинета в MAX получите одноразовую ссылку у администратора.'),
@@ -273,20 +301,20 @@ class PlatformStore(LiveStore):
                 reply={'text':'Личный доступ изменился или отозван. Обратитесь к администратору.','buttons':[],'accessDenied':True}
             else:
                 if callback:
-                    action=db.execute('SELECT * FROM platform_actions WHERE hash=?',(digest(event['callbackPayload']),)).fetchone()
-                    if (action is None or action['used']or action['expires_at']<=stamp()or action['sender_id']!=event['senderId']
-                            or action['chat_id']!=event['chatId']or action['actor_id']!=session['actor_id']):
+                    incoming = self._callback_command(db, event, session['actor_id'])
+                    if incoming is None:
                         reply={'text':'Эта кнопка уже использована, устарела или относится к другому профилю. Откройте актуальный кабинет.','buttons':[{'label':'Личный кабинет','command':'/home'}]}
-                    else:
-                        incoming=action['command']
                 # Rejecting a stale tap must not invalidate a newer keyboard.
                 # Only exact, stateless navigation can survive a successful tap.
                 if reply is None:
                     self._retire_actions(db, event, keep_navigation=True)
                 if reply is None:
                     verb,_,argument=incoming.strip().partition(' ')
-                    if verb.casefold() == '/demo':
-                        reply = demo_role_reply(argument.casefold())
+                    if self.web_demo_accounts and verb.casefold() == '/start' and not event['startPayload']:
+                        reply = self._web_demo_reply('', session)
+                    elif verb.casefold() == '/demo':
+                        reply = (self._web_demo_reply(argument.casefold(), session) if self.web_demo_accounts
+                                 else demo_role_reply(argument.casefold()))
                     if verb=='/role':
                         target=ALIASES.get(argument.casefold())
                         if target is None and argument.isascii()and argument.isdigit():target=int(argument)
@@ -338,9 +366,10 @@ class PlatformStore(LiveStore):
                             reply=self.assistant.handle(session['actor_id'],incoming,event['eventId'],session_key=scope)
                         if reply is None:reply={'text':'Выберите действие в личном кабинете.','buttons':[{'label':'Личный кабинет','command':'/home'}]}
                         if incoming.strip().casefold() in {'/start','/home','/help'} and not reply.get('accessDenied'):
-                            reply.setdefault('buttons', []).extend([
-                                school_link, {'label': 'Демо-роли', 'command': '/demo'},
-                            ])
+                            buttons = reply.setdefault('buttons', [])
+                            buttons.append(school_link)
+                            if not self.web_demo_accounts:
+                                buttons.append({'label': 'Демо-роли', 'command': '/demo'})
                         target=reply.pop('inviteActorId',None)
                         if target is not None:
                             role=self._profile(db,session['actor_id'])['platformRole'];target_profile=self._profile(db,target)
@@ -405,7 +434,16 @@ class PlatformStore(LiveStore):
     def image_is_current(self,item):
         """Recheck access across the separate image upload and message POST."""
         try:
+            image = item.get('reply', {}).get('image')
             with self.connection() as db:
+                if image and image == cover_image('hackathon-school'):
+                    public = db.execute("""
+                        SELECT 1 FROM platform_reply_owners owner
+                        JOIN live_outbox outbox ON outbox.id=owner.outbox_id
+                        WHERE owner.outbox_id=? AND outbox.state='started' AND owner.actor_id=0
+                    """, (item['id'],)).fetchone()
+                    if public:
+                        return True
                 row=db.execute("""
                     SELECT owner.actor_id FROM platform_reply_owners owner
                     JOIN live_outbox outbox ON outbox.id=owner.outbox_id
