@@ -39,6 +39,17 @@ class NativePlatformTransportTests(unittest.TestCase):
         self.assertEqual(body['attachments'][0]['payload']['buttons'][0][0],{'type':'callback','text':'Расписание','payload':'a'*43})
         self.assertEqual(self.media,[])
 
+    def test_local_demo_link_and_long_action_use_separate_rows(self):
+        link={'label':'Открыть демо-кабинет','url':'http://127.0.0.1:5212/?role=teacher'}
+        long={'label':'Показать опубликованное расписание','payload':'a'*43}
+        result=self.client.send_reply(456,'Школьное демо',buttons=[link,long])
+        self.assertEqual(result.status,'accepted')
+        keyboard=json.loads(self.api[-1].content)['attachments'][0]['payload']['buttons']
+        self.assertEqual(keyboard[0],[{'type':'link','text':link['label'],'url':link['url']}])
+        self.assertEqual(keyboard[1],[{'type':'callback','text':long['label'],'payload':long['payload']}])
+        result=self.client.send_reply(456,'Школьное демо',buttons=[{**link,'url':'https://example.test'}])
+        self.assertEqual(result.status,'rejected')
+
     def test_document_upload_does_not_forward_bot_credentials(self):
         document={'name':'пример.pdf','contentType':'application/pdf','base64':base64.b64encode(b'%PDF-1.4 synthetic').decode()}
         with patch('time.sleep'):

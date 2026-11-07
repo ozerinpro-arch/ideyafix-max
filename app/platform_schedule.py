@@ -15,7 +15,9 @@ import time
 from urllib.parse import quote, urlencode, urlsplit, parse_qs
 from zoneinfo import ZoneInfo
 
-from .platform_schedule_cards import WEEKDAYS, Day, date_label, lesson_count, render_card, timetable_days, week_pages
+from .platform_schedule_cards import (
+    WEEKDAYS, date_label, day_pages, lesson_count, render_card, timetable_days, week_pages,
+)
 
 
 NAMESPACES = {'schedule', 'calendar', 'preferences', 'requests', 'replacements',
@@ -396,9 +398,9 @@ class ScheduleAssistant:
             heading = 'Неделя · ' + period
         else:
             day = days[index]
-            pages = [day.lessons[start:start + 6] for start in range(0, max(1, len(day.lessons)), 6)]
+            pages = day_pages(day)
             page = min(int(words[1]) if len(words) == 2 else 0, len(pages) - 1)
-            shown = (Day(day.index, day.date, pages[page]),)
+            shown = pages[page]
             period = date_label(day.date) if day.date else 'Сетка без даты'
             heading = WEEKDAYS[index] + (' · ' + period if day.date else '')
             buttons = []
@@ -419,7 +421,10 @@ class ScheduleAssistant:
         lines = [heading]
         for day in shown:
             if week:
-                lines.append(WEEKDAYS[day.index] + ' · ' + lesson_count(len(day.lessons)))
+                summary = lesson_count(len(day.lessons)) if day.lessons or not day.blocks else 'Продолжение'
+                lines.append(WEEKDAYS[day.index] + ' · ' + summary)
+            elif not day.lessons and day.blocks:
+                lines.append('Продолжение занятия.')
             for lesson in day.lessons:
                 row = [str(lesson.get('start') or ''), str(lesson.get('subject') or 'Занятие')]
                 room = ', '.join(lesson.get('rooms') or [])

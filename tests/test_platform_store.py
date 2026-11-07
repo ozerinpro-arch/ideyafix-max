@@ -72,6 +72,39 @@ class PlatformSessionTests(unittest.TestCase):
         self.store.ingest(native('message_callback',sender=999,chat=999,payload=token))
         self.assertEqual(len(self.assistant.calls),calls)
 
+    def test_stale_tap_preserves_current_action_and_home_is_reusable(self):
+        self.assistant.handle=lambda actor,text,event,**kwargs:{
+            'text':text,'buttons':[{'label':'Главная','command':'/home'},
+                                   {'label':'Текущий шаг','command':'/schedule confirm'}]}
+        self.bind()
+        first=self.store.claim_next()['reply']['buttons']
+        home, stale=(item['payload'] for item in first[:2])
+        self.store.ingest(native('message_callback',payload=home))
+        current=self.store.claim_next()['reply']['buttons'][1]['payload']
+        self.store.ingest(native('message_callback',payload=stale))
+        self.assertIn('устарела',self.store.claim_next()['text'])
+        self.store.ingest(native('message_callback',payload=current))
+        self.assertEqual(self.store.claim_next()['text'],'/schedule confirm')
+        self.store.ingest(native('message_callback',payload=home))
+        self.assertEqual(self.store.claim_next()['text'],'/home')
+
+    def test_demo_role_changes_target_link_without_rebinding_profile(self):
+        self.bind()
+        first=self.store.claim_next()['reply']
+        demo=next(button['payload'] for button in first['buttons'] if button['label']=='Демо-роли')
+        self.store.ingest(native('message_callback',payload=demo))
+        choices=self.store.claim_next()['reply']['buttons']
+        director=next(button['payload'] for button in choices if button['label']=='Директор')
+        teacher=next(button['payload'] for button in choices if button['label']=='Преподаватель')
+        for token,role in ((director,'director'),(teacher,'teacher')):
+            self.store.ingest(native('message_callback',payload=token))
+            reply=self.store.claim_next()['reply']
+            self.assertEqual(reply['buttons'][0]['url'],f'http://127.0.0.1:5212/?role={role}')
+        with self.store.connection()as db:
+            self.assertEqual(db.execute('SELECT actor_id FROM live_sessions').fetchone()[0],710007)
+            self.assertEqual(db.execute('SELECT operator FROM platform_session_permissions').fetchone()[0],0)
+        self.assertEqual(self.assistant.calls,[(710007,'/start')])
+
     def test_existing_demo_operator_permission_migrates_but_new_invite_is_locked(self):
         with self.store.connection()as db:
             db.execute("DELETE FROM live_meta WHERE key='platform_permissions_initialized'")

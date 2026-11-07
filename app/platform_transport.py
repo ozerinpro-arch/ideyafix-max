@@ -11,6 +11,7 @@ from PIL import Image
 from .live_transport import LiveMaxClient
 from .vendor.max_transport import API_ORIGIN, TransportOutcome, _identity, _text, _tls_context
 from .vendor.max_wire import is_personal_recipient, opaque_payload
+from .school_demo_links import DEMO_URLS
 
 MAX_FILE_BYTES=8*1024*1024
 MAX_IMAGE_BYTES=2*1024*1024
@@ -119,11 +120,26 @@ class PlatformMaxClient(LiveMaxClient):
                 raise ValueError()
             attachments=[]
             rows=[]
+            pair=[]
             for button in buttons:
                 if not isinstance(button,dict) or not _text(button.get('label'),128):raise ValueError()
-                item={'type':'callback','text':button['label'],'payload':opaque_payload(button.get('payload'))}
-                if not rows or len(rows[-1])==2:rows.append([])
-                rows[-1].append(item)
+                if set(button) == {'label', 'url'} and isinstance(button['url'], str) and button['url'] in DEMO_URLS:
+                    item = {'type':'link','text':button['label'],'url':button['url']}
+                else:
+                    item={'type':'callback','text':button['label'],'payload':opaque_payload(button.get('payload'))}
+                wide = len(buttons) <= 30 and (len(button['label']) > 22 or item['type'] == 'link')
+                if wide:
+                    if pair:
+                        rows.append(pair)
+                        pair=[]
+                    rows.append([item])
+                else:
+                    pair.append(item)
+                    if len(pair) == 2:
+                        rows.append(pair)
+                        pair=[]
+            if pair:
+                rows.append(pair)
             if document is not None:
                 file=self._upload(document)
                 if isinstance(file,TransportOutcome):return file

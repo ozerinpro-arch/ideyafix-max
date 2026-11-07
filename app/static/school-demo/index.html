@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Школа действия · Демо</title>
+  <link rel="stylesheet" href="/static/school-demo/styles.css">
+  <script src="/static/school-demo/app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">К содержимому</a>
+  <div class="shell">
+    <header class="top panel">
+      <a class="brand" href="/" aria-label="Школа действия, главная">
+        <span class="mark" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M10 25V13l8-4 8 4v12l-8 4zM10 13l8 4 8-4M18 17v12"/></svg></span>
+        <span>Школа действия<small>Локальный демо-кабинет</small></span>
+      </a>
+      <button id="theme" class="theme" type="button" aria-label="Переключить тему">Тема</button>
+    </header>
+    <aside class="side panel" aria-label="Кабинет">
+      <p class="eyebrow">ДЕМО-РОЛЬ</p>
+      <label for="role" class="visually-hidden">Роль в школе</label>
+      <select id="role">
+        <option value="student">Ученик</option><option value="teacher">Преподаватель</option>
+        <option value="planner">Завуч</option><option value="director">Директор</option>
+      </select>
+      <p id="profile" class="profile muted"></p>
+      <nav aria-label="Разделы школы" id="sections"></nav>
+      <a class="back" href="https://max.ru/ideya_fiks_150_bot">Вернуться в MAX ↗</a>
+    </aside>
+    <main id="main" tabindex="-1">
+      <div class="heading">
+        <div><p class="eyebrow">ПРОБНЫЙ РЕЖИМ</p><h1 id="title">Обзор</h1><p id="intro" class="muted">Все ученики, уроки и документы вымышлены.</p></div>
+        <span class="badge">Демо-данные</span>
+      </div>
+      <p id="status" class="notice" role="status">Загружаем кабинет…</p>
+      <div id="workspace"></div>
+    </main>
+  </div>
+</body>
+</html>

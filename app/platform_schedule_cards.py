@@ -12,7 +12,14 @@ from PIL import Image, ImageDraw, ImageFont
 WEEKDAYS = ('Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота')
 MONTHS = ('января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
           'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря')
-WIDTH = 720
+WIDTH = 960
+CONTENT_LEFT = 104
+CONTENT_RIGHT = 856
+BODY_TOP = 291
+BODY_BOTTOM = 794
+BODY_HEIGHT = BODY_BOTTOM - BODY_TOP
+SECTION_HEIGHT = 41
+ROW_PADDING = 21
 FONT_PATH = Path(__file__).resolve().parents[1] / 'platform_engine/server/assets/Inter.ttf'
 TEXT = '#f5f6fc'
 MUTED = '#bfc8e0'
@@ -24,6 +31,7 @@ class Day:
     index: int
     date: date | None
     lessons: tuple[dict, ...]
+    blocks: tuple['LessonBlock', ...] = ()
 
 
 def date_label(value):
@@ -55,23 +63,24 @@ def lesson_count(count):
     return f'{count} {noun}'
 
 
-def week_pages(days, *, row_limit=9):
-    """Bound picture height without hiding lessons or empty days."""
-    pages = []
-    page = []
-    used = 0
-    for day in days:
-        for start in range(0, max(1, len(day.lessons)), row_limit):
-            rows = day.lessons[start:start + row_limit]
-            cost = max(1, len(rows))
-            if page and used + cost > row_limit:
-                pages.append(tuple(page))
-                page, used = [], 0
-            page.append(Day(day.index, day.date, rows))
-            used += cost
-    if page:
-        pages.append(tuple(page))
-    return pages
+@dataclass(frozen=True)
+class Line:
+    text: str
+    size: int
+    height: int
+    color: str
+    bold: bool = False
+
+
+@dataclass(frozen=True)
+class LessonBlock:
+    row: dict
+    lines: tuple[Line, ...]
+    continuation: bool = False
+
+    @property
+    def height(self):
+        return ROW_PADDING + sum(line.height for line in self.lines)
 
 
 @lru_cache(maxsize=12)
@@ -79,93 +88,165 @@ def _font(size):
     return ImageFont.truetype(str(FONT_PATH), size)
 
 
-def _line(draw, value, width, size, weight=400):
-    value = ' '.join(value.split())
+def _wrap(value, width, size):
     font = _font(size)
-    if draw.textlength(value, font=font) <= width:
-        return value
-    while value and draw.textlength(value + '…', font=font) > width:
-        value = value[:-1]
-    return value.rstrip() + '…'
+    line = ''
+    for word in value.split():
+        candidate = f'{line} {word}' if line else word
+        if font.getlength(candidate) <= width:
+            line = candidate
+            continue
+        if line:
+            yield line
+        # Imported names may have no whitespace. Break at the widest prefix.
+        while font.getlength(word) > width:
+            stop = 1
+            while stop < len(word) and font.getlength(word[:stop + 1]) <= width:
+                stop += 1
+            yield word[:stop]
+            word = word[stop:]
+        line = word
+    if line:
+        yield line
 
 
-def _wrap(draw, value, width, size, weight=400):
-    first, remaining = '', value.split()
-    while remaining:
-        candidate = ' '.join(filter(None, (first, remaining[0])))
-        if draw.textlength(candidate, font=_font(size)) > width:
-            break
-        first = candidate
-        remaining.pop(0)
-    if not first:
-        return [_line(draw, value, width, size, weight)]
-    return [first, _line(draw, ' '.join(remaining), width, size, weight)] if remaining else [first]
+def _lesson_blocks(row, *, week):
+    width = CONTENT_RIGHT - CONTENT_LEFT - 53
+    time = '–'.join(row[key] for key in ('start', 'end') if row.get(key))
+    summary = '  ·  '.join(filter(None, (time, row.get('className'))))
+    subject = row.get('subject') or 'Занятие'
+    teachers = ', '.join(row.get('teachers') or ())
+    rooms = ', '.join(row.get('rooms') or ())
+    details = '  ·  '.join(filter(None, (teachers, rooms)))
+    title_size = 30 if week else 33
+    lines = [
+        *(Line(text, 24, 28, ACCENT, True) for text in _wrap(summary, width, 24)),
+        *(Line(text, title_size, title_size + 6, TEXT, True) for text in _wrap(subject, width, title_size)),
+        *(Line(text, 22, 26, MUTED) for text in _wrap(details, width, 22)),
+    ]
+    max_height = BODY_HEIGHT - ROW_PADDING - (SECTION_HEIGHT if week else 0)
+    chunk = []
+    height = 0
+    continued = False
+    for line in lines:
+        if height + line.height > max_height:
+            yield LessonBlock(row, tuple(chunk), continued)
+            continued = True
+            chunk = [Line('Продолжение занятия', 24, 29, ACCENT, True)]
+            height = 29
+        chunk.append(line)
+        height += line.height
+    yield LessonBlock(row, tuple(chunk), continued)
 
 
-def _draw_text(draw, x, y, value, size, color=TEXT, weight=400):
+def _pages(days, *, week):
+    pages = []
+    page = []
+    used = 0
+    for day in days:
+        blocks = [block for row in day.lessons for block in _lesson_blocks(row, week=week)]
+        if not blocks:
+            if used + SECTION_HEIGHT > BODY_HEIGHT:
+                pages.append(tuple(page))
+                page, used = [], 0
+            page.append(day)
+            used += SECTION_HEIGHT
+            continue
+        for block in blocks:
+            same_day = bool(page and page[-1].index == day.index)
+            heading = 0 if same_day or not week else SECTION_HEIGHT
+            if used + heading + block.height > BODY_HEIGHT:
+                pages.append(tuple(page))
+                page, used = [], 0
+                same_day = False
+                heading = SECTION_HEIGHT if week else 0
+            # A split lesson keeps its details on the next page. The message
+            # caption lists the lesson once, alongside the first fragment.
+            lessons = () if block.continuation else (block.row,)
+            if same_day:
+                previous = page[-1]
+                page[-1] = Day(day.index, day.date, previous.lessons + lessons,
+                               previous.blocks + (block,))
+            else:
+                page.append(Day(day.index, day.date, lessons, (block,)))
+            used += heading + block.height
+    if page:
+        pages.append(tuple(page))
+    return pages
+
+
+def week_pages(days):
+    return _pages(days, week=True)
+
+
+def day_pages(day):
+    return _pages((day,), week=False)
+
+
+def _draw_text(draw, x, y, value, size, color=TEXT, bold=False):
     draw.text((x, y), value, font=_font(size), fill=color, anchor='lt',
-              stroke_width=int(weight >= 600), stroke_fill=color)
+              stroke_width=int(bold), stroke_fill=color)
+
+
+def _draw_block(draw, y, block):
+    draw.rounded_rectangle((CONTENT_LEFT, y, CONTENT_RIGHT, y + block.height - 8),
+                           radius=17, fill='#26324f', outline='#3b4b6d', width=1)
+    draw.rounded_rectangle((CONTENT_LEFT + 12, y + 12, CONTENT_LEFT + 17,
+                            y + block.height - 19), radius=2, fill='#8d79e7')
+    line_y = y + 9
+    for line in block.lines:
+        _draw_text(draw, CONTENT_LEFT + 32, line_y, line.text, line.size, line.color, line.bold)
+        line_y += line.height
 
 
 def render_card(days, *, week, scope, period, state='', page=1, page_count=1):
-    compact = week
-    row_height = 151
-    section_height = 53 if compact else 0
-    sections = sum(section_height + (row_height * len(day.lessons) if day.lessons else 67)
-                   for day in days)
-    height = 235 + (38 if state else 0) + sections + 68
-    image = Image.new('RGB', (WIDTH, height), '#11182b')
+    """Render a square with all content inside the central landscape preview."""
+    image = Image.new('RGB', (WIDTH, WIDTH))
     draw = ImageDraw.Draw(image)
-    for y in range(height):
-        fraction = y / max(1, height - 1)
-        draw.line((0, y, WIDTH, y), fill=(int(27 - 12 * fraction), int(31 - 10 * fraction),
-                                        int(58 - 24 * fraction)))
-    draw.rounded_rectangle((25, 25, WIDTH - 26, height - 26), radius=32, fill='#1a233b',
+    for y in range(WIDTH):
+        fraction = y / (WIDTH - 1)
+        draw.line((0, y, WIDTH, y), fill=(int(32 - 16 * fraction), int(39 - 14 * fraction),
+                                        int(71 - 25 * fraction)))
+    draw.rounded_rectangle((46, 48, WIDTH - 47, WIDTH - 49), radius=42, fill='#1a233b',
                            outline='#465271', width=2)
-    draw.rounded_rectangle((49, 50, 54, 78), radius=2, fill='#a991ff')
-    _draw_text(draw, 68, 51, 'ИДЕЯФИКС  /  РАСПИСАНИЕ', 22, ACCENT, 650)
+    used = sum(
+        sum(block.height for block in day.blocks)
+        + (SECTION_HEIGHT if week else 50 if not day.blocks else 0)
+        for day in days
+    )
+    # Keep sparse day cards balanced while reserving the same safe area for
+    # dense days, page labels and the cropped chat preview.
+    offset = min(108, max(0, (BODY_HEIGHT - used) // 2))
+    x = CONTENT_LEFT
+    draw.rounded_rectangle((x, 133 + offset, x + 5, 157 + offset), radius=2, fill='#a991ff')
+    _draw_text(draw, x + 17, 134 + offset, 'ИДЕЯФИКС  /  РАСПИСАНИЕ', 21, ACCENT, True)
     title = 'Расписание недели' if week else WEEKDAYS[days[0].index]
-    _draw_text(draw, 49, 101, title, 43, weight=720)
-    _draw_text(draw, 49, 163, _line(draw, period, 620, 25), 25, MUTED)
-    _draw_text(draw, 49, 201, _line(draw, scope, 620, 24, 620), 24, ACCENT, 620)
-    y = 241
-    if state:
-        _draw_text(draw, 49, y, _line(draw, state, 620, 22), 22, MUTED)
-        y += 38
+    _draw_text(draw, x, 165 + offset, title, 46, bold=True)
+    _draw_text(draw, x, 225 + offset, period, 25, MUTED)
+    meta = '  ·  '.join(filter(None, (scope, state)))
+    for index, line in enumerate(_wrap(meta, CONTENT_RIGHT - x - 4, 20)):
+        if index >= 2:
+            break
+        _draw_text(draw, x, 252 + 20 * index + offset, line, 20, ACCENT, True)
+
+    y = BODY_TOP + offset
     for day in days:
-        if compact:
+        if week:
             label = WEEKDAYS[day.index]
             if day.date:
                 label += f'  ·  {day.date:%d.%m}'
-            _draw_text(draw, 49, y + 8, label, 26, ACCENT, 650)
-            y += section_height
-        if not day.lessons:
-            draw.rounded_rectangle((49, y, 670, y + 49), radius=14, fill='#232e48')
-            _draw_text(draw, 67, y + 12, 'Нет занятий в этой сетке', 23, MUTED)
-            y += 67
-            continue
-        for row in day.lessons:
-            draw.rounded_rectangle((49, y, 670, y + row_height - 10), radius=17,
-                                   fill='#26324f', outline='#3b4b6d', width=1)
-            draw.rounded_rectangle((62, y + 15, 68, y + row_height - 25), radius=3, fill='#8d79e7')
-            time = '–'.join(str(row[key]) for key in ('start', 'end') if row.get(key))
-            class_name = str(row.get('className') or '')
-            top = '  ·  '.join(filter(None, (time, class_name)))
-            _draw_text(draw, 83, y + 14, _line(draw, top, 568, 25, 640), 25, ACCENT, 640)
-            subject = str(row.get('subject') or 'Занятие')
-            size = 32 if compact else 35
-            lines = _wrap(draw, subject, 565, size, 700)
-            for index, line in enumerate(lines):
-                _draw_text(draw, 83, y + 48 + index * 34, line, size, TEXT, 700)
-            teachers = ', '.join(row.get('teachers') or ())
-            rooms = ', '.join(row.get('rooms') or ())
-            details = '  ·  '.join(filter(None, (teachers, rooms)))
-            if details:
-                detail_y = y + (91 if len(lines) == 1 else 119)
-                _draw_text(draw, 83, detail_y, _line(draw, details, 565, 22), 22, MUTED)
-            y += row_height
+            if not day.blocks:
+                label += '  ·  Нет занятий'
+            _draw_text(draw, x, y + 8, label, 25, ACCENT if day.blocks else MUTED, bool(day.blocks))
+            y += SECTION_HEIGHT
+        elif not day.blocks:
+            draw.rounded_rectangle((x, y, CONTENT_RIGHT, y + 50), radius=14, fill='#232e48')
+            _draw_text(draw, x + 18, y + 13, 'Нет занятий в этой сетке', 24, MUTED)
+        for block in day.blocks:
+            _draw_block(draw, y, block)
+            y += block.height
     if page_count > 1:
-        _draw_text(draw, 49, height - 55, f'Страница {page} из {page_count}', 21, MUTED)
+        _draw_text(draw, x, 803, f'Страница {page} из {page_count}', 21, MUTED)
     output = BytesIO()
     image.save(output, 'JPEG', quality=90, optimize=True, subsampling=0)
     return {'name': 'schedule-week.jpg' if week else 'schedule-day.jpg',

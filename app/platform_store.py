@@ -12,6 +12,7 @@ from .live_store import LiveStore,_validate,_text,_identifier
 from .platform_profiles import PROFILES,ALIASES
 from .platform_chat import ChatState
 from .platform_transport import document_bytes, image_bytes
+from .school_demo_links import DEMO_URLS, REUSABLE_NAVIGATION, demo_role_reply
 from . import domain
 
 def stamp():return int(time.time()*1000)
@@ -204,7 +205,13 @@ class PlatformStore(LiveStore):
         if len(buttons)>(page+1)*18:selected.append({'label':'Далее →','command':f'/page {page_id} {page+1}'})
         native=[]
         for button in selected:
-            if not isinstance(button,dict)or not _text(button.get('label'),128)or not _text(button.get('command'),2000):raise ValueError('invalid_platform_button')
+            if not isinstance(button,dict) or not _text(button.get('label'),128):
+                raise ValueError('invalid_platform_button')
+            if set(button)=={'label','url'} and isinstance(button['url'],str) and button['url'] in DEMO_URLS:
+                native.append(button.copy())
+                continue
+            if not _text(button.get('command'),2000):
+                raise ValueError('invalid_platform_button')
             token=secrets.token_urlsafe(32)
             db.execute('INSERT INTO platform_actions VALUES(?,?,?,?,?,?,0)',(digest(token),event['senderId'],event['chatId'],session['actor_id'],button['command'],stamp()+15*60*1000))
             native.append({'label':button['label'],'payload':token})
@@ -254,13 +261,17 @@ class PlatformStore(LiveStore):
                             or action['chat_id']!=event['chatId']or action['actor_id']!=session['actor_id']):
                         reply={'text':'Эта кнопка уже использована, устарела или относится к другому профилю. Откройте актуальный кабинет.','buttons':[{'label':'Личный кабинет','command':'/home'}]}
                     else:
-                        db.execute('UPDATE platform_actions SET used=1 WHERE hash=?',(digest(event['callbackPayload']),))
                         incoming=action['command']
-                # Only buttons from the latest dialogue response remain active.
-                # Old confirmations cannot approve a newer form or role cycle.
-                db.execute('UPDATE platform_actions SET used=1 WHERE sender_id=? AND chat_id=?',(event['senderId'],event['chatId']))
+                # Rejecting a stale tap must not invalidate a newer keyboard.
+                # Only exact, stateless navigation can survive a successful tap.
+                if reply is None:
+                    slots = ','.join('?' for _ in REUSABLE_NAVIGATION)
+                    db.execute(f'UPDATE platform_actions SET used=1 WHERE sender_id=? AND chat_id=? AND command NOT IN ({slots})',
+                               (event['senderId'],event['chatId'],*REUSABLE_NAVIGATION))
                 if reply is None:
                     verb,_,argument=incoming.strip().partition(' ')
+                    if verb.casefold() == '/demo':
+                        reply = demo_role_reply(argument.casefold())
                     if verb=='/role':
                         target=ALIASES.get(argument.casefold())
                         if target is None and argument.isascii()and argument.isdigit():target=int(argument)
@@ -269,9 +280,11 @@ class PlatformStore(LiveStore):
                         elif not argument:
                             reply={'text':'Ваш профиль: '+self._profile(db,session['actor_id'])['name'],
                                 'buttons':[{'label':p['name']+' · '+p['label'],'command':'/role '+str(p['id'])}for p in [json.loads(r['payload'])for r in db.execute('SELECT payload FROM platform_profile_catalog ORDER BY actor_id')]]if operator else[{'label':'Мой кабинет','command':'/home'}]}
+                            reply['buttons'].append({'label':'Демо-роли','command':'/demo'})
                         elif self._profile(db,target)is None:
                             reply={'text':'Такого тестового профиля нет.','buttons':[{'label':'Профили','command':'/role'}]}
                         else:
+                            db.execute('UPDATE platform_actions SET used=1 WHERE sender_id=? AND chat_id=?',(event['senderId'],event['chatId']))
                             db.execute('UPDATE live_sessions SET actor_id=? WHERE sender_id=?',(target,event['senderId']))
                             session=db.execute('SELECT * FROM live_sessions WHERE sender_id=?',(event['senderId'],)).fetchone()
                             incoming='/start'
@@ -292,6 +305,7 @@ class PlatformStore(LiveStore):
                         intent=reply.pop('scheduleNoticeIntent',None)
                         if intent is not None:reply['text']=self._queue_notice(db,session['actor_id'],event,intent)
                         if reply.pop('unlinkMax',False):
+                            db.execute('UPDATE platform_actions SET used=1 WHERE sender_id=? AND chat_id=?',(event['senderId'],event['chatId']))
                             db.execute('DELETE FROM live_sessions WHERE sender_id=? AND chat_id=?',(event['senderId'],event['chatId']))
                             db.execute('DELETE FROM platform_session_permissions WHERE sender_id=?',(event['senderId'],))
                             db.execute("UPDATE live_outbox SET state='rejected',error_code='dialog_stopped' WHERE chat_id=? AND state='queued'",(event['chatId'],))
@@ -308,6 +322,8 @@ class PlatformStore(LiveStore):
                             if incoming.strip()=='/education':incoming='/learning'
                             reply=self.assistant.handle(session['actor_id'],incoming,event['eventId'],session_key=scope)
                         if reply is None:reply={'text':'Выберите действие в личном кабинете.','buttons':[{'label':'Личный кабинет','command':'/home'}]}
+                        if incoming.strip().casefold() in {'/start','/home','/help'} and not reply.get('accessDenied'):
+                            reply.setdefault('buttons',[]).append({'label':'Демо-роли','command':'/demo'})
                         target=reply.pop('inviteActorId',None)
                         if target is not None:
                             role=self._profile(db,session['actor_id'])['platformRole'];target_profile=self._profile(db,target)
