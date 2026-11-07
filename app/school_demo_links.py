@@ -2,7 +2,8 @@
 from urllib.parse import urlencode
 
 
-DEMO_ORIGIN = 'http://127.0.0.1:5212'
+DEMO_PORT = 5212
+DEMO_ORIGIN = f'http://127.0.0.1:{DEMO_PORT}'
 DEMO_ROLES = {
     'student': ('Ученик', 'Личное расписание, задания и оценки.', 'Мои задания', 'learning'),
     'teacher': ('Преподаватель', 'Мои уроки, материалы и работы учеников.', 'Мои материалы', 'materials'),

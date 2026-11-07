@@ -33,6 +33,7 @@ let school = null;
 let reply = null;
 let busy = false;
 let draft = false;
+let refreshNeeded = false;
 
 function element(tag, className, text) {
   const result = document.createElement(tag);
@@ -237,13 +238,18 @@ function render() {
   }
 }
 
-function openView(next) {
+function setView(next) {
   view = next;
   const url = new URL(location.href);
   url.searchParams.set("role", role);
   if (next === "overview") url.searchParams.delete("view");
   else url.searchParams.set("view", next);
   history.replaceState(null, "", url);
+}
+
+function openView(next) {
+  setView(next);
+  if (refreshNeeded && next !== "actions") return load();
   render();
 }
 
@@ -260,8 +266,10 @@ async function load() {
   render();
   try {
     school = await request("/api/demo/state?role=" + encodeURIComponent(role));
+    refreshNeeded = false;
     status.textContent = "";
   } catch (error) {
+    school = null;
     status.textContent = error.message;
   } finally {
     busy = false;
@@ -277,6 +285,7 @@ async function execute(path, payload, goHome = false) {
   if (busy) return;
   view = "actions";
   busy = true;
+  refreshNeeded = true;
   status.textContent = "Открываем действие…";
   render();
   try {
@@ -286,18 +295,14 @@ async function execute(path, payload, goHome = false) {
       body: JSON.stringify({role, ...payload, event_id: crypto.randomUUID()}),
     });
     reply = goHome ? null : result.reply;
-    if (goHome) openView("overview");
+    if (goHome) setView("overview");
     status.textContent = "";
-    try {
-      school = await request("/api/demo/state?role=" + encodeURIComponent(role));
-    } catch {
-      status.textContent = "Ответ получен. Обзор обновится при следующем открытии.";
-    }
   } catch (error) {
     status.textContent = error.message;
   } finally {
     busy = false;
-    render();
+    if (view === "overview") await load();
+    else render();
   }
 }
 
@@ -307,7 +312,7 @@ roleSelect.addEventListener("change", () => {
   school = null;
   reply = null;
   draft = false;
-  openView("overview");
+  setView("overview");
   load();
 });
 

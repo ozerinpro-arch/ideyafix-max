@@ -4,6 +4,7 @@ import tempfile
 import time
 import json
 import unittest
+from unittest.mock import patch
 from uuid import uuid4
 from fastapi import HTTPException
 from app.platform_store import PlatformStore
@@ -71,6 +72,20 @@ class PlatformSessionTests(unittest.TestCase):
         self.assertEqual(len(self.assistant.calls),calls)
         self.store.ingest(native('message_callback',sender=999,chat=999,payload=token))
         self.assertEqual(len(self.assistant.calls),calls)
+
+    def test_role_switch_retires_expired_button_even_if_clock_moves_back(self):
+        with patch('app.platform_store.stamp') as now:
+            now.return_value = int(time.time() * 1000)
+            original = now.return_value
+            self.bind(operator=True)
+            token = self.store.claim_next()['reply']['buttons'][0]['payload']
+            now.return_value = original + 16 * 60 * 1000
+            self.store.ingest(native(text='/role 710005'))
+            self.store.ingest(native(text='/role 710007'))
+            calls = len(self.assistant.calls)
+            now.return_value = original + 1
+            self.store.ingest(native('message_callback', payload=token))
+            self.assertEqual(len(self.assistant.calls), calls)
 
     def test_stale_tap_preserves_current_action_and_home_is_reusable(self):
         self.assistant.handle=lambda actor,text,event,**kwargs:{

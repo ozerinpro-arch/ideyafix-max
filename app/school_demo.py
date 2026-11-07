@@ -18,14 +18,15 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_valida
 
 from .demo_seed import prepare
 from .platform_assistant import PlatformAssistant
+from .platform_navigation import home_reply
 from .platform_runtime import PlatformRuntime
 from .platform_transport import document_bytes
+from .school_demo_links import DEMO_PORT
 
 
 PROJECT = Path(__file__).resolve().parent.parent
 STATIC = PROJECT / 'app/static/school-demo'
 RUNTIME = PROJECT / 'runtime/school-demo'
-PORT = 5212
 COOKIE = 'ideyafix_school_demo'
 SESSION_IDLE_SECONDS = 30 * 60
 SESSION_LIMIT = 8
@@ -176,7 +177,6 @@ class _Workspace:
             active = (self.read(actor, '/api/school/publications') or {}).get('active')
             timetable = {**active, 'publicationVersion': active['version']} if active else None
             sections['draftTimetable'] = _timetable(self.read(actor, '/api/timetable'))
-        menu = self.assistant.handle(actor, '/home', 'school-demo-menu-v1', session_key='school-demo-menu')
         return {
             'role': role,
             'profile': current,
@@ -184,7 +184,7 @@ class _Workspace:
             'timetable': _timetable(timetable),
             'assignments': assignments,
             'sections': sections,
-            'menu': _public_reply(menu),
+            'menu': _public_reply(home_reply(current)),
         }
 
     def action(self, value):
@@ -250,7 +250,7 @@ def create_app(runtime_root=None):
     async def loopback_boundary(request, call_next):
         hosts = request.headers.getlist('host')
         origins = request.headers.getlist('origin')
-        allowed_hosts = {f'127.0.0.1:{PORT}', f'localhost:{PORT}'}
+        allowed_hosts = {f'127.0.0.1:{DEMO_PORT}', f'localhost:{DEMO_PORT}'}
         valid_host = len(hosts) == 1 and hosts[0] in allowed_hosts
         same_origin = valid_host and origins == ['http://' + hosts[0]]
         cross_site_api = (request.url.path.startswith('/api/') and
@@ -329,7 +329,7 @@ def create_app(runtime_root=None):
 def main():
     import uvicorn
 
-    uvicorn.run(create_app(), host='127.0.0.1', port=PORT, proxy_headers=False, access_log=False)
+    uvicorn.run(create_app(), host='127.0.0.1', port=DEMO_PORT, proxy_headers=False, access_log=False)
 
 
 if __name__ == '__main__':

@@ -30,6 +30,8 @@ class PlatformStore(LiveStore):
             CREATE TABLE IF NOT EXISTS platform_invite_permissions(hash TEXT PRIMARY KEY,operator INTEGER NOT NULL);
             CREATE TABLE IF NOT EXISTS platform_actions(hash TEXT PRIMARY KEY,sender_id TEXT NOT NULL,chat_id TEXT NOT NULL,
                 actor_id INTEGER NOT NULL,command TEXT NOT NULL,expires_at INTEGER NOT NULL,used INTEGER NOT NULL DEFAULT 0);
+            CREATE INDEX IF NOT EXISTS platform_actions_active_dialog
+                ON platform_actions(sender_id, chat_id) WHERE used=0;
             CREATE TABLE IF NOT EXISTS platform_pages(id TEXT PRIMARY KEY,sender_id TEXT NOT NULL,chat_id TEXT NOT NULL,
                 actor_id INTEGER NOT NULL,payload TEXT NOT NULL,expires_at INTEGER NOT NULL);
             CREATE TABLE IF NOT EXISTS platform_reply_payloads(outbox_id TEXT PRIMARY KEY,payload TEXT NOT NULL);
@@ -169,12 +171,22 @@ class PlatformStore(LiveStore):
         owner=db.execute('SELECT sender_id FROM live_sessions WHERE chat_id=?',(event['chatId'],)).fetchone()
         if owner and owner['sender_id']!=event['senderId']:return None
         db.execute('UPDATE live_invites SET used=1 WHERE hash=?',(hashed,))
-        db.execute('UPDATE platform_actions SET used=1 WHERE sender_id=? AND chat_id=?',(event['senderId'],event['chatId']))
+        self._retire_actions(db, event)
         db.execute('INSERT INTO live_sessions VALUES(?,?,?) ON CONFLICT(sender_id) DO UPDATE SET chat_id=excluded.chat_id,actor_id=excluded.actor_id',
             (event['senderId'],event['chatId'],invite['actor_id']))
         db.execute('INSERT INTO platform_session_permissions VALUES(?,?) ON CONFLICT(sender_id) DO UPDATE SET operator=excluded.operator',
             (event['senderId'],int(operator)))
         return invite['actor_id']
+
+    def _retire_actions(self, db, event, *, keep_navigation=False):
+        query = ('UPDATE platform_actions SET used=1 '
+                 'WHERE sender_id=? AND chat_id=? AND used=0')
+        values = (event['senderId'], event['chatId'])
+        if keep_navigation:
+            placeholders = ','.join('?' for _ in REUSABLE_NAVIGATION)
+            query += f' AND command NOT IN ({placeholders})'
+            values += REUSABLE_NAVIGATION
+        db.execute(query, values)
 
     def _validate_platform(self,normalized):
         event=deepcopy(normalized);document=event.pop('file',None)
@@ -265,9 +277,7 @@ class PlatformStore(LiveStore):
                 # Rejecting a stale tap must not invalidate a newer keyboard.
                 # Only exact, stateless navigation can survive a successful tap.
                 if reply is None:
-                    slots = ','.join('?' for _ in REUSABLE_NAVIGATION)
-                    db.execute(f'UPDATE platform_actions SET used=1 WHERE sender_id=? AND chat_id=? AND command NOT IN ({slots})',
-                               (event['senderId'],event['chatId'],*REUSABLE_NAVIGATION))
+                    self._retire_actions(db, event, keep_navigation=True)
                 if reply is None:
                     verb,_,argument=incoming.strip().partition(' ')
                     if verb.casefold() == '/demo':
@@ -284,7 +294,7 @@ class PlatformStore(LiveStore):
                         elif self._profile(db,target)is None:
                             reply={'text':'Такого тестового профиля нет.','buttons':[{'label':'Профили','command':'/role'}]}
                         else:
-                            db.execute('UPDATE platform_actions SET used=1 WHERE sender_id=? AND chat_id=?',(event['senderId'],event['chatId']))
+                            self._retire_actions(db, event)
                             db.execute('UPDATE live_sessions SET actor_id=? WHERE sender_id=?',(target,event['senderId']))
                             session=db.execute('SELECT * FROM live_sessions WHERE sender_id=?',(event['senderId'],)).fetchone()
                             incoming='/start'
@@ -305,7 +315,7 @@ class PlatformStore(LiveStore):
                         intent=reply.pop('scheduleNoticeIntent',None)
                         if intent is not None:reply['text']=self._queue_notice(db,session['actor_id'],event,intent)
                         if reply.pop('unlinkMax',False):
-                            db.execute('UPDATE platform_actions SET used=1 WHERE sender_id=? AND chat_id=?',(event['senderId'],event['chatId']))
+                            self._retire_actions(db, event)
                             db.execute('DELETE FROM live_sessions WHERE sender_id=? AND chat_id=?',(event['senderId'],event['chatId']))
                             db.execute('DELETE FROM platform_session_permissions WHERE sender_id=?',(event['senderId'],))
                             db.execute("UPDATE live_outbox SET state='rejected',error_code='dialog_stopped' WHERE chat_id=? AND state='queued'",(event['chatId'],))

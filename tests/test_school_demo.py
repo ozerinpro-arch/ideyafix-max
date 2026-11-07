@@ -1,5 +1,5 @@
 from pathlib import Path
-from tempfile import TemporaryDirectory, gettempdir
+from tempfile import TemporaryDirectory
 import unittest
 from uuid import uuid4
 
@@ -14,7 +14,7 @@ ORIGIN = 'http://127.0.0.1:5212'
 
 class SchoolDemoTests(unittest.TestCase):
     def setUp(self):
-        directory = TemporaryDirectory(prefix='ifx-school-demo-test-', dir=Path(gettempdir()).resolve())
+        directory = TemporaryDirectory(prefix='ifx-school-demo-test-', dir='/private/tmp')
         self.addCleanup(directory.cleanup)
         self.root = Path(directory.name)
         self.app = create_app(self.root)
@@ -68,6 +68,7 @@ class SchoolDemoTests(unittest.TestCase):
         self.assertEqual({row['role'] for row in teacher['profiles']}, {'teacher', 'student', 'planner', 'director'})
         self.assertEqual(len({state['profile']['id'] for state in (teacher, student, planner, director)}), 4)
         self.assertEqual(len(teacher['assignments']), 2)
+        self.assertNotIn('image', teacher['menu'])
         self.assertEqual(len(student['assignments']), 1)
         self.assertEqual(student['assignments'][0]['title'], 'Саше: найти половину')
         self.assertNotIn('answers', student['assignments'][0])
