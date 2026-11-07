@@ -50,6 +50,18 @@ class NativePlatformTransportTests(unittest.TestCase):
         result=self.client.send_reply(456,'Школьное демо',buttons=[{**link,'url':'https://example.test'}])
         self.assertEqual(result.status,'rejected')
 
+    def test_only_exact_public_school_link_is_allowed(self):
+        link={'label':'Открыть школу','url':'https://taskfloww.site/school-staff/'}
+        result=self.client.send_reply(456,'Школьный кабинет',buttons=[link])
+        self.assertEqual(result.status,'accepted')
+        body=json.loads(self.api[-1].content)
+        self.assertEqual(body['attachments'][0]['payload']['buttons'][0][0],
+                         {'type':'link','text':'Открыть школу','url':link['url']})
+        for url in ('https://taskfloww.site/school-staff','https://taskfloww.site/school-staff/?x=1',
+                    'https://taskfloww.site.evil.test/school-staff/'):
+            result=self.client.send_reply(456,'Школьный кабинет',buttons=[{**link,'url':url}])
+            self.assertEqual(result.status,'rejected')
+
     def test_document_upload_does_not_forward_bot_credentials(self):
         document={'name':'пример.pdf','contentType':'application/pdf','base64':base64.b64encode(b'%PDF-1.4 synthetic').decode()}
         with patch('time.sleep'):

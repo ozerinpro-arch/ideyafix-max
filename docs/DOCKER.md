@@ -22,10 +22,10 @@ docker run --rm --network none --entrypoint python ideyafix-max:local \
 ```sh
 # Linux x86-64:
 docker load -i ideyafix-max-linux-amd64.tar.gz
-export IDEYAFIX_IMAGE=ideyafix-max:amd64
+export IDEYAFIX_IMAGE=ideyafix-max:school-2026-11-08-amd64
 # Для Apple Silicon / Linux ARM64 вместо этого:
 # docker load -i ideyafix-max-linux-arm64.tar.gz
-# export IDEYAFIX_IMAGE=ideyafix-max:arm64
+# export IDEYAFIX_IMAGE=ideyafix-max:school-2026-11-08-arm64
 docker tag "$IDEYAFIX_IMAGE" ideyafix-max:local
 ```
 

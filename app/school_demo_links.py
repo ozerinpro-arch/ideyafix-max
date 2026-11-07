@@ -24,6 +24,8 @@ DEMO_URLS = frozenset(
     for role, (_, _, _, action) in DEMO_ROLES.items()
     for view in (None, 'schedule', action)
 )
+SCHOOL_STAFF_URL = 'https://taskfloww.site/school-staff/'
+ALLOWED_URLS = DEMO_URLS | {SCHOOL_STAFF_URL}
 REUSABLE_NAVIGATION = (
     '/home', '/start', '/help', '/role', '/section study', '/section school',
     '/section management', '/demo', *(f'/demo {role}' for role in DEMO_ROLES),

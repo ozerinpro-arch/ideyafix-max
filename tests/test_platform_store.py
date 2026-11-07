@@ -52,6 +52,16 @@ class PlatformSessionTests(unittest.TestCase):
         self.assertEqual(self.assistant.calls[-1],(710007,'/schedule'))
         with self.assertRaises(HTTPException):self.store.issue_invite(710007)
 
+    def test_unbound_start_offers_school_link_without_platform_access(self):
+        self.store.ingest(native('bot_started'))
+        reply = self.store.claim_next()['reply']
+        self.assertEqual(reply['buttons'], [
+            {'label': 'Открыть школу', 'url': 'https://taskfloww.site/school-staff/'},
+        ])
+        self.assertEqual(self.assistant.calls, [])
+        with self.store.connection() as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM live_sessions').fetchone()[0], 0)
+
     def test_operator_can_switch_but_old_button_does_not_change_new_profile(self):
         self.bind(710001,True)
         first=self.store.claim_next();button=first['reply']['buttons'][0]['payload']

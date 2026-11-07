@@ -12,7 +12,7 @@ from .live_store import LiveStore,_validate,_text,_identifier
 from .platform_profiles import PROFILES,ALIASES
 from .platform_chat import ChatState
 from .platform_transport import document_bytes, image_bytes
-from .school_demo_links import DEMO_URLS, REUSABLE_NAVIGATION, demo_role_reply
+from .school_demo_links import ALLOWED_URLS, REUSABLE_NAVIGATION, SCHOOL_STAFF_URL, demo_role_reply
 from . import domain
 
 def stamp():return int(time.time()*1000)
@@ -219,7 +219,7 @@ class PlatformStore(LiveStore):
         for button in selected:
             if not isinstance(button,dict) or not _text(button.get('label'),128):
                 raise ValueError('invalid_platform_button')
-            if set(button)=={'label','url'} and isinstance(button['url'],str) and button['url'] in DEMO_URLS:
+            if set(button)=={'label','url'} and isinstance(button['url'],str) and button['url'] in ALLOWED_URLS:
                 native.append(button.copy())
                 continue
             if not _text(button.get('command'),2000):
@@ -260,9 +260,14 @@ class PlatformStore(LiveStore):
             permission=db.execute('SELECT operator FROM platform_session_permissions WHERE sender_id=?',(event['senderId'],)).fetchone()
             operator=bool(permission and permission['operator'])
             incoming='/start'if event['eventType']=='bot_started'else event.get('text')
+            school_link = {'label': 'Открыть школу', 'url': SCHOOL_STAFF_URL}
             reply=None
             if session is None:
-                reply={'text':'Идеяфикс · личный кабинет в MAX. Для первого входа получите одноразовую ссылку у администратора. После входа все действия выполняются здесь.','buttons':[]}
+                reply = {
+                    'text': ('Идеяфикс · школьный кабинет. Откройте школу по кнопке. '
+                             'Для личного кабинета в MAX получите одноразовую ссылку у администратора.'),
+                    'buttons': [school_link],
+                }
             elif self.assistant is None:raise ValueError('platform_assistant_required')
             elif self.assistant.authorize(session['actor_id']).get('status')!=200:
                 reply={'text':'Личный доступ изменился или отозван. Обратитесь к администратору.','buttons':[],'accessDenied':True}
@@ -333,7 +338,9 @@ class PlatformStore(LiveStore):
                             reply=self.assistant.handle(session['actor_id'],incoming,event['eventId'],session_key=scope)
                         if reply is None:reply={'text':'Выберите действие в личном кабинете.','buttons':[{'label':'Личный кабинет','command':'/home'}]}
                         if incoming.strip().casefold() in {'/start','/home','/help'} and not reply.get('accessDenied'):
-                            reply.setdefault('buttons',[]).append({'label':'Демо-роли','command':'/demo'})
+                            reply.setdefault('buttons', []).extend([
+                                school_link, {'label': 'Демо-роли', 'command': '/demo'},
+                            ])
                         target=reply.pop('inviteActorId',None)
                         if target is not None:
                             role=self._profile(db,session['actor_id'])['platformRole'];target_profile=self._profile(db,target)

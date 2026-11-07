@@ -2,7 +2,7 @@
 
 Учебный кабинет в MAX для ученика, преподавателя, завуча и директора. Бот открывает разделы по роли и присылает расписание на день и неделю картинкой вместе с кнопками. Проект запускается на собственном ядре и вымышленных данных.
 
-[Открыть бота MAX](https://max.ru/ideya_fiks_150_bot) · [GitHub](https://github.com/ozerinpro-arch/ideyafix-max) · [Релиз и Docker-образы](https://github.com/ozerinpro-arch/ideyafix-max/releases/tag/hackathon-max-visual-2026-11-07)
+[Открыть бота MAX](https://max.ru/ideya_fiks_150_bot) · [Веб-кабинет школы](https://taskfloww.site/school-staff/) · [Релизы и Docker-образы](https://github.com/ozerinpro-arch/ideyafix-max/releases)
 
 Стек проекта — Python 3.12, FastAPI, SQLite, Pillow, HTML/CSS и JavaScript без фреймворка. Бот подключается к MAX через Long Polling. Контейнер запускает тот же Python-модуль, что и CLI.
 
@@ -23,6 +23,8 @@
 ## Личные кабинеты
 
 Администратор выдаёт одноразовую личную ссылку. Получатель открывает её в MAX и нажимает «Начать». Простое открытие общей ссылки бота не предоставляет права администратора.
+
+Кнопка «Открыть школу» в ответе бота на `/start` открывает отдельный школьный веб-кабинет с собственным входом. Подключение бота, расписание и учебные сценарии MAX используют отдельные вымышленные данные.
 
 Девять начальных вымышленных профилей раздельны; Славик и Саша — разные ученики с разными заданиями. Приглашённый человек получает отдельный профиль с закреплёнными правами. Только тестовый оператор может переключать вымышленные роли; обычный пользователь через `/role` просматривает свой профиль.
 
@@ -57,15 +59,15 @@ docker run --rm --init --name ideyafix-max \
 
 Запускайте от обычного пользователя компьютера. Токен не передаётся через Dockerfile или переменные окружения. Дополнительный публичный CA применяется только к клиенту MAX, проверка TLS остаётся включённой. Настройки монтируются только для чтения, собственные данные сохраняются в `runtime/container-data`.
 
-В [релизе](https://github.com/ozerinpro-arch/ideyafix-max/releases/tag/hackathon-max-visual-2026-11-07) доступны отдельные архивы для Linux x86-64 и ARM64. Вместо сборки загрузите нужный образ:
+В [релизах](https://github.com/ozerinpro-arch/ideyafix-max/releases) доступны отдельные архивы для Linux x86-64 и ARM64. Вместо сборки загрузите нужный образ:
 
 ```sh
 # Linux x86-64:
 docker load -i ideyafix-max-linux-amd64.tar.gz
-docker tag ideyafix-max:amd64 ideyafix-max:local
+docker tag ideyafix-max:school-2026-11-08-amd64 ideyafix-max:local
 # Apple Silicon / Linux ARM64:
 # docker load -i ideyafix-max-linux-arm64.tar.gz
-# docker tag ideyafix-max:arm64 ideyafix-max:local
+# docker tag ideyafix-max:school-2026-11-08-arm64 ideyafix-max:local
 ```
 
 Первоначальное личное приглашение тестового оператора создаётся локальной командой до запуска приёмника. Команда, Docker Compose, проверка состояния и все настройки приведены в [инструкции Docker](docs/DOCKER.md). Одноразовую ссылку сохраняйте приватно.

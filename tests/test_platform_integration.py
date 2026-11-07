@@ -74,7 +74,8 @@ class FullPlatformIntegrationTests(unittest.TestCase):
         self.bind(710007)
         menu=self.client.sent[-1]
         self.assertIn('Славик Демо',menu['text'])
-        labels={b['label']:b['payload']for b in menu['buttons']}
+        self.assertIn({'label':'Открыть школу','url':'https://taskfloww.site/school-staff/'},menu['buttons'])
+        labels={b['label']:b['payload']for b in menu['buttons'] if 'payload' in b}
         self.assertNotIn('Люди и доступ',labels)
         self.assertFalse(any('Хакатон' in label or 'MAX' in label for label in labels))
         with Image.open(BytesIO(b64decode(menu['image']['base64']))) as cover:

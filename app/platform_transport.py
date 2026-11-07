@@ -11,7 +11,7 @@ from PIL import Image
 from .live_transport import LiveMaxClient
 from .vendor.max_transport import API_ORIGIN, TransportOutcome, _identity, _text, _tls_context
 from .vendor.max_wire import is_personal_recipient, opaque_payload
-from .school_demo_links import DEMO_URLS
+from .school_demo_links import ALLOWED_URLS
 
 MAX_FILE_BYTES=8*1024*1024
 MAX_IMAGE_BYTES=2*1024*1024
@@ -123,7 +123,7 @@ class PlatformMaxClient(LiveMaxClient):
             pair=[]
             for button in buttons:
                 if not isinstance(button,dict) or not _text(button.get('label'),128):raise ValueError()
-                if set(button) == {'label', 'url'} and isinstance(button['url'], str) and button['url'] in DEMO_URLS:
+                if set(button) == {'label', 'url'} and isinstance(button['url'], str) and button['url'] in ALLOWED_URLS:
                     item = {'type':'link','text':button['label'],'url':button['url']}
                 else:
                     item={'type':'callback','text':button['label'],'payload':opaque_payload(button.get('payload'))}
