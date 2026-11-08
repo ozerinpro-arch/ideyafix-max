@@ -2,7 +2,7 @@
 
 Расписание, замены и задания в MAX. Четыре демо-роли открывают школьный кабинет в браузере. Личный кабинет в чате работает на отдельном ядре.
 
-**[Открыть бота MAX](https://max.ru/ideya_fiks_150_bot)** · **[Демо-школа](https://taskfloww.site/school-staff/)** · **[Релиз с Docker-образом](https://github.com/ozerinpro-arch/ideyafix-max/releases/tag/hackathon-taskflow-2026-11-08-fix)**
+**[Открыть бота MAX](https://max.ru/ideya_fiks_150_bot)** · **[Демо-школа](https://taskfloww.site/school-staff/)** · **[Релиз с Docker-образом](https://github.com/ozerinpro-arch/ideyafix-max/releases/latest)**
 
 ## Попробовать за минуту
 
@@ -44,7 +44,7 @@
 
 Архив релиза содержит образ **Linux AMD64**, который работает на Taskflow, исходники соответствующей версии и контрольные суммы.
 
-Скачайте [архив образа](https://github.com/ozerinpro-arch/ideyafix-max/releases/download/hackathon-taskflow-2026-11-08-fix/ideyafix-max-taskflow-linux-amd64.tar.gz) и `SHA256SUMS.txt` со [страницы релиза](https://github.com/ozerinpro-arch/ideyafix-max/releases/tag/hackathon-taskflow-2026-11-08-fix). Загрузите образ или соберите его из корня репозитория.
+Скачайте [архив образа](https://github.com/ozerinpro-arch/ideyafix-max/releases/latest/download/ideyafix-max-taskflow-linux-amd64.tar.gz) и `SHA256SUMS.txt` со [страницы релиза](https://github.com/ozerinpro-arch/ideyafix-max/releases/latest). Загрузите образ или соберите его из корня репозитория.
 
 ```sh
 # Готовый образ из релиза

@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import sqlite3
 import tempfile
+import time
 import unittest
 from uuid import uuid4
 from xml.sax.saxutils import escape
@@ -139,6 +140,69 @@ class PlatformRuntimeTests(unittest.TestCase):
         result=self.event(710003,path,body,event='uncertain-gateway-event',expected=409)
         self.assertTrue(result['data']['uncertain'])
         self.assertEqual((self.root/'teacher-preparation.sqlite3').read_bytes(),before)
+
+    def test_timeout_after_commit_isolates_next_actor_and_replays_one_write(self):
+        teacher, student = 710003, 710004
+        path = '/api/teacher/preparation/materials'
+        event = 'timed-out-commit-' + str(uuid4())
+        body = {'title': 'Материал после тайм-аута', 'topic': 'Доли', 'content': 'Синтетический материал'}
+        original_wait = self.runtime._wait
+        old_process = self.runtime._process
+
+        def expire_with_reply_waiting(fd, deadline, *, writing=False):
+            original_wait(fd, deadline, writing=writing)
+            if not writing:
+                # The real child wrote the reply, but the caller missed its deadline.
+                original_wait(fd, time.monotonic() - 1)
+
+        with patch.object(self.runtime, '_wait', side_effect=expire_with_reply_waiting):
+            with self.assertRaisesRegex(RuntimeError, '^platform_runtime_timeout$'):
+                self.event(teacher, path, body, event=event)
+        self.assertIsNotNone(old_process.poll())
+        self.assertIsNone(self.runtime._process)
+        with sqlite3.connect(self.root / 'gateway.sqlite3') as database:
+            state, response = database.execute('SELECT state,response FROM gateway_receipts WHERE event_id=?',
+                                               (event,)).fetchone()
+        self.assertEqual(state, 'done')
+        committed = json.loads(response)
+        material = committed['data']['material']['id']
+        pupil = self.runtime.authorize(student)
+        self.assertEqual(pupil['data']['profile']['id'], student)
+        self.assertNotIn('material', pupil['data'])
+        self.assertIsNot(self.runtime._process, old_process)
+        self.call(710001, 'GET', path + '/' + material, expected=404)
+        before = (self.root / 'teacher-preparation.sqlite3').read_bytes()
+        self.assertEqual(self.event(teacher, path, body, event=event), committed)
+        self.event(710001, path, body, event=event, expected=409)
+        self.assertEqual((self.root / 'teacher-preparation.sqlite3').read_bytes(), before)
+
+    def test_partial_response_cannot_keep_the_channel_open_past_its_deadline(self):
+        original_read = os.read
+        old_process = self.runtime._process
+
+        def partial_read(fd, size):
+            return original_read(fd, size)[:7]
+
+        with patch('app.platform_runtime.RPC_TIMEOUT', 1.5), patch('app.platform_runtime.os.read', side_effect=partial_read):
+            with self.assertRaisesRegex(RuntimeError, '^platform_runtime_timeout$'):
+                self.runtime.authorize(710003)
+        self.assertIsNotNone(old_process.poll())
+        self.assertEqual(self.runtime.authorize(710004)['data']['profile']['id'], 710004)
+
+    def test_response_with_a_different_rpc_id_is_rejected(self):
+        original_read = os.read
+        old_process = self.runtime._process
+
+        def replace_id(fd, size):
+            frame = json.loads(original_read(fd, size))
+            frame['rpcId'] += 1
+            return (json.dumps(frame) + '\n').encode()
+
+        with patch('app.platform_runtime.os.read', side_effect=replace_id):
+            with self.assertRaisesRegex(RuntimeError, '^platform_runtime_mismatched_response$'):
+                self.runtime.authorize(710003)
+        self.assertIsNotNone(old_process.poll())
+        self.assertEqual(self.runtime.authorize(710004)['data']['profile']['id'], 710004)
 
     def test_e_actual_pdf_native_roles_replay_and_cancelled_source(self):
         body=self.make_document()

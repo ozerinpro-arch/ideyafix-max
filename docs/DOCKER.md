@@ -6,13 +6,13 @@
 
 ## Готовый образ Taskflow
 
-Скачайте архив образа и `SHA256SUMS.txt` из [релиза Taskflow](https://github.com/ozerinpro-arch/ideyafix-max/releases/tag/hackathon-taskflow-2026-11-08-fix).
+Скачайте архив образа и `SHA256SUMS.txt` из [релиза Taskflow](https://github.com/ozerinpro-arch/ideyafix-max/releases/latest).
 В релизе один образ Linux AMD64. Для Linux ARM64 можно собрать образ из исходников.
 
 ```sh
 shasum -a 256 -c SHA256SUMS.txt --ignore-missing
 docker load -i ideyafix-max-taskflow-linux-amd64.tar.gz
-export IDEYAFIX_IMAGE=ideyafix-max:taskflow-62a71d7
+export IDEYAFIX_IMAGE=ideyafix-max:taskflow-rpc-fix
 docker image inspect --format '{{.Id}} {{.Architecture}}' "$IDEYAFIX_IMAGE"
 ```
 

@@ -650,8 +650,8 @@ def main():
     protocol = sys.stdout
     sys.stdout = sys.stderr
     host = None
-    def emit(value):
-        protocol.write(canonical(value)+'\n'); protocol.flush()
+    def emit(value, rpc_id=None):
+        protocol.write(canonical({'rpcId': rpc_id, **value})+'\n'); protocol.flush()
     try:
         provider=configuration(root,sys.argv[2] if len(sys.argv)>2 else None)
         host = Host(root,provider)
@@ -665,11 +665,15 @@ def main():
         return 1
     try:
         for line in sys.stdin:
+            rpc_id = None
             try:
                 value = json.loads(line)
+                rpc_id = value['rpcId']
+                if type(rpc_id) is not int or rpc_id < 1:
+                    raise ValueError('invalid_rpc_id')
                 operation = value['operation']
                 if operation == 'close':
-                    emit({'ok': True, 'value': None}); break
+                    emit({'ok': True, 'value': None}, rpc_id); break
                 if operation == 'profiles': result = host.profiles()
                 elif operation == 'schema': result = host.schema()
                 elif operation == 'upload': result = host.upload(**value['arguments'])
@@ -678,12 +682,12 @@ def main():
                 elif operation == 'authorize': result = host.authorize(**value['arguments'])
                 elif operation == 'request': result = host.request(**value['arguments'])
                 else: raise ValueError('unsupported_operation')
-                emit({'ok': True, 'value': result})
+                emit({'ok': True, 'value': result}, rpc_id)
             except Exception as error:
                 import traceback
                 frames=traceback.extract_tb(error.__traceback__)[-3:]
                 emit({'ok': False, 'error': type(error).__name__+':'+';'.join(
-                    Path(frame.filename).name+':'+str(frame.lineno) for frame in frames)})
+                    Path(frame.filename).name+':'+str(frame.lineno) for frame in frames)}, rpc_id)
     finally:
         host.close()
     return 0
