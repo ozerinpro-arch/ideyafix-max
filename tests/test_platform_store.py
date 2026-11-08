@@ -117,7 +117,7 @@ class PlatformSessionTests(unittest.TestCase):
         with self.store.connection() as db:
             self.assertEqual(db.execute('SELECT COUNT(*) FROM live_sessions').fetchone()[0], 0)
 
-    def test_expired_public_button_and_invalid_invite_offer_recovery(self):
+    def test_old_public_button_still_works_and_unknown_button_offers_recovery(self):
         accounts = self.enable_web_demo()
         with patch('app.platform_store.stamp') as now:
             initial = int(time.time() * 1000)
@@ -129,6 +129,10 @@ class PlatformSessionTests(unittest.TestCase):
 
             now.return_value = initial + 16 * 60 * 1000
             self.store.ingest(native('message_callback', payload=expired))
+            chosen = self.store.claim_next()['reply']
+            self.assertEqual(chosen['buttons'][0]['copy'], accounts['student']['login'])
+
+            self.store.ingest(native('message_callback', payload='x'*43))
             recovery = self.store.claim_next()['reply']
             self.assertIn('Кнопка устарела', recovery['text'])
             self.assertNotIn('image', recovery)
@@ -144,6 +148,37 @@ class PlatformSessionTests(unittest.TestCase):
             self.assertEqual(len(invalid['buttons']), len(DEMO_ROLES))
             self.assertNotIn('image', invalid)
         self.assertEqual(self.assistant.calls, [])
+
+    def test_old_demo_menu_survives_private_revocation_without_granting_access(self):
+        accounts = self.enable_web_demo()
+        with patch('app.platform_store.stamp') as now:
+            initial = int(time.time() * 1000)
+            now.return_value = initial
+            self.bind()
+            self.store.claim_next()
+            self.store.ingest(native(text='/start'))
+            menu = self.store.claim_next()['reply']
+            teacher = next(button['payload'] for button in menu['buttons'] if button['label'] == 'Преподаватель')
+            home = next(button['payload'] for button in menu['buttons'] if button['label'] == 'Мой кабинет MAX')
+
+            self.assistant.authorize = lambda actor: {'status': 401}
+            now.return_value = initial + 9 * 3600 * 1000
+            self.store.ingest(native('message_callback', payload=teacher))
+            chosen = self.store.claim_next()['reply']
+            self.assertEqual(chosen['buttons'][0]['copy'], accounts['teacher']['login'])
+            self.assertNotIn('Мой кабинет MAX', [button['label'] for button in chosen['buttons']])
+
+            self.store.ingest(native('message_callback', payload=home))
+            denied = self.store.claim_next()['reply']
+            self.assertIn('отозван', denied['text'])
+            self.store.ingest(native('message_callback', payload=denied['buttons'][0]['payload']))
+            recovered = self.store.claim_next()['reply']
+            self.assertEqual([button['label'] for button in recovered['buttons']],
+                             ['Ученик', 'Преподаватель', 'Завуч', 'Директор'])
+            self.store.ingest(native(text='/demo Завуч'))
+            self.assertEqual(self.store.claim_next()['reply']['buttons'][0]['copy'],
+                             accounts['planner']['login'])
+        self.assertEqual(self.assistant.calls, [(710007, '/start')])
 
     def test_bound_demo_selection_can_return_to_same_private_cabinet(self):
         self.enable_web_demo()

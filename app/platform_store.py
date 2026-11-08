@@ -13,7 +13,7 @@ from .platform_profiles import PROFILES,ALIASES
 from .platform_chat import ChatState
 from .platform_transport import document_bytes, image_bytes
 from .school_demo_links import (
-    ALLOWED_URLS, REUSABLE_NAVIGATION, SCHOOL_STAFF_URL,
+    ALLOWED_URLS, REUSABLE_NAVIGATION, SCHOOL_STAFF_URL, WEB_DEMO_COMMANDS,
     demo_role_reply, web_demo_reply, web_demo_role,
 )
 from .platform_navigation import cover_image
@@ -258,14 +258,47 @@ class PlatformStore(LiveStore):
                 result['image']=image
         return result
 
-    def _callback_command(self, db, event, actor_id):
+    def _scoped_callback(self, db, event):
         action = db.execute('SELECT * FROM platform_actions WHERE hash=?',
                             (digest(event['callbackPayload']),)).fetchone()
-        if (action is None or action['used'] or action['expires_at'] <= stamp()
-                or action['sender_id'] != event['senderId'] or action['chat_id'] != event['chatId']
-                or action['actor_id'] != actor_id):
+        if action and action['sender_id'] == event['senderId'] and action['chat_id'] == event['chatId']:
+            return action
+
+    def _callback_command(self, action, actor_id):
+        if (action and not action['used'] and action['expires_at'] > stamp()
+                and action['actor_id'] == actor_id):
+            return action['command']
+
+    def _web_demo_entry(self, event, incoming, action, session):
+        if not self.web_demo_accounts:
             return None
-        return action['command']
+        callback = event['eventType'] == 'message_callback'
+        if callback:
+            # A public role link carries no personal rights. Preserve links from old
+            # messages in the same chat, even after its private session or button expires.
+            incoming = action['command'] if action and action['command'] in WEB_DEMO_COMMANDS else None
+        text = (incoming or '').strip().casefold()
+        verb, _, argument = text.partition(' ')
+        welcome = text == '/start' and event['startPayload'] is None
+        if session is not None and not welcome and verb != '/demo':
+            return None
+        hint = None
+        if callback and incoming is None:
+            hint = 'Кнопка устарела. Выберите роль в новом меню ниже.'
+        elif event['startPayload'] is not None:
+            hint = 'Ссылка для личного входа недействительна. Попросите администратора прислать новую.'
+        role = web_demo_role(argument if verb == '/demo' else text)
+        return role, welcome and not callback, hint
+
+    def _optional_demo_cabinet(self, session):
+        if session is None or self.assistant is None:
+            return None
+        try:
+            if self.assistant.authorize(session['actor_id']).get('status') == 200:
+                return session
+        except (OSError, RuntimeError, ValueError):
+            # The separate school demo remains available if the personal core is down.
+            pass
 
     def _web_demo_reply(self, role, session, *, welcome=False, hint=None):
         reply = web_demo_reply(role, self.web_demo_accounts, personal_cabinet=session is not None)
@@ -378,20 +411,15 @@ class PlatformStore(LiveStore):
             incoming='/start'if event['eventType']=='bot_started'else event.get('text')
             school_link = ({'label': 'Открыть школу', 'command': '/demo'} if self.web_demo_accounts
                            else {'label': 'Открыть школу', 'url': SCHOOL_STAFF_URL})
+            action = self._scoped_callback(db, event) if callback else None
+            demo = self._web_demo_entry(event, incoming, action, session)
             reply=None
-            if self.web_demo_accounts and session is None:
-                if callback:
-                    incoming = self._callback_command(db, event, 0)
-                text = (incoming or '').strip().casefold()
-                verb, _, argument = text.partition(' ')
-                role = web_demo_role(argument if verb == '/demo' else text)
-                hint = None
-                if callback and incoming is None:
-                    hint = 'Кнопка устарела. Выберите роль в новом меню ниже.'
-                elif event['startPayload'] is not None:
-                    hint = 'Ссылка для личного входа недействительна. Попросите администратора прислать новую.'
-                reply = self._web_demo_reply(role, None, welcome=text == '/start' and not callback and not hint,
-                                             hint=hint)
+            if demo is not None:
+                role, welcome, hint = demo
+                if session is not None:
+                    self._retire_actions(db, event, keep_navigation=True)
+                session = self._optional_demo_cabinet(session)
+                reply = self._web_demo_reply(role, session, welcome=welcome, hint=hint)
             elif session is None:
                 reply = {
                     'text': ('Идеяфикс · школьный кабинет. Откройте школу по кнопке. '
@@ -401,9 +429,11 @@ class PlatformStore(LiveStore):
             elif self.assistant is None:raise ValueError('platform_assistant_required')
             elif self.assistant.authorize(session['actor_id']).get('status')!=200:
                 reply={'text':'Личный доступ изменился или отозван. Обратитесь к администратору.','buttons':[],'accessDenied':True}
+                if self.web_demo_accounts:
+                    reply['buttons'].append({'label': 'Выбрать демо-роль', 'command': '/demo'})
             else:
                 if callback:
-                    incoming = self._callback_command(db, event, session['actor_id'])
+                    incoming = self._callback_command(action, session['actor_id'])
                     if incoming is None:
                         reply={'text':'Эта кнопка уже использована, устарела или относится к другому профилю. Откройте актуальный кабинет.','buttons':[{'label':'Личный кабинет','command':'/home'}]}
                         if self.web_demo_accounts:
@@ -414,11 +444,8 @@ class PlatformStore(LiveStore):
                     self._retire_actions(db, event, keep_navigation=True)
                 if reply is None:
                     verb,_,argument=incoming.strip().partition(' ')
-                    if self.web_demo_accounts and verb.casefold() == '/start' and not event['startPayload']:
-                        reply = self._web_demo_reply('', session, welcome=not callback)
-                    elif verb.casefold() == '/demo':
-                        reply = (self._web_demo_reply(web_demo_role(argument), session) if self.web_demo_accounts
-                                 else demo_role_reply(argument.casefold()))
+                    if verb.casefold() == '/demo':
+                        reply = demo_role_reply(argument.casefold())
                     if verb=='/role':
                         target=ALIASES.get(argument.casefold())
                         if target is None and argument.isascii()and argument.isdigit():target=int(argument)
@@ -494,13 +521,13 @@ class PlatformStore(LiveStore):
                             db.execute('INSERT INTO platform_native_invites VALUES(?,?,?,?,0)',
                                 (digest(capability),native_token,session['actor_id'],stamp()+15*60*1000))
                             reply['text']+='\n\nОдноразовая ссылка на 15 минут для входа в MAX:\nhttps://max.ru/'+self.bot_username+'?start='+capability
-            if session is not None and hasattr(self.assistant,'validate_reply'):
+            if demo is None and session is not None and hasattr(self.assistant,'validate_reply'):
                 reply=self.assistant.validate_reply(session['actor_id'],reply)
             denied=reply.pop('accessDenied',False)
             if reply.pop('_native',False):native=reply
             else:native=self._paged(db,session or {'actor_id':0},event,reply)
             self._queue_reply(db, event['eventId'], event['chatId'], native,
-                              session['actor_id'] if session is not None and not denied else 0)
+                              session['actor_id'] if session is not None and not denied and demo is None else 0)
             db.execute('INSERT INTO live_events VALUES(?,?,?)',(event['eventId'],event['payloadHash'],'queued'))
             return {'duplicate':False,'queued':1}
 

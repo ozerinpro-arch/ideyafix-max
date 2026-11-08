@@ -284,11 +284,17 @@ class Host:
     def client_for(self, account):
         if account not in self.clients:
             client = self.stack.enter_context(self.TestClient(self.app, base_url=ORIGIN))
-            with self.registry() as database:
-                row=database.execute("SELECT password FROM profiles WHERE username=? AND state='active'",(account,)).fetchone()
-            self.post(client, '/api/staff/login', {'username': account, 'password': row['password'] if row else PASSWORD})
+            self.sign_in(client, account)
             self.clients[account] = client
         return self.clients[account]
+
+    def sign_in(self, client, account):
+        with self.registry() as database:
+            row = database.execute("SELECT password FROM profiles WHERE username=? AND state='active'",
+                                   (account,)).fetchone()
+        self.post(client, '/api/staff/login', {
+            'username': account, 'password': row['password'] if row else PASSWORD,
+        })
 
     def post(self, client, path, body, method='POST'):
         csrf = client.get(PREFIX + '/api/portal-session').json()['csrfToken']
@@ -309,14 +315,19 @@ class Host:
         owner=profile['role']=='platform_admin'
         try:
             client=self.owner_client if owner else self.client_for(profile['account'])
+            # The owner uses the closed-portal bridge, while staff cookies expire.
+            if owner:
+                response = client.get('/api/school/workspace', headers={'Origin': 'http://localhost:8798'})
+            else:
+                identity_url = PREFIX + '/api/staff/me'
+                response = client.get(identity_url, headers={'Origin': ORIGIN})
+                if response.status_code == 401:
+                    self.sign_in(client, profile['account'])
+                    response = client.get(identity_url, headers={'Origin': ORIGIN})
         except RuntimeError as error:
             if str(error).startswith('native_seed_401_'):
                 return {'status':401,'data':{'detail':'Личный доступ изменился'},'file':None}
             raise
-        # The owner has no staff cookie. Its real closed-portal bridge is checked
-        # by an existing owner-only business route, without returning its data.
-        response=client.get('/api/school/workspace' if owner else PREFIX+'/api/staff/me',
-            headers={'Origin':'http://localhost:8798' if owner else ORIGIN})
         if response.status_code!=200:
             return {'status':response.status_code,'data':{'detail':'Личный доступ изменился'},'file':None}
         # A live membership alone does not authorize a pupil whose underlying

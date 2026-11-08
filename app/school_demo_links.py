@@ -37,9 +37,10 @@ DEMO_URLS = frozenset(
 )
 SCHOOL_STAFF_URL = 'https://taskfloww.site/school-staff/'
 ALLOWED_URLS = DEMO_URLS | {SCHOOL_STAFF_URL}
+WEB_DEMO_COMMANDS = ('/demo', *(f'/demo {role}' for role in DEMO_ROLES))
 REUSABLE_NAVIGATION = (
     '/home', '/start', '/help', '/role', '/section study', '/section school',
-    '/section management', '/demo', *(f'/demo {role}' for role in DEMO_ROLES),
+    '/section management', *WEB_DEMO_COMMANDS,
 )
 
 def load_web_demo_accounts(path: Path):

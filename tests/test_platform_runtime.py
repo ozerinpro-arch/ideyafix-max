@@ -36,6 +36,18 @@ class PlatformRuntimeTests(unittest.TestCase):
     def event(self, actor, path, payload, **kwargs):
         return self.call(actor, 'POST', path, payload, kwargs.pop('event', str(uuid4())), **kwargs)
 
+    def test_staff_session_expiry_renews_the_same_membership_in_place(self):
+        actor = 710005
+        path = '/api/staff/me'
+        before = self.call(actor, 'GET', path)['data']['profile']
+        with sqlite3.connect(self.root / 'staff.sqlite3') as database:
+            changed = database.execute('UPDATE staff_sessions SET expires=0 WHERE member_id=?',
+                                       (before['membershipId'],))
+            self.assertGreater(changed.rowcount, 0)
+
+        self.assertEqual(self.runtime.authorize(actor)['status'], 200)
+        self.assertEqual(self.call(actor, 'GET', path)['data']['profile'], before)
+
     def make_document(self, student='ifx-student-1'):
         revision = self.call(710005, 'GET', '/api/school/clubs')['data']['revision']
         value = self.event(710005, '/api/school/clubs/programs', {'expectedRevision':revision,
