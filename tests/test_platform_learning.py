@@ -4,13 +4,14 @@ All roots are disposable, separate from the user's real MAX runtime. No provider
 network, source application imports, production identities or secrets are used.
 """
 from pathlib import Path
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 import base64
 import json
 import os
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 from uuid import uuid4
@@ -704,8 +705,41 @@ class NativeLearningAdapterTests(unittest.TestCase):
 
     def test_actual_consultation_offer_book_cancel_and_time_collision_guard(self):
         own = self.data(710003, '/api/staff/my-schedule')
-        last = date.fromisoformat(own['periodStart']) + timedelta(days=6)
+        week = date.fromisoformat(own['periodStart'])
+        last = week + timedelta(days=6)
         start = last.isoformat() + 'T15:00:00+03:00'
+        if datetime.fromisoformat(start) <= datetime.now(timezone.utc) + timedelta(minutes=2):
+            # Seeded lessons cover the current week. After Sunday afternoon,
+            # publish the next fixture week before exercising a future booking.
+            director = 710005
+
+            def post(path, body):
+                response = self.runtime.request(director, 'POST', path, body, str(uuid4()))
+                self.assertEqual(response['status'], 200, response.get('data'))
+                return response['data']
+
+            period = week + timedelta(weeks=1)
+            config = self.data(director, '/api/planning/config')
+            published = self.data(director, '/api/school/publications')
+            run = post('/api/planning/runs', {
+                'periodStart': period.isoformat(), 'mode': 'generate', 'timeLimitSeconds': 3,
+                'expectedConfigRevision': config['revision'],
+                'expectedDraftRevision': published['draftRevision'],
+            })
+            deadline = time.monotonic() + 20
+            while run['status'] in {'queued', 'running'} and time.monotonic() < deadline:
+                time.sleep(.05)
+                run = self.data(director, '/api/planning/runs/' + run['id'])
+            self.assertIn(run['status'], {'optimal', 'feasible'}, run.get('message'))
+            task = post('/api/planning/runs/' + run['id'] + '/propose', {})
+            self.assertEqual(post('/api/schedule-agent/tasks/' + task['id'] + '/decision',
+                                  {'decision': 'approve'})['status'], 'completed')
+            versions = {'runId': run['id'], 'expectedActiveVersion': published['activeVersion'],
+                        'expectedDraftRevision': self.data(director, '/api/timetable')['revision']}
+            preview = post('/api/school/publications/preview', versions)
+            self.assertTrue(preview['ready'], preview)
+            post('/api/school/publications/publish', {**versions, 'previewHash': preview['previewHash']})
+            start = (period + timedelta(days=6)).isoformat() + 'T15:00:00+03:00'
         result = self.form(710003, '/consultations new', ['1', 'Обсудить доли', 'Тестовый кабинет', start, '3'])
         self.assertIn('подтверждено', result['text'])
         duplicate = self.form(710003, '/consultations new', ['1', 'Пересекающееся время', 'Тестовый кабинет', start, '3'])
