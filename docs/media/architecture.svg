@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="690" viewBox="0 0 640 690" role="img" aria-labelledby="title description">
+  <title id="title">Архитектура «Школы действия» в MAX</title>
+  <desc id="description">Три маршрута. Демо-роль из MAX открывает веб-школу. Личный кабинет обращается к отдельному ядру бота. Бот забирает уведомления из очереди школы и отправляет их в MAX.</desc>
+  <defs>
+    <linearGradient id="canvas" x2="1" y2="1">
+      <stop stop-color="#e7edfc"/>
+      <stop offset="0.58" stop-color="#f6f7fb"/>
+      <stop offset="1" stop-color="#e8e9f8"/>
+    </linearGradient>
+    <linearGradient id="glass" x2="0.7" y2="1">
+      <stop stop-color="#fff"/>
+      <stop offset="1" stop-color="#f1f4fc"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M1 1 9 5 1 9" fill="none" stroke="#465f9c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="640" height="690" rx="32" fill="url(#canvas)"/>
+  <path d="M440 0c-6 91 65 136 200 158V0Z" fill="#d7e1ff" opacity=".65"/>
+  <g font-family="system-ui, 'Segoe UI', sans-serif" fill="#182643">
+    <text x="32" y="55" font-size="37" font-weight="730" letter-spacing="-1">Школа действия</text>
+    <text x="33" y="88" font-size="22" fill="#445477">Архитектура · Идеяфикс в MAX</text>
+    <g>
+      <rect x="31" y="119" width="578" height="154" rx="22" fill="#dce4f6"/>
+      <rect x="31" y="116" width="578" height="154" rx="22" fill="url(#glass)" stroke="#fff"/>
+      <rect x="53" y="136" width="42" height="42" rx="13" fill="#e2ebff"/>
+      <text x="74" y="165" font-size="22" font-weight="700" fill="#2855aa" text-anchor="middle">01</text>
+      <text x="111" y="165" font-size="28" font-weight="700">Демо для жюри</text>
+      <rect x="53" y="191" width="141" height="40" rx="12" fill="#edf2ff" stroke="#d8e2f7"/>
+      <rect x="249" y="191" width="160" height="40" rx="12" fill="#edf2ff" stroke="#d8e2f7"/>
+      <rect x="464" y="191" width="123" height="40" rx="12" fill="#edf2ff" stroke="#d8e2f7"/>
+      <g stroke="#465f9c" stroke-width="2.5" marker-end="url(#arrow)">
+        <path d="M205 211h32"/><path d="M420 211h32"/>
+      </g>
+      <g font-size="20" font-weight="650" text-anchor="middle">
+        <text x="123" y="218">MAX /start</text>
+        <text x="329" y="218">Выбор роли</text>
+        <text x="525" y="218">Сайт</text>
+      </g>
+      <text x="53" y="252" font-size="19" fill="#445477">В браузере открывается отдельная демо-школа</text>
+    </g>
+    <g>
+      <rect x="31" y="294" width="578" height="154" rx="22" fill="#dce4f6"/>
+      <rect x="31" y="291" width="578" height="154" rx="22" fill="url(#glass)" stroke="#fff"/>
+      <rect x="53" y="311" width="42" height="42" rx="13" fill="#e9e3fa"/>
+      <text x="74" y="340" font-size="22" font-weight="700" fill="#5b3d9c" text-anchor="middle">02</text>
+      <text x="111" y="340" font-size="28" font-weight="700">Личный кабинет в MAX</text>
+      <rect x="53" y="366" width="141" height="40" rx="12" fill="#f0edfa" stroke="#dfd9ee"/>
+      <rect x="249" y="366" width="160" height="40" rx="12" fill="#f0edfa" stroke="#dfd9ee"/>
+      <rect x="464" y="366" width="123" height="40" rx="12" fill="#f0edfa" stroke="#dfd9ee"/>
+      <g stroke="#465f9c" stroke-width="2.5" marker-end="url(#arrow)">
+        <path d="M205 386h32"/><path d="M420 386h32"/>
+      </g>
+      <g font-size="20" font-weight="650" text-anchor="middle">
+        <text x="123" y="393">Диалог</text>
+        <text x="329" y="393">Бот</text>
+        <text x="525" y="393">Ядро</text>
+      </g>
+      <text x="53" y="427" font-size="19" fill="#445477">Закреплённая роль и собственная база SQLite</text>
+    </g>
+    <g>
+      <rect x="31" y="469" width="578" height="154" rx="22" fill="#dce4f6"/>
+      <rect x="31" y="466" width="578" height="154" rx="22" fill="url(#glass)" stroke="#fff"/>
+      <rect x="53" y="486" width="42" height="42" rx="13" fill="#e2f1ee"/>
+      <text x="74" y="515" font-size="22" font-weight="700" fill="#21675d" text-anchor="middle">03</text>
+      <text x="111" y="515" font-size="28" font-weight="700">Уведомления школы</text>
+      <rect x="53" y="541" width="141" height="40" rx="12" fill="#eaf5f3" stroke="#d5e9e4"/>
+      <rect x="249" y="541" width="160" height="40" rx="12" fill="#eaf5f3" stroke="#d5e9e4"/>
+      <rect x="464" y="541" width="123" height="40" rx="12" fill="#eaf5f3" stroke="#d5e9e4"/>
+      <g stroke="#465f9c" stroke-width="2.5" marker-end="url(#arrow)">
+        <path d="M205 561h32"/><path d="M420 561h32"/>
+      </g>
+      <g font-size="20" font-weight="650" text-anchor="middle">
+        <text x="123" y="568">Очередь</text>
+        <text x="329" y="568">Бот</text>
+        <text x="525" y="568">MAX</text>
+      </g>
+      <text x="53" y="602" font-size="19" fill="#445477">Публикация замены или ответ на обращение</text>
+    </g>
+    <text x="33" y="660" font-size="20" fill="#445477">Python · FastAPI · SQLite</text>
+    <text x="607" y="660" font-size="20" font-weight="630" text-anchor="end">Docker на Taskflow</text>
+  </g>
+</svg>

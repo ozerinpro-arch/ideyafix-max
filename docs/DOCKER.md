@@ -1,39 +1,37 @@
 # Контейнер и командная строка
 
-Образ запускает собственный MAX-бот «Идеяфикс» через исходящий Long Polling.
-Публичный порт, сайт и webhook не нужны. Все предметные данные вымышлены.
-Для работы должны оставаться включёнными компьютер, Docker и процесс бота.
-Реальный MAX и генерация ИИ принимаются отдельно от синтетических тестов образа.
+Образ запускает бота «Школа действия» через исходящий Long Polling. Для работы
+бота нужен доступ к API MAX. Входящий порт и webhook не нужны. Публичная
+демо-школа развёрнута отдельно. [Архитектура](ARCHITECTURE.md).
 
-## Сборка и проверка без MAX
+## Готовый образ Taskflow
+
+Скачайте архив образа и `SHA256SUMS.txt` из [релиза Taskflow](https://github.com/ozerinpro-arch/ideyafix-max/releases/tag/hackathon-taskflow-2026-11-08-fix).
+В релизе один образ Linux AMD64. Для Linux ARM64 можно собрать образ из исходников.
+
+```sh
+shasum -a 256 -c SHA256SUMS.txt --ignore-missing
+docker load -i ideyafix-max-taskflow-linux-amd64.tar.gz
+export IDEYAFIX_IMAGE=ideyafix-max:taskflow-62a71d7
+docker image inspect --format '{{.Id}} {{.Architecture}}' "$IDEYAFIX_IMAGE"
+```
+
+Ожидаемый ID опубликован в заметках релиза. Проверьте основные сценарии бота
+в загруженном образе. Тестам не нужны токен, учётные записи и доступ к сети.
+
+```sh
+docker run --rm --platform linux/amd64 --network none \
+  --entrypoint python "$IDEYAFIX_IMAGE" -B -m unittest \
+  tests.test_platform_store tests.test_polling tests.test_school_notifications
+```
+
+## Сборка из исходников
 
 Из корня проекта:
 
 ```sh
 docker build -t ideyafix-max:local .
-docker run --rm --network none --entrypoint python ideyafix-max:local \
-  -B -m unittest tests.test_platform_runtime tests.test_platform_chat \
-  tests.test_platform_store tests.test_platform_transport \
-  tests.test_platform_integration tests.test_polling tests.test_polling_batch_recovery -v
-```
-
-Готовый архив образов загружается без сборки:
-
-```sh
-# Linux x86-64:
-docker load -i ideyafix-max-linux-amd64.tar.gz
-export IDEYAFIX_IMAGE=ideyafix-max:school-demo-2026-11-08-amd64
-# Для Apple Silicon / Linux ARM64 вместо этого:
-# docker load -i ideyafix-max-linux-arm64.tar.gz
-# export IDEYAFIX_IMAGE=ideyafix-max:school-demo-2026-11-08-arm64
-docker tag "$IDEYAFIX_IMAGE" ideyafix-max:local
-```
-
-Теги архитектур собираются отдельно. Для воспроизводимой пересборки:
-
-```sh
-docker buildx build --platform linux/amd64 --load -t ideyafix-max:amd64 .
-docker buildx build --platform linux/arm64 --load -t ideyafix-max:arm64 .
+export IDEYAFIX_IMAGE=ideyafix-max:local
 ```
 
 Python 3.12.16 взят из официального образа и закреплён digest в Dockerfile.
@@ -74,18 +72,20 @@ chmod 600 runtime/container-private/connection.json runtime/container-private/ad
 UID/GID владельца bind-mount файлов, чтобы 0600-файлы читались без изменения прав:
 
 ```sh
+: "${IDEYAFIX_IMAGE:=ideyafix-max:local}"
+export IDEYAFIX_IMAGE
 export IDEYAFIX_UID="$(id -u)"
 export IDEYAFIX_GID="$(id -g)"
 export IDEYAFIX_PRIVATE_DIR="$PWD/runtime/container-private"
 export IDEYAFIX_RUNTIME_DIR="$PWD/runtime/container-data"
-docker compose up --build -d
+docker compose up --no-build -d
 docker compose ps
 docker compose logs --tail=20 bot
 docker compose down
 ```
 
-При использовании загруженного готового образа замените `up --build -d`
-на `up --no-build -d`; `IDEYAFIX_IMAGE` выбирает его архитектуру.
+Compose использует образ из `IDEYAFIX_IMAGE`. Если исходники уже на компьютере,
+можно вместо отдельной команды сборки запустить `docker compose up --build -d`.
 
 Compose подключает настройки только для чтения, данные — в `/app/runtime`,
 а основной filesystem — только для чтения. `/tmp` и `/private/tmp` временные.
@@ -103,7 +103,7 @@ Compose подключает настройки только для чтения
 docker run --rm --network none --user "$(id -u):$(id -g)" \
   --mount "type=bind,src=$PWD/runtime/container-private,dst=/run/private,readonly" \
   --mount "type=bind,src=$PWD/runtime/container-data,dst=/app/runtime" \
-  --entrypoint python ideyafix-max:local -B -c \
+  --entrypoint python "${IDEYAFIX_IMAGE:-ideyafix-max:local}" -B -c \
   'from app.max_settings import MaxSettings; from app.platform_store import PlatformStore; s=MaxSettings.load("/run/private/connection.json"); i=PlatformStore(s.db_path,bot_username=s.bot_username).issue_invite(710008,operator=True); print("https://max.ru/"+s.bot_username+"?start="+i["payload"])'
 ```
 
@@ -120,14 +120,19 @@ docker run --rm --network none --user "$(id -u):$(id -g)" \
 `director`. Значение каждого ключа — объект с полями `login` (`ifx.demo.<роль>`)
 и `password` вымышленной учётной записи на демонстрационном стенде. Эти пары
 показываются всем, кто открывает бота, поэтому подходят только для общих
-учётных записей с тестовыми данными. Без файла используется обычный вход.
+учётных записей с тестовыми данными. Без файла используется личный вход по приглашению.
+
+Для интеграции с очередью демо-школы на Taskflow задайте
+`schoolNotificationsTokenFile` с путём к отдельному приватному ключу очереди.
+Интеграция включается только на согласованном стенде. Самостоятельному запуску
+бота для работы в MAX ключ очереди не нужен.
 
 До запуска приёмника также можно подготовить необязательный вымышленный пример:
 
 ```sh
 docker run --rm --network none --user "$(id -u):$(id -g)" \
   --mount "type=bind,src=$PWD/runtime/container-data,dst=/app/runtime" \
-  --entrypoint python ideyafix-max:local -B -m app.demo_seed
+  --entrypoint python "${IDEYAFIX_IMAGE:-ideyafix-max:local}" -B -m app.demo_seed
 ```
 
 Он создаёт один материал преподавателя и разные личные задания Славику и Саше
@@ -143,12 +148,13 @@ docker run --rm --init --name ideyafix-max \
   --tmpfs /private/tmp:rw,nosuid,nodev,mode=1777 \
   --mount "type=bind,src=$PWD/runtime/container-private,dst=/run/private,readonly" \
   --mount "type=bind,src=$PWD/runtime/container-data,dst=/app/runtime" \
-  ideyafix-max:local --config /run/private/connection.json
+  "${IDEYAFIX_IMAGE:-ideyafix-max:local}" --config /run/private/connection.json
 ```
 
 Для проверки конфигурации и бота используйте тот же запуск с `--check` после пути
 настроек. При `enabled:true` эта команда обращается к MAX, проверяет имя бота и
-отсутствие webhook. Синтетическая приёмка образа выше выполняется с `--network none`.
+отсутствие webhook. Для `--check` используйте отдельный каталог данных или
+остановите второй процесс, если он работает с той же базой.
 
 ## Без Docker
 
@@ -166,8 +172,7 @@ python3.12 -m venv .venv
 ```
 
 Она слушает только `127.0.0.1:5211`. Пользователь бота работает непосредственно в MAX.
-Новый NanoGPT-ключ и бесплатная API-модель пока не активированы; в образе нет ключей
-и автоматического платного fallback.
+ИИ-генерация по умолчанию выключена. Для запуска достаточно конфигурации MAX.
 
 Основание сборки: [официальный Python Docker image](https://hub.docker.com/_/python).
 Настройки пользователя и контекста: [Dockerfile reference](https://docs.docker.com/reference/dockerfile/).
